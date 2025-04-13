@@ -252,20 +252,6 @@ end
 
 AddPrefabPostInit("wili", onDamageImmunity)
 
-local COLLISION=GLOBAL.COLLISION
-AddPrefabPostInit("wili",function(inst)
-    inst:ListenForEvent("respawnfromghost", function()
-        inst:DoTaskInTime(0.5, function()
-            inst.Physics:ClearCollidesWith(COLLISION.LAND_OCEAN_LIMITS)
-            inst.Physics:ClearCollidesWith(COLLISION.OBSTACLES)
-            inst.Physics:ClearCollidesWith(COLLISION.BOAT_LIMITS)
-            inst.Physics:ClearCollidesWith(COLLISION.CHARACTERS)
-            inst.Physics:ClearCollidesWith(COLLISION.GIANTS)
-        end)
-    end)
-end)
-
-
 local require = GLOBAL.require
 local STRINGS = GLOBAL.STRINGS
 

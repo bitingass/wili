@@ -23,8 +23,13 @@ local prefabs = {}
 
 -- When the character is revived from human
 local function onbecamehuman(inst)
-    -- Set speed when not a ghost (optional)
+    -- Set speed and clear collides
     inst.components.locomotor:SetExternalSpeedMultiplier(inst, "wili_speed_mod", 1.75)
+    inst.Physics:ClearCollidesWith(COLLISION.LAND_OCEAN_LIMITS)
+    inst.Physics:ClearCollidesWith(COLLISION.OBSTACLES)
+    inst.Physics:ClearCollidesWith(COLLISION.BOAT_LIMITS)
+    inst.Physics:ClearCollidesWith(COLLISION.CHARACTERS)
+    inst.Physics:ClearCollidesWith(COLLISION.GIANTS)
 end
 
 local function onbecameghost(inst)
