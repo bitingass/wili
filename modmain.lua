@@ -31,12 +31,14 @@ AddComponentPostInit("playervision", function(self)
     local doer = player
     local orangeperiod
     local function isAttackingSG(inst, statename)
-        return statename == "attack" or inst.sg and inst.sg:HasStateTag("attack")
-            and inst.sg:HasStateTag("abouttoattack")
+        return statename == "attack" or inst.sg and inst.sg:HasStateTag("attack") and
+                   inst.sg:HasStateTag("abouttoattack")
     end
 
     doer:ListenForEvent("newstate", function(inst, data)
-        if not inst.sg then return end
+        if not inst.sg then
+            return
+        end
         local statename = data and data.statename
         if inst.remove_sgtag_task then
             inst.remove_sgtag_task:Cancel()
@@ -47,7 +49,7 @@ AddComponentPostInit("playervision", function(self)
             end
         end
         if isAttackingSG(inst, statename) then
-            local timeout = inst.sg.timeout or 0.5 --防止某些模组没写timeout
+            local timeout = inst.sg.timeout or 0.5 -- 防止某些模组没写timeout
             local combat = inst.components.combat or inst.replica.combat
             orangeperiod = orangeperiod or combat.min_attack_period or TUNING.WILSON_ATTACK_PERIOD
             local orange_attackspeed = 1 / timeout -- 2.5
@@ -55,15 +57,14 @@ AddComponentPostInit("playervision", function(self)
             local newperiod = 1 / new_attackspeed
             combat.min_attack_period = newperiod
             inst.AnimState:SetDeltaTimeMultiplier(math.min(2.5, (new_attackspeed / orange_attackspeed)))
-            inst.remove_sgtag_task = inst:DoTaskInTime(newperiod,
-                function()
-                    inst.sg:RemoveStateTag("attack")
-                    inst.sg:AddStateTag("idle")
-                    if GLOBAL.TheWorld.ismastersim then
-                        inst:PerformBufferedAction()
-                    end
-                    inst.sg:RemoveStateTag("abouttoattack")
-                end)
+            inst.remove_sgtag_task = inst:DoTaskInTime(newperiod, function()
+                inst.sg:RemoveStateTag("attack")
+                inst.sg:AddStateTag("idle")
+                if GLOBAL.TheWorld.ismastersim then
+                    inst:PerformBufferedAction()
+                end
+                inst.sg:RemoveStateTag("abouttoattack")
+            end)
         end
     end)
 end)
@@ -313,6 +314,9 @@ local wilitab = AddRecipeTab("wili's Tab", 996, "images/modicon.xml", "modicon.t
 local scimitar_recipe = AddRecipe("scimitar", {Ingredient("nightmarefuel", 2), Ingredient("goldnugget", 2),
                                                Ingredient("walrus_tusk", 1)}, wilitab, GLOBAL.TECH.NONE, nil, nil, nil,
     nil, "wili_builder", "images/inventoryimages/scimitar.xml", "scimitar.tex")
+
+local livinglog_recipe = AddRecipe("livinglog", {Ingredient("nightmarefuel", 1), Ingredient("log", 1)}, wilitab,
+    GLOBAL.TECH.NONE, nil, nil, nil, 1, "wili_builder")
 
 local shadow_forge_kit_recipe = AddRecipe("shadow_forge_kit", {Ingredient("nightmarefuel", 5),
                                                                Ingredient("dreadstone", 2), Ingredient("horrorfuel", 1)},
