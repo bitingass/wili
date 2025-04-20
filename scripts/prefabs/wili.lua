@@ -25,11 +25,7 @@ local prefabs = {}
 local function onbecamehuman(inst)
     -- Set speed and clear collides
     inst.components.locomotor:SetExternalSpeedMultiplier(inst, "wili_speed_mod", 1.75)
-    inst.Physics:ClearCollidesWith(COLLISION.LAND_OCEAN_LIMITS)
-    inst.Physics:ClearCollidesWith(COLLISION.OBSTACLES)
-    inst.Physics:ClearCollidesWith(COLLISION.BOAT_LIMITS)
-    inst.Physics:ClearCollidesWith(COLLISION.CHARACTERS)
-    inst.Physics:ClearCollidesWith(COLLISION.GIANTS)
+    inst.Physics:SetCollisionMask(COLLISION.GROUND)
 end
 
 local function onbecameghost(inst)
@@ -446,11 +442,15 @@ end
 
 -- This initializes for the server only. Components are added here.
 local master_postinit = function(inst)
-    inst.Physics:ClearCollidesWith(COLLISION.LAND_OCEAN_LIMITS)
-    inst.Physics:ClearCollidesWith(COLLISION.OBSTACLES)
-    inst.Physics:ClearCollidesWith(COLLISION.BOAT_LIMITS)
-    inst.Physics:ClearCollidesWith(COLLISION.CHARACTERS)
-    inst.Physics:ClearCollidesWith(COLLISION.GIANTS)
+        -- clear collides after get up on chair 
+    inst:ListenForEvent("newstate", function(inst)
+        if not inst:HasTag("sitting_on_chair") then
+            -- 坐下时重新清除碰撞
+            inst.Physics:SetCollisionMask(COLLISION.GROUND)
+        end
+    end)
+
+    inst.Physics:SetCollisionMask(COLLISION.GROUND)
     -- inst.Physics:ClearCollisionMask()
     inst.components.drownable.enabled = false
     -- Set starting inventory
