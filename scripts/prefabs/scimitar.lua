@@ -5,7 +5,7 @@ local assets = {Asset("ANIM", "anim/scimitar.zip"), Asset("ANIM", "anim/swap_sci
 local function onequip(inst, owner)
     if owner.prefab ~= "wili" then
         if owner.components.talker then
-            owner.components.talker:Say("get rejected")
+            owner.components.talker:Say(STRINGS.CHARACTERS.WILI.ANNOUNCE_WILI_REJECTED)
         end
         owner:DoTaskInTime(0, function()
             owner.components.inventory:Unequip(EQUIPSLOTS.HANDS)

@@ -2,7 +2,7 @@
 name = "Moon Shadow Assassin"
 description = "Wili come from a female assassin Alliance.\nShe come here because she was framed by friends."
 author = "Frankie Zhang"
-version = "1.1.21" -- This is the version of the template. Change it to your own number.
+version = "1.2.0"
 
 -- This is the URL name of the mod's thread on the forum; the part after the ? and before the first & in the url
 forumthread = ""
@@ -27,7 +27,15 @@ icon = "modicon.tex"
 -- The mod's tags displayed on the server list
 server_filter_tags = {"character"}
 
--- configuration_options = {}
+local invincibility_rate_options = {}
+for percent = 0, 100 do
+    invincibility_rate_options[#invincibility_rate_options + 1] = {
+        description = percent == 0 and "关闭" or (percent == 13 and "13%（默认）" or percent .. "%"),
+        hover = "受到攻击时有" .. percent .. "%概率获得13秒无敌",
+        data = percent / 100
+    }
+end
+
 configuration_options = {{
     name = "oneshot_rate", -- 配置项名换，在modmain.lua里获取配置值时要用到
     hover = "攻击时秒杀的概率", -- 鼠标移到配置项上时所显示的信息
@@ -70,4 +78,10 @@ configuration_options = {{
         data = -1
     }},
     default = 0.04 -- 默认值，与可选项里的值匹配作为默认值
+}, {
+    name = "invincibility_rate",
+    label = "无敌触发概率",
+    hover = "受到攻击时获得13秒无敌的概率，0%为关闭",
+    options = invincibility_rate_options,
+    default = 0.13
 }}

@@ -1,7 +1,20 @@
 local MakePlayerCharacter = require "prefabs/player_common"
 
-local oneshot_weapon_name = {"nightsword", "glasscutter", "shovel_lunarplant", "pickaxe_lunarplant", "moonglassaxe",
-                             "voidcloth_scythe", "batbat", "ruins_bat", "shadow_battleaxe", "sword_lunarplant"}
+local WILI_SPEED_MULTIPLIER = 2.25
+
+local oneshot_weapons = {
+    nightsword = true,
+    glasscutter = true,
+    shovel_lunarplant = true,
+    pickaxe_lunarplant = true,
+    moonglassaxe = true,
+    voidcloth_scythe = true,
+    batbat = true,
+    ruins_bat = true,
+    shadow_battleaxe = true,
+    sword_lunarplant = true,
+    scimitar = true
+}
 
 local assets = {Asset("SCRIPT", "scripts/prefabs/player_common.lua"), Asset("SOUNDPACKAGE", "sound/wili.fev"),
                 Asset("SOUND", "sound/wili_bank00.fsb"), Asset("ANIM", "anim/wili.zip"),
@@ -21,11 +34,52 @@ for k, v in pairs(TUNING.GAMEMODE_STARTING_ITEMS) do
 end
 local prefabs = {}
 
+local MOONVISION_SOURCE = "wili_moonvision"
+local IDENTITY_COLOURCUBE = "images/colour_cubes/identity_colourcube.tex"
+local MOONVISION_COLOURCUBES = {
+    day = IDENTITY_COLOURCUBE,
+    dusk = IDENTITY_COLOURCUBE,
+    night = IDENTITY_COLOURCUBE,
+    full_moon = IDENTITY_COLOURCUBE
+}
+
+-- Personal visual ambient colours only: this does not illuminate the world.
+-- Use the built-in neutral colour cube instead of the green moggles filter.
+local MOONVISION_AMBIENT_COLOURS = {
+    default = {colour = Vector3(.16, .29, .60), time = 8},
+    FULL_MOON_COLOUR = {colour = Vector3(.16, .29, .60), time = 8},
+    CAVE_COLOUR = {colour = Vector3(.16, .29, .60), time = 2}
+}
+
+local function RefreshWiliNightVision(inst)
+    local vision = inst.components.playervision
+    -- Ghost vision is synchronized on both peers. During resurrection the
+    -- playerghost tag is removed later, so it must not gate this update.
+    local enabled = not vision:HasGhostVision() and
+                        (TheWorld:HasTag("cave") or TheWorld.state.isnight == true)
+    if inst._wili_moonvision_active == enabled then
+        return
+    end
+    inst._wili_moonvision_active = enabled
+    if enabled then
+        vision:PushForcedNightVision(MOONVISION_SOURCE, 0, MOONVISION_COLOURCUBES, true,
+            MOONVISION_AMBIENT_COLOURS)
+    else
+        vision:PopForcedNightVision(MOONVISION_SOURCE)
+    end
+end
+
+local function RestoreWiliCollision(inst)
+    if inst.Physics:GetCollisionMask() ~= COLLISION.GROUND then
+        inst.Physics:SetCollisionMask(COLLISION.GROUND)
+    end
+end
+
 -- When the character is revived from human
 local function onbecamehuman(inst)
     -- Set speed and clear collides
-    inst.components.locomotor:SetExternalSpeedMultiplier(inst, "wili_speed_mod", 1.75)
-    inst.Physics:SetCollisionMask(COLLISION.GROUND)
+    inst.components.locomotor:SetExternalSpeedMultiplier(inst, "wili_speed_mod", WILI_SPEED_MULTIPLIER)
+    RestoreWiliCollision(inst)
 end
 
 local function onbecameghost(inst)
@@ -50,21 +104,15 @@ local common_postinit = function(inst)
     -- Minimap icon
     inst.MiniMapEntity:SetIcon("wili.tex")
     inst:AddTag("wili_builder")
+    inst:ListenForEvent("ghostvision", RefreshWiliNightVision)
+    inst:WatchWorldState("isnight", RefreshWiliNightVision)
+    RefreshWiliNightVision(inst)
 end
 
 local function better_random_seed()
     local time_seed = tonumber(tostring(os.time()):reverse():sub(1, 6))
     local line_seed = tonumber(tostring(debug.getinfo(1).currentline):reverse())
     return time_seed + line_seed
-end
-
-local function table_contains(table, value)
-    for k, v in pairs(table) do
-        if v == value then
-            return true
-        end
-    end
-    return false
 end
 
 -- 在脚本开始时设置一次随机数种子
@@ -75,10 +123,10 @@ local ONESHOT_CHANCE = 1 + (-1.0) * oneshot_rate
 
 local changedamage = function(inst, data)
     local hand = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-    if hand and math.random() >= ONESHOT_CHANCE and table_contains(oneshot_weapon_name, hand.prefab) then
+    if hand and math.random() >= ONESHOT_CHANCE and oneshot_weapons[hand.prefab] then
         inst.SoundEmitter:PlaySound("wili/skill/coup_de_grace")
         inst.components.combat.damagemultiplier = 99999
-        inst.components.talker:Say("Give you relief!")
+        inst.components.talker:Say(GetString(inst, "ANNOUNCE_WILI_COUP_DE_GRACE"))
     else
         inst.components.combat.damagemultiplier = 2
     end
@@ -202,49 +250,40 @@ local attack_functions = {
 }
 
 -- 特殊武器切换武器代码
-local function changeweapon(inst)
-    local hand = inst.components.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-    if hand and hand.components.weapon then
-        hand.components.weapon.temp_attack = hand.components.weapon.onattack
-        local weapon_name = hand.prefab
-        if table_contains(oneshot_weapon_name, weapon_name) then
-            hand.components.weapon:SetRange(TUNING.BOOMERANG_DISTANCE, TUNING.BOOMERANG_DISTANCE + 1)
-            local attack_fn = attack_functions[weapon_name]
-            if attack_fn then
-                hand.components.weapon.onattack = attack_fn
-            end
-        end
-        -- if theWeaponname == "batbat" then
-        --     hand.components.weapon:SetRange(TUNING.BOOMERANG_DISTANCE, TUNING.BOOMERANG_DISTANCE + 1)
-        --     hand.components.weapon.onattack = batbat_attack
-        -- elseif theWeaponname == "ruins_bat" then
-        --     hand.components.weapon:SetRange(TUNING.BOOMERANG_DISTANCE, TUNING.BOOMERANG_DISTANCE + 1)
-        --     hand.components.weapon.onattack = ruins_bat_attack
-        -- elseif theWeaponname == "shadow_battleaxe" then
-        --     hand.components.weapon:SetRange(TUNING.BOOMERANG_DISTANCE, TUNING.BOOMERANG_DISTANCE + 1)
-        --     hand.components.weapon.onattack = shadow_battleaxe_attack
-        -- elseif theWeaponname == "sword_lunarplant" then
-        --     hand.components.weapon:SetRange(TUNING.BOOMERANG_DISTANCE, TUNING.BOOMERANG_DISTANCE + 1)
-        --     hand.components.weapon.onattack = sword_lunarplant_attack
-        -- elseif table_contains(oneshot_weapon_name, thename) then
-        --     hand.components.weapon:SetRange(TUNING.BOOMERANG_DISTANCE, TUNING.BOOMERANG_DISTANCE + 1)
-        --     hand.components.weapon.onattack = onattack
-        -- end
-        -- 这是源作者的代码，讲道理，这么写和GTA:V的19.8亿次if有什么区别(笑哭)
+local function changeweapon(inst, data)
+    if data == nil or data.eslot ~= EQUIPSLOTS.HANDS then
+        return
+    end
+
+    local item = data.item
+    local weapon = item ~= nil and item.components.weapon or nil
+    local attack_fn = item ~= nil and attack_functions[item.prefab] or nil
+    if weapon ~= nil and attack_fn ~= nil and weapon._wili_original == nil then
+        weapon._wili_original = {
+            onattack = weapon.onattack,
+            attackrange = weapon.attackrange,
+            hitrange = weapon.hitrange
+        }
+        weapon:SetRange(TUNING.BOOMERANG_DISTANCE, TUNING.BOOMERANG_DISTANCE + 1)
+        weapon.onattack = attack_fn
     end
 end
 
 local function recoverweapon(inst, data)
-    local item = data.item
-    local thename
-    if item then
-        thename = item.prefab
-        if item.components.weapon and table_contains(oneshot_weapon_name, thename) then
-            item.components.weapon.onattack = item.components.weapon.temp_attack
-            item.components.weapon:SetRange(nil)
-        end
+    if data == nil or data.eslot ~= EQUIPSLOTS.HANDS then
+        return
     end
 
+    local item = data.item
+    local weapon = item ~= nil and item.components.weapon or nil
+    local original = weapon ~= nil and weapon._wili_original or nil
+    if original ~= nil then
+        weapon.onattack = original.onattack
+        weapon:SetRange(original.attackrange, original.hitrange)
+        -- Preserve an explicitly unset hit range as well as the networked attack range.
+        weapon.hitrange = original.hitrange
+        weapon._wili_original = nil
+    end
 end
 
 local ZERO_DISTANCE = 10
@@ -253,12 +292,6 @@ local UPDATE_SPAWNLIGHT_ONEOF_TAGS = {"HASHEATER", "spawnlight"}
 local UPDATE_NOSPAWNLIGHT_MUST_TAGS = {"HASHEATER"}
 
 function OnUpdate(self, dt, applyhealthdelta)
-    self.inst.Light:Enable(true)
-    self.inst.Light:SetRadius(13)
-    self.inst.Light:SetFalloff(0.75)
-    self.inst.Light:SetIntensity(.6)
-    self.inst.Light:SetColour(235 / 255, 12 / 255, 12 / 255)
-
     self.externalheaterpower = 0
     self.delta = 0
     self.rate = 0
@@ -442,15 +475,26 @@ end
 
 -- This initializes for the server only. Components are added here.
 local master_postinit = function(inst)
+    local wisecracker = inst.components.wisecracker
+    if wisecracker ~= nil then
+        local old_update = wisecracker.OnUpdate
+        wisecracker.OnUpdate = function(self, dt)
+            -- Suppress only the two light-transition remarks. Keep other
+            -- automatic speech, including food and fish buffs, in the original update.
+            self.inlight = CanEntitySeeInDark(self.inst) or self.inst:IsInLight()
+            return old_update(self, dt)
+        end
+    end
+
         -- clear collides after get up on chair 
     inst:ListenForEvent("newstate", function(inst)
         if not inst:HasTag("sitting_on_chair") then
             -- 坐下时重新清除碰撞
-            inst.Physics:SetCollisionMask(COLLISION.GROUND)
+            RestoreWiliCollision(inst)
         end
     end)
 
-    inst.Physics:SetCollisionMask(COLLISION.GROUND)
+    RestoreWiliCollision(inst)
     -- inst.Physics:ClearCollisionMask()
     inst.components.drownable.enabled = false
     -- Set starting inventory
@@ -472,7 +516,7 @@ local master_postinit = function(inst)
     inst.components.builder.ancient_bonus = 4
 
     -- move
-    inst.components.locomotor:SetExternalSpeedMultiplier(inst, "wili_speed_mod", 2.25)
+    inst.components.locomotor:SetExternalSpeedMultiplier(inst, "wili_speed_mod", WILI_SPEED_MULTIPLIER)
 
     -- Damage multiplier (optional)
     inst.components.combat.damagemultiplier = 2
@@ -487,16 +531,9 @@ local master_postinit = function(inst)
 
     inst.components.temperature.OnUpdate = OnUpdate
 
-    -- Emit light at night
+    -- Reduced sanity drain
     inst.components.sanity.night_drain_mult = 0.1
     inst.components.sanity.neg_aura_mult = 0.1
-    local light = inst.entity:AddLight()
-    inst.Light:Enable(true)
-    inst.Light:SetRadius(13)
-    inst.Light:SetFalloff(0.75)
-    inst.Light:SetIntensity(.6)
-    inst.Light:SetColour(235 / 255, 12 / 255, 12 / 255)
-
     inst:ListenForEvent("onattackother", changedamage)
     inst:ListenForEvent("equip", changeweapon)
     inst:ListenForEvent("unequip", recoverweapon)
