@@ -1,0 +1,18 @@
+Wili 当前美术源文件
+
+source/anim：已通过游戏测试的角色、幽灵、专武构建元数据及无压缩 PNG 部件。
+source/ui：当前头像、立绘、图标等 11 张纹理的 PNG 源图。
+source/illustrations：采用的高分辨率设计图、绘制源图和生成提示词。
+source/manifest.json：当前资源映射；记录 2026-10-20 用户确认游戏测试通过。
+tools：格式转换及重新打包工具。
+
+旧稿、重复解包/测试输出、发布包、旧导出目录和回退备份均已清理。历史版本按用户要求使用 Git，不另留本地回退副本。
+
+重新打包（在项目根目录运行）：
+python art/tools/rebuild_assets.py
+输出为 art/.work/rebuilt，确认后再覆盖到 Mod。工具不会自动替换运行资源。
+加 --verify-runtime 可以检查重建内容是否与当前运行资源逐字节相同。
+
+依赖：Python、Pillow、NumPy，以及 Klei Don't Starve Mod Tools 的 TextureConverter.exe。
+当前工具位置在 tools/dst_art_pipeline.py 的 MODTOOLS 常量中，可按安装目录调整。
+所有构建中的 source_zip 相对项目根目录定位，不再依赖已删除的备份或旧导出目录。

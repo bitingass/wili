@@ -1,0 +1,7 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit. Asset type: character selection locked silhouette.\nInput image 1 is the head-and-shoulders portrait to edit. Convert the existing figure into a pure solid BLACK silhouette. Preserve exactly its external contour, hair silhouette, ponytail, shoulders, framing and proportions. All interior pixels of the figure must be opaque flat black, with no eye, hair highlights, jewel, clothing seams or other interior detail. Keep the background genuinely transparent. Exactly the same single bust outline, nothing else. No outlines beyond the existing contour, no glow, no text, no symbols, no question mark.",
+  "reference": "wili-head-bust-v1.png",
+  "source": "C:/Users/Frankie/.codex/generated_images/01a15511-2d5a-76f1-a5a5-3e710ce112c8/exec-4e3dc791-2821-4c8d-bedd-310c250878b1.png",
+  "transparent_background": true
+}

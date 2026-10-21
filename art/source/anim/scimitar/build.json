@@ -1,0 +1,27 @@
+{
+  "name": "scimitar",
+  "version": 6,
+  "symbol_count": 1,
+  "frame_count": 1,
+  "atlases": [
+    "atlas-0.tex"
+  ],
+  "source_zip": "anim/scimitar.zip",
+  "symbols": [
+    {
+      "name": "hash_824664575",
+      "hash": 824664575,
+      "frames": [
+        {
+          "frame": 0,
+          "duration": 2,
+          "x": 5.200500011444092,
+          "y": -109.02449798583984,
+          "w": 120.0,
+          "h": 248.0,
+          "png": "hash_824664575-0.png"
+        }
+      ]
+    }
+  ]
+}

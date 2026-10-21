@@ -1,0 +1,10 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: identity-preserve. Asset type: transparent head-and-shoulders portrait for tiny Don't Starve Together HUD, map and save icons.\nInput image 1 is the approved concept design, input image 2 is the completed full-body production portrait. Preserve exactly the same female moon assassin Wili identity and game ink drawing style from image 2.\nCreate ONE clean head and short shoulder bust, three-quarter facing slightly viewer's left, genuine transparent background. Large readable head, sharp clear eye, blue-black swept spiky hair, one broad silver-white forelock over the left of the picture, short dark blue tied ponytail visible on right, tiny muted burgundy hair tie, pale face, charcoal cloth mask covering nose/mouth, raised black/navy collar and compact shoulder cape, small silver crescent clasp with sapphire jewel at lower chest.\nSimplify fine scratch texture and tiny folds just enough to read at 64 pixels, while preserving the approved silhouette and expressive face. Thick irregular dark outlines with crisp separations between hair, eye and mask. Preserve the face design and dark sapphire/charcoal palette. Frame tightly but include entire hair, ponytail and shoulders with transparent padding; lower edge ends cleanly below shoulders.\nNo hands, no weapon, no text, no background, no moon disc, no ground or shadow, no decorative frame, no alternate faces, no watermark. Exactly one isolated bust with genuine transparent alpha.",
+  "references": [
+    "../reference/approved-concept.png",
+    "wili-fullbody-v1.png"
+  ],
+  "source": "C:/Users/Frankie/.codex/generated_images/01a15511-2d5a-76f1-a5a5-3e710ce112c8/exec-47e81209-acc7-4978-8c02-01149a74376d.png",
+  "transparent_background": true
+}

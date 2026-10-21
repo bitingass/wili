@@ -1,0 +1,88 @@
+{
+  "revision": "moonshadow-face-fix-v2",
+  "game_test_confirmed_by_user": "2026-10-20",
+  "animation_builds": [
+    {
+      "archive": "anim/wili.zip",
+      "source": "anim/wili",
+      "frames": 85,
+      "runtime_sha256": "943b4e9a48b2f9a9c3323dbee6cfaf4c4921f963650fdce8592875c3e136bd5e"
+    },
+    {
+      "archive": "anim/ghost_wili_build.zip",
+      "source": "anim/ghost_wili_build",
+      "frames": 60,
+      "runtime_sha256": "90c6c06f83d264eef287aa2d391460a1f3ff09f963a0db183912e56dd84ff81f"
+    },
+    {
+      "archive": "anim/scimitar.zip",
+      "source": "anim/scimitar",
+      "frames": 1,
+      "runtime_sha256": "9cc56d248553ad1e41ea66dbb5826ad77ff6a0ee3bd5c84b36eadd810c6ab39c"
+    },
+    {
+      "archive": "anim/swap_scimitar.zip",
+      "source": "anim/swap_scimitar",
+      "frames": 2,
+      "runtime_sha256": "d8d1b2294396454a56dee07e2e2bbcc48e5c9ca10daf9e55e1eb417b27ecd2de"
+    }
+  ],
+  "ui_textures": [
+    {
+      "target": "modicon.tex",
+      "source": "ui/modicon.png",
+      "format": "bc3"
+    },
+    {
+      "target": "images/modicon.tex",
+      "source": "ui/images/modicon.png",
+      "format": "argb"
+    },
+    {
+      "target": "images/avatars/avatar_wili.tex",
+      "source": "ui/images/avatars/avatar_wili.png",
+      "format": "argb"
+    },
+    {
+      "target": "images/avatars/self_inspect_wili.tex",
+      "source": "ui/images/avatars/self_inspect_wili.png",
+      "format": "argb"
+    },
+    {
+      "target": "images/map_icons/wili.tex",
+      "source": "ui/images/map_icons/wili.png",
+      "format": "argb"
+    },
+    {
+      "target": "images/saveslot_portraits/wili.tex",
+      "source": "ui/images/saveslot_portraits/wili.png",
+      "format": "argb"
+    },
+    {
+      "target": "images/selectscreen_portraits/wili.tex",
+      "source": "ui/images/selectscreen_portraits/wili.png",
+      "format": "bc3"
+    },
+    {
+      "target": "images/selectscreen_portraits/wili_silho.tex",
+      "source": "ui/images/selectscreen_portraits/wili_silho.png",
+      "format": "bc3"
+    },
+    {
+      "target": "bigportraits/wili.tex",
+      "source": "ui/bigportraits/wili.png",
+      "format": "bc3"
+    },
+    {
+      "target": "images/avatars/avatar_ghost_wili.tex",
+      "source": "ui/images/avatars/avatar_ghost_wili.png",
+      "format": "bc3"
+    },
+    {
+      "target": "images/inventoryimages/scimitar.tex",
+      "source": "ui/images/inventoryimages/scimitar.png",
+      "format": "bc3"
+    }
+  ],
+  "notes": "Current editable uncompressed artwork only. Runtime files are in the project root; history/rollback uses Git as requested."
+}

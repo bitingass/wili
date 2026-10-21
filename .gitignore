@@ -1,0 +1,12 @@
+# Generated art build output
+/art/.work/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Editor and operating-system temporary files
+*.tmp
+*.bak
+Thumbs.db
+.DS_Store

@@ -1,0 +1,20 @@
+{
+  "tool": "built-in image_gen.imagegen",
+  "transparent_background": true,
+  "selected_assets": [
+    {
+      "output": "tail-generated-v3.png",
+      "input": "tail-generated-v2.png",
+      "used_for": "ghost_tail frames 0 through 15; first cell also adapted to ghost_body frame 0",
+      "prompt": "Edit the ghost sprite sheet only. There are exactly 16 ghosts in 4x4 cells. Keep all shapes/layout/pale ghost tails exactly unchanged. Replace their medium-length hair with an EXTREMELY SHORT PIXIE CROWN / SHORT HAIR CAP. This is a technical correction: the existing hair is still too long. Remove ALL hanging hair at the sides. Remove the hanging white bang. Keep just a SMALL compact navy cap right on top of the forehead, no more than ONE FIFTH (20%) of the full ghost height. The white accent is a SHORT SMALL stripe inside this little top cap, not a dangling strand. A tiny moon emblem can sit on the top cap. Leave a very large uninterrupted ivory forehead and blank face under the cap. No hair at all along either side of the face. No eyes/eyebrows/mouth. Each long ghost should look like a white ghost with a tiny navy-and-white short pixie cap on top. Do not add body parts. Exactly 4x4 and fully transparent, no text."
+    },
+    {
+      "output": "eyes-generated.png",
+      "input": "../references/ghost_wili_build/sheets/ghost_eyes.png",
+      "used_for": "ghost_eyes frames 0 through 3",
+      "prompt": "Use case: precise-object-edit. Asset type: one horizontal production sprite strip with four ghost eye-pair frames on a truly transparent background. The supplied image is the original four-frame animation reference. Preserve the four expression silhouettes and left-to-right order exactly: 0 neutral tall oval eyes with small lashes, 1 angry slanted eyes, 2 sad drooping teardrop eyes, 3 blink two closed curved eyelid strokes. Draw ONLY the eyes and lashes, no body, no hair, no eyebrows, no noses, no mouths. Each pair is centered in its own equal-size square quarter-cell, four square cells in one horizontal row, all identical scale and approximately the same eye baseline. Repaint in simple Don't Starve Together ink-cutout style: near-black/navy slightly rough bold outlines, pale icy-white eye interior and a very subtle light cool-blue lower inner edge. No iris or pupils, no glow clouds, no frame lines, no words or digits, no labels, no background color. The closed blink consists of only the two dark strokes and tiny lashes. Exactly four separated eye pairs, large transparent margins between them. Preserve the expressive angle and silhouette of each original pair. True transparent alpha."
+    }
+  ],
+  "production_processing": "Only mechanical cropping, canvas alignment, resampling, format conversion and matrix-based assembly. No programmatic painting or recolouring.",
+  "qa_correction": "Ghost tail is the actually displayed body in the original game's idle animation. Original long bangs overlapped the separate eyes; v3 shortens the ghost hair while preserving all original eye positions, symbol hashes, frame durations and build pivots. Generic FX source sprites remain unchanged."
+}

@@ -1,0 +1,36 @@
+{
+  "name": "swap_scimitar",
+  "version": 6,
+  "symbol_count": 1,
+  "frame_count": 2,
+  "atlases": [
+    "atlas-0.tex"
+  ],
+  "source_zip": "anim/swap_scimitar.zip",
+  "symbols": [
+    {
+      "name": "swap_spear",
+      "hash": 2452395053,
+      "frames": [
+        {
+          "frame": 0,
+          "duration": 3,
+          "x": 9.250499725341797,
+          "y": -48.29949951171875,
+          "w": 76.0,
+          "h": 312.0,
+          "png": "swap_spear-0.png"
+        },
+        {
+          "frame": 5,
+          "duration": 3,
+          "x": 9.250499725341797,
+          "y": -48.29949951171875,
+          "w": 76.0,
+          "h": 312.0,
+          "png": "swap_spear-5.png"
+        }
+      ]
+    }
+  ]
+}
