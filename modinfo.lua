@@ -2,7 +2,7 @@
 name = "Moon Shadow Assassin"
 description = "Wili come from a female assassin Alliance.\nShe come here because she was framed by friends."
 author = "Frankie Zhang"
-version = "1.2.0"
+version = "1.2.1"
 
 -- This is the URL name of the mod's thread on the forum; the part after the ? and before the first & in the url
 forumthread = ""
