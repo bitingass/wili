@@ -1,12 +1,12 @@
 {
-  "revision": "moonshadow-face-fix-v2",
-  "game_test_confirmed_by_user": "2026-10-20",
+  "revision": "moonshadow-chin-slices-v3",
+  "game_test_confirmed_by_user": null,
   "animation_builds": [
     {
       "archive": "anim/wili.zip",
       "source": "anim/wili",
       "frames": 85,
-      "runtime_sha256": "943b4e9a48b2f9a9c3323dbee6cfaf4c4921f963650fdce8592875c3e136bd5e"
+      "runtime_sha256": "d6b04d706ebeaf29b1dbe8cd8fd17846019a283a3f3283ac1d5db033a5ff0461"
     },
     {
       "archive": "anim/ghost_wili_build.zip",
@@ -84,5 +84,6 @@
       "format": "bc3"
     }
   ],
-  "notes": "Current editable uncompressed artwork only. Runtime files are in the project root; history/rollback uses Git as requested."
+  "notes": "Current editable uncompressed artwork. The first four headbase slices restore tips clipped at source-sheet y=378, preserving original upper pixels and rig positions. Source and compiled assets checked; this revision awaits in-game verification. Runtime files are in the project root; history/rollback uses Git.",
+  "previous_revision_game_test_confirmed_by_user": "2026-10-20"
 }
