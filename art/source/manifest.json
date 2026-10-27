@@ -1,5 +1,5 @@
 {
-  "revision": "moonshadow-chin-slices-v3",
+  "revision": "moonshadow-head-tips-and-ground-burial-v6",
   "game_test_confirmed_by_user": null,
   "animation_builds": [
     {
@@ -17,14 +17,14 @@
     {
       "archive": "anim/scimitar.zip",
       "source": "anim/scimitar",
-      "frames": 1,
-      "runtime_sha256": "9cc56d248553ad1e41ea66dbb5826ad77ff6a0ee3bd5c84b36eadd810c6ab39c"
+      "frames": 2,
+      "runtime_sha256": "a672c4d1b4afcfe58bdeb0bac72c41a7ae939fe1f58530cbee8a2d9587bf82a4"
     },
     {
       "archive": "anim/swap_scimitar.zip",
       "source": "anim/swap_scimitar",
       "frames": 2,
-      "runtime_sha256": "d8d1b2294396454a56dee07e2e2bbcc48e5c9ca10daf9e55e1eb417b27ecd2de"
+      "runtime_sha256": "894f324bf95b73dc961d0f1349ee907f898ec9519804fbef0027c47cce288096"
     }
   ],
   "ui_textures": [
@@ -84,6 +84,29 @@
       "format": "bc3"
     }
   ],
-  "notes": "Current editable uncompressed artwork. The first four headbase slices restore tips clipped at source-sheet y=378, preserving original upper pixels and rig positions. Source and compiled assets checked; this revision awaits in-game verification. Runtime files are in the project root; history/rollback uses Git.",
-  "previous_revision_game_test_confirmed_by_user": "2026-10-20"
+  "notes": "Current editable uncompressed artwork combines restored headbase tips with the redesigned, enlarged weapon and buried ground pose. Head tips preserve original upper pixels and rig positions. Source and compiled assets checked; these final corrections await in-game verification. Runtime files are in the project root; history/rollback uses Git.",
+  "previous_revision_game_test_confirmed_by_user": "2026-10-20",
+  "previous_game_test_confirmed_by_user": {
+    "date": "2026-10-20",
+    "scope": "Character/ghost art and previous weapon design"
+  },
+  "weapon_update": {
+    "date": "2026-10-24",
+    "design": "gem-tile game-readable refinement",
+    "ground_bank": "scimitar",
+    "ground_all_directions": true,
+    "ground_tip_at_floor": true,
+    "held_scale_vs_previous": 1.35,
+    "ground_scale_vs_previous": 1.65,
+    "native_ground_contact": "staffs/grass",
+    "ground_contact_scale": 1.0,
+    "compiled_resources_verified": true,
+    "game_tested": false,
+    "ground_pose": "lower blade buried, wide cut section at soil plane",
+    "additional_ground_burial_units": 36
+  },
+  "previous_weapon_in_game_feedback": {
+    "date": "2026-10-24",
+    "result": "Visible but too small in hand and on ground; lacked native contact strokes."
+  }
 }

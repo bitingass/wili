@@ -63,7 +63,7 @@ local function fn()
     inst.entity:AddNetwork()
     MakeInventoryPhysics(inst)
 
-    inst.AnimState:SetBank("nightmaresword")
+    inst.AnimState:SetBank("scimitar")
     inst.AnimState:SetBuild("scimitar")
     inst.AnimState:PlayAnimation("idle")
 

@@ -275,6 +275,11 @@ def encode_tex(png, output, texture_format="bc3"):
 
 def pack_archive(build_path, sprites, output, texture_format="bc3"):
     build = json.loads(build_path.read_text(encoding="utf-8"))
+    animation_data = None
+    if build.get("animation_file"):
+        animation_data = (build_path.parent / build["animation_file"]).read_bytes()
+        if animation_data[:4] != b"ANIM":
+            raise ValueError("animation_file must contain a compiled ANIM resource")
     allframes = [f for s in build["symbols"] for f in s["frames"]]
     images = {f["png"]: Image.open(sprites / f["png"]).convert("RGBA") for f in allframes}
     padding = 4
@@ -322,8 +327,12 @@ def pack_archive(build_path, sprites, output, texture_format="bc3"):
             raise ValueError("Pack to a temporary ZIP before replacing the current runtime archive")
         with zipfile.ZipFile(source_zip) as source, zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as packed:
             for name in source.namelist():
+                if name == "anim.bin" and animation_data is not None:
+                    continue
                 if name != "build.bin" and name not in build["atlases"]:
                     packed.writestr(name, source.read(name))
+            if animation_data is not None:
+                packed.writestr("anim.bin", animation_data)
             packed.writestr("build.bin", data)
             for name in atlas_names:
                 packed.writestr(name, (temp / name).read_bytes())

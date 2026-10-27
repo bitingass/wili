@@ -1,6 +1,6 @@
 Wili 当前美术源文件
 
-source/anim：角色、幽灵、专武构建元数据及无压缩 PNG 部件。当前头部切片修复待游戏内复测。
+source/anim：角色、幽灵、专武构建元数据及无压缩 PNG 部件。当前头部切片和武器地面姿势修正待游戏内复测。
 source/ui：当前头像、立绘、图标等 11 张纹理的 PNG 源图。
 source/illustrations：采用的高分辨率设计图、绘制源图和生成提示词。
 source/manifest.json：当前资源映射及运行资源哈希；保留上一版 2026-10-20 游戏测试记录，当前修复版尚未确认。
@@ -16,6 +16,9 @@ python art/tools/rebuild_assets.py
 依赖：Python、Pillow、NumPy，以及 Klei Don't Starve Mod Tools 的 TextureConverter.exe。
 当前工具位置在 tools/dst_art_pipeline.py 的 MODTOOLS 常量中，可按安装目录调整。
 所有构建中的 source_zip 相对项目根目录定位，不再依赖已删除的备份或旧导出目录。
+银月弯刀的独立地面动画保存在 source/anim/scimitar/anim.bin，build.json 的 animation_file 指向该文件，重新打包会自动采用它。
+地面线条使用原版 staffs/grass 部件，独立于刀身缩放；来源记录在 source/illustrations/weapon/ground-contact-source.json，只会在地面动画中显示。
+source/illustrations/weapon/placement.json 记录了握持轴心、地面接触点和库存图标的导出参数。
 
 头部末端切片修复（2026-10-23）：
 原稿 illustrations/head/heads-v1.png 高 756 像素，先前按两行等分裁在 y=378；第一排四个头却延伸至约 y=390–399，造成横向断边。

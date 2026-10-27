@@ -1,0 +1,68 @@
+{
+  "source_archive": "base game data/anim/staffs.zip",
+  "source_sha256": "665659edf7095dc05e82f02f4196cecdb658c8d9043c65a578b86a1459c5e7f3",
+  "original_build": "staffs",
+  "symbol": {
+    "hash": 1012542230,
+    "frames": [
+      {
+        "frame": 0,
+        "duration": 1,
+        "x": 0.0,
+        "y": -2.025001049041748,
+        "w": 65.0,
+        "h": 46.0,
+        "vertex_start": 72,
+        "vertex_count": 6,
+        "png": "grass-0.png",
+        "pivot_x": 0.5,
+        "pivot_y": 0.4559782380643098
+      }
+    ],
+    "name": "grass"
+  },
+  "original_animation": "redstaff (shared with all staff ground poses)",
+  "element": {
+    "symbol": 1012542230,
+    "frame": 0,
+    "layer": 1012542230,
+    "matrix": [
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      2.5,
+      -2.1500000953674316,
+      -5.0
+    ],
+    "symbol_name": "grass",
+    "layer_name": "grass"
+  },
+  "visible_alpha_size_native": [
+    57,
+    38
+  ],
+  "suggested_scimitar_use": {
+    "ground_blade_scale": 1.65,
+    "held_blade_scale": 1.35,
+    "grass_scale": 1.0,
+    "grass_translation": [
+      0,
+      -2.15
+    ],
+    "grass_z": -6.0,
+    "reason": "Weapon idle element is z=-5; keep grass in foreground at contact tip; preserve dedicated ground symbol rather than add to hand sprite."
+  },
+  "caution": "Compiled animation units are not calibrated world metres or screen pixels; camera projection is not included. The render-derived bounds are slightly larger than source alpha geometry due to bicubic filtering.",
+  "current_sprite": "../../anim/scimitar/sprites/grass-0.png",
+  "usage": "Ground-only native hand-inked contact strokes. Native dimensions retained; foreground z=-6.",
+  "current_scimitar_matrix": [
+    1,
+    0,
+    0,
+    1,
+    0,
+    -2.15,
+    -6
+  ]
+}

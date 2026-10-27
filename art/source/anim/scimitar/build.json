@@ -1,12 +1,13 @@
 {
   "name": "scimitar",
   "version": 6,
-  "symbol_count": 1,
-  "frame_count": 1,
+  "symbol_count": 2,
+  "frame_count": 2,
   "atlases": [
     "atlas-0.tex"
   ],
   "source_zip": "anim/scimitar.zip",
+  "animation_file": "anim.bin",
   "symbols": [
     {
       "name": "hash_824664575",
@@ -15,13 +16,28 @@
         {
           "frame": 0,
           "duration": 2,
-          "x": 5.200500011444092,
-          "y": -109.02449798583984,
-          "w": 120.0,
-          "h": 248.0,
+          "x": 44.512500011920935,
+          "y": -143.82542167663573,
+          "w": 198.0,
+          "h": 409.2,
           "png": "hash_824664575-0.png"
         }
       ]
+    },
+    {
+      "hash": 1012542230,
+      "frames": [
+        {
+          "frame": 0,
+          "duration": 1,
+          "x": 0.0,
+          "y": -2.025001049041748,
+          "w": 65.0,
+          "h": 46.0,
+          "png": "grass-0.png"
+        }
+      ],
+      "name": "grass"
     }
   ]
 }

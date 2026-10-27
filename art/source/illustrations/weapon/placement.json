@@ -1,0 +1,181 @@
+{
+  "input": "silver-moon-source.png",
+  "input_sha256": "4648585599de922440913ee89b9e733115003996f8d408bd2920ba8fa7c01dc8",
+  "original_generated_sha256": "48e0cea82228e4196a8bcf8d2e6821a1743fbdf71b3c05839c476be040fd92ec",
+  "clean_source": "silver-moon-source.png",
+  "source_size": [
+    1024,
+    1536
+  ],
+  "source_solid_bounds": [
+    316,
+    13,
+    806,
+    1452
+  ],
+  "source_alpha_bounds": [
+    316,
+    12,
+    807,
+    1452
+  ],
+  "source_tip": [
+    794.0952380952381,
+    1451.0
+  ],
+  "alpha_normalization": {
+    "zero_threshold": 3,
+    "opaque_threshold": 248,
+    "disconnected_pixels_removed": 20
+  },
+  "pixel_scale_only": true,
+  "world_geometry_scale_applied": false,
+  "external_geometry_scale": {
+    "ground": 1.65,
+    "held": 1.35
+  },
+  "baseline_complete_pixel_heights": {
+    "held": 223,
+    "ground_unclipped": 262
+  },
+  "source_grip_relative_height": 0.2762286951723655,
+  "held": [
+    {
+      "frame": 0,
+      "file": "swap_spear-0.png",
+      "canvas_size": [
+        152,
+        624
+      ],
+      "source_grip_anchor": [
+        502.0,
+        410.49309235303394
+      ],
+      "target_grip_anchor_png": [
+        57.499000549316406,
+        408.5989990234375
+      ],
+      "world_zero_png": [
+        57.499000549316406,
+        408.5989990234375
+      ],
+      "pixel_scale": 0.15496872828353023,
+      "new_solid_bounds": [
+        29,
+        347,
+        104,
+        570
+      ],
+      "full_pixel_height_target": 223,
+      "original_relative_frame_shift_preserved": true
+    },
+    {
+      "frame": 5,
+      "file": "swap_spear-5.png",
+      "canvas_size": [
+        152,
+        624
+      ],
+      "source_grip_anchor": [
+        502.0,
+        410.49309235303394
+      ],
+      "target_grip_anchor_png": [
+        57.499000549316406,
+        414.5989990234375
+      ],
+      "world_zero_png": [
+        57.499000549316406,
+        408.5989990234375
+      ],
+      "pixel_scale": 0.15496872828353023,
+      "new_solid_bounds": [
+        29,
+        353,
+        104,
+        576
+      ],
+      "full_pixel_height_target": 223,
+      "original_relative_frame_shift_preserved": true
+    }
+  ],
+  "ground": {
+    "file": "hash_824664575-0.png",
+    "canvas_size": [
+      240,
+      496
+    ],
+    "source_tip": [
+      794.0952380952381,
+      1451.0
+    ],
+    "target_tip_png": [
+      108.69899997711181,
+      473.8489959716797
+    ],
+    "ground_line_png": 422.2126323335099,
+    "pixel_scale": 0.18207088255733148,
+    "full_pixel_height_target": 262,
+    "unclipped_solid_bounds": [
+      22,
+      212,
+      111,
+      474
+    ],
+    "inserted_solid_bounds": [
+      22,
+      212,
+      105,
+      466
+    ],
+    "selected": "lower blade buried",
+    "geometry_scale_applied": false,
+    "note": "The lower curved blade is hidden below the new soil plane, about one third of the blade. The wide cut section is centered on the item origin and native contact strokes.",
+    "shadow_symbol": "grass",
+    "shadow_scale": 1.0,
+    "shadow_reference": "ground-contact-source.json",
+    "additional_burial_units": 36,
+    "hidden_source_rows": 43.636363636363626,
+    "contact_center_png": [
+      65.5,
+      422.2126323335099
+    ],
+    "pose_shift_units": [
+      35.63917499303818,
+      36
+    ],
+    "shadow_translation": [
+      0,
+      -2.15
+    ]
+  },
+  "inventory": {
+    "file": "scimitar.png",
+    "size": [
+      64,
+      64
+    ],
+    "rotation_degrees": 25,
+    "fit_box": [
+      60,
+      60
+    ],
+    "alpha_bounds": [
+      7,
+      2,
+      56,
+      62
+    ],
+    "solid_bounds": [
+      7,
+      2,
+      56,
+      62
+    ]
+  },
+  "geometry_scale_applied_in_build": {
+    "ground": 1.65,
+    "held": 1.35,
+    "about": "original ground contact and original grip anchors"
+  }
+}
