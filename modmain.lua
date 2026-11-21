@@ -1,4 +1,5 @@
-Assets = {Asset("IMAGE", "images/saveslot_portraits/wili.tex"), Asset("ATLAS", "images/saveslot_portraits/wili.xml"),
+Assets = {Asset("ANIM", "anim/wili_scimitar_attack.zip"),
+          Asset("IMAGE", "images/saveslot_portraits/wili.tex"), Asset("ATLAS", "images/saveslot_portraits/wili.xml"),
 
           Asset("IMAGE", "images/selectscreen_portraits/wili.tex"),
           Asset("ATLAS", "images/selectscreen_portraits/wili.xml"),
@@ -92,6 +93,33 @@ AddPrefabPostInit("wili", function(inst)
         needs_restore = false
     end)
 end)
+
+-- Keep the reverse-held blade and its wrist visible across the wind-up.
+-- Only replace the ordinary on-foot melee pair after the SG selected it.
+local wilson_bank = GLOBAL.hash("wilson")
+local function UseScimitarAttack(sg)
+    local state = sg.states.attack
+    local old_onenter = state.onenter
+    state.onenter = function(inst, ...)
+        old_onenter(inst, ...)
+        if inst.prefab ~= "wili" or inst.sg.currentstate ~= state
+            or inst.AnimState:GetBankHash() ~= wilson_bank
+            or not inst.AnimState:IsCurrentAnimation("atk_pre") then
+            return
+        end
+
+        local inventory = inst.components.inventory or inst.replica.inventory
+        local hand = inventory ~= nil and inventory:GetEquippedItem(GLOBAL.EQUIPSLOTS.HANDS)
+        local rider = inst.components.rider or inst.replica.rider
+        if hand and hand.prefab == "scimitar" and not (rider and rider:IsRiding()) then
+            inst.AnimState:PlayAnimation("wili_scimitar_atk_pre")
+            inst.AnimState:PushAnimation("wili_scimitar_atk", false)
+        end
+    end
+end
+
+AddStategraphPostInit("wilson", UseScimitarAttack)
+AddStategraphPostInit("wilson_client", UseScimitarAttack)
 
 -- Suppress combat reactions in the server stategraph, not the damage/events
 -- themselves, so health loss and Wili's revenge proc still work normally.
@@ -403,7 +431,7 @@ TUNING.STARTING_ITEM_IMAGE_OVERRIDE["scimitar"] = {
     atlas = "images/inventoryimages/scimitar.xml",
     image = "scimitar.tex"
 }
-PrefabFiles = {"wili", "wili_none", "scimitar"}
+PrefabFiles = {"wili", "wili_none", "scimitar", "wili_blink_trail"}
 --- 制作栏部分
 local wilitab = AddRecipeTab("wili's Tab", 996, "images/modicon.xml", "modicon.tex", "wili_builder")
 local scimitar_recipe = AddRecipe("scimitar", {Ingredient("nightmarefuel", 2), Ingredient("goldnugget", 2),

@@ -1,0 +1,2721 @@
+{
+  "kind": "offline native animation assembly, not gameplay footage",
+  "sources": {
+    "player_idles.zip": {
+      "path": "F:\\steam\\steamapps\\common\\Don't Starve Together\\data\\anim\\player_idles.zip",
+      "sha256": "328deee7df0ae0c4b496091180affd1828039700d11d03b4f18e3482d5a3d88b",
+      "header": {
+        "elements": 40193,
+        "frames": 912,
+        "events": 0,
+        "animations": 28
+      }
+    },
+    "wili_scimitar_attack.zip": {
+      "path": "G:\\codex data\\wili\\anim\\wili_scimitar_attack.zip",
+      "sha256": "60375b8792c4e2fdce013ca39a9d4c5a58bd337f60cb8907f6abd7684ae1579d",
+      "header": {
+        "elements": 2892,
+        "frames": 75,
+        "events": 0,
+        "animations": 6
+      }
+    },
+    "hound_basic.zip": {
+      "path": "F:\\steam\\steamapps\\common\\Don't Starve Together\\data\\anim\\hound_basic.zip",
+      "sha256": "b5889f21eac7e8273baca190e2fd57370a1722901c0db97e85041f4a84907d92",
+      "header": {
+        "elements": 9064,
+        "frames": 716,
+        "events": 0,
+        "animations": 58
+      }
+    },
+    "gems.zip": {
+      "path": "F:\\steam\\steamapps\\common\\Don't Starve Together\\data\\anim\\gems.zip",
+      "sha256": "ad1a289b785e8f6b714e67cebf332800ae68136524b6faad5395e6d8f8cab2d6",
+      "header": {
+        "elements": 1491,
+        "frames": 244,
+        "events": 0,
+        "animations": 22
+      }
+    },
+    "wili.zip": {
+      "path": "G:\\codex data\\wili\\anim\\wili.zip",
+      "sha256": "d6b04d706ebeaf29b1dbe8cd8fd17846019a283a3f3283ac1d5db033a5ff0461"
+    },
+    "swap_scimitar.zip": {
+      "path": "G:\\codex data\\wili\\anim\\swap_scimitar.zip",
+      "sha256": "8180b385cb969d175d4b6b4a2034e072047ab7a0d832c73b55d6b8dbcb8c7a64"
+    },
+    "hound.zip": {
+      "path": "F:\\steam\\steamapps\\common\\Don't Starve Together\\data\\anim\\hound.zip",
+      "sha256": "bbdf6e6b430e2ba4e9ec8f3ec662246a9dbf056037df77e9f593dcaed156820a"
+    }
+  },
+  "sequences": {
+    "wili_idle_front": {
+      "canvas": [
+        900,
+        1100
+      ],
+      "anchor": [
+        450,
+        1010
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 66,
+      "frames": [
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 0,
+          "path": "wili_idle_front\\000.png",
+          "alpha_bbox": [
+            262,
+            428,
+            708,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 1,
+          "path": "wili_idle_front\\001.png",
+          "alpha_bbox": [
+            262,
+            429,
+            708,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 2,
+          "path": "wili_idle_front\\002.png",
+          "alpha_bbox": [
+            262,
+            429,
+            709,
+            1057
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 3,
+          "path": "wili_idle_front\\003.png",
+          "alpha_bbox": [
+            262,
+            429,
+            709,
+            1058
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 4,
+          "path": "wili_idle_front\\004.png",
+          "alpha_bbox": [
+            262,
+            430,
+            709,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 5,
+          "path": "wili_idle_front\\005.png",
+          "alpha_bbox": [
+            262,
+            430,
+            709,
+            1060
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 6,
+          "path": "wili_idle_front\\006.png",
+          "alpha_bbox": [
+            262,
+            430,
+            709,
+            1061
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 7,
+          "path": "wili_idle_front\\007.png",
+          "alpha_bbox": [
+            262,
+            430,
+            709,
+            1062
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 8,
+          "path": "wili_idle_front\\008.png",
+          "alpha_bbox": [
+            262,
+            431,
+            709,
+            1063
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 9,
+          "path": "wili_idle_front\\009.png",
+          "alpha_bbox": [
+            262,
+            431,
+            710,
+            1064
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 10,
+          "path": "wili_idle_front\\010.png",
+          "alpha_bbox": [
+            262,
+            431,
+            710,
+            1065
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 11,
+          "path": "wili_idle_front\\011.png",
+          "alpha_bbox": [
+            262,
+            432,
+            710,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 12,
+          "path": "wili_idle_front\\012.png",
+          "alpha_bbox": [
+            262,
+            433,
+            709,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 13,
+          "path": "wili_idle_front\\013.png",
+          "alpha_bbox": [
+            261,
+            433,
+            709,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 14,
+          "path": "wili_idle_front\\014.png",
+          "alpha_bbox": [
+            261,
+            434,
+            708,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 15,
+          "path": "wili_idle_front\\015.png",
+          "alpha_bbox": [
+            261,
+            435,
+            708,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 16,
+          "path": "wili_idle_front\\016.png",
+          "alpha_bbox": [
+            261,
+            436,
+            707,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 17,
+          "path": "wili_idle_front\\017.png",
+          "alpha_bbox": [
+            261,
+            437,
+            706,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 18,
+          "path": "wili_idle_front\\018.png",
+          "alpha_bbox": [
+            261,
+            438,
+            706,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 19,
+          "path": "wili_idle_front\\019.png",
+          "alpha_bbox": [
+            261,
+            439,
+            707,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 20,
+          "path": "wili_idle_front\\020.png",
+          "alpha_bbox": [
+            261,
+            439,
+            708,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 21,
+          "path": "wili_idle_front\\021.png",
+          "alpha_bbox": [
+            261,
+            440,
+            709,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 22,
+          "path": "wili_idle_front\\022.png",
+          "alpha_bbox": [
+            261,
+            441,
+            710,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 23,
+          "path": "wili_idle_front\\023.png",
+          "alpha_bbox": [
+            261,
+            442,
+            710,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 24,
+          "path": "wili_idle_front\\024.png",
+          "alpha_bbox": [
+            262,
+            443,
+            711,
+            1067
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 25,
+          "path": "wili_idle_front\\025.png",
+          "alpha_bbox": [
+            262,
+            444,
+            712,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 26,
+          "path": "wili_idle_front\\026.png",
+          "alpha_bbox": [
+            262,
+            445,
+            713,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 27,
+          "path": "wili_idle_front\\027.png",
+          "alpha_bbox": [
+            262,
+            446,
+            713,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 28,
+          "path": "wili_idle_front\\028.png",
+          "alpha_bbox": [
+            262,
+            446,
+            714,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 29,
+          "path": "wili_idle_front\\029.png",
+          "alpha_bbox": [
+            262,
+            447,
+            715,
+            1066
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 30,
+          "path": "wili_idle_front\\030.png",
+          "alpha_bbox": [
+            262,
+            448,
+            716,
+            1065
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 31,
+          "path": "wili_idle_front\\031.png",
+          "alpha_bbox": [
+            262,
+            449,
+            717,
+            1065
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 32,
+          "path": "wili_idle_front\\032.png",
+          "alpha_bbox": [
+            262,
+            449,
+            717,
+            1064
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 33,
+          "path": "wili_idle_front\\033.png",
+          "alpha_bbox": [
+            262,
+            448,
+            717,
+            1063
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 34,
+          "path": "wili_idle_front\\034.png",
+          "alpha_bbox": [
+            262,
+            448,
+            718,
+            1062
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 35,
+          "path": "wili_idle_front\\035.png",
+          "alpha_bbox": [
+            262,
+            448,
+            718,
+            1061
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 36,
+          "path": "wili_idle_front\\036.png",
+          "alpha_bbox": [
+            262,
+            447,
+            719,
+            1060
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 37,
+          "path": "wili_idle_front\\037.png",
+          "alpha_bbox": [
+            262,
+            447,
+            719,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 38,
+          "path": "wili_idle_front\\038.png",
+          "alpha_bbox": [
+            262,
+            447,
+            720,
+            1058
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 39,
+          "path": "wili_idle_front\\039.png",
+          "alpha_bbox": [
+            262,
+            447,
+            720,
+            1057
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 40,
+          "path": "wili_idle_front\\040.png",
+          "alpha_bbox": [
+            262,
+            446,
+            720,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 41,
+          "path": "wili_idle_front\\041.png",
+          "alpha_bbox": [
+            262,
+            446,
+            721,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 42,
+          "path": "wili_idle_front\\042.png",
+          "alpha_bbox": [
+            262,
+            446,
+            721,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 43,
+          "path": "wili_idle_front\\043.png",
+          "alpha_bbox": [
+            262,
+            445,
+            722,
+            1052
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 44,
+          "path": "wili_idle_front\\044.png",
+          "alpha_bbox": [
+            262,
+            445,
+            722,
+            1051
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 45,
+          "path": "wili_idle_front\\045.png",
+          "alpha_bbox": [
+            262,
+            444,
+            722,
+            1052
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 46,
+          "path": "wili_idle_front\\046.png",
+          "alpha_bbox": [
+            262,
+            444,
+            721,
+            1052
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 47,
+          "path": "wili_idle_front\\047.png",
+          "alpha_bbox": [
+            262,
+            443,
+            720,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 48,
+          "path": "wili_idle_front\\048.png",
+          "alpha_bbox": [
+            262,
+            442,
+            720,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 49,
+          "path": "wili_idle_front\\049.png",
+          "alpha_bbox": [
+            262,
+            441,
+            719,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 50,
+          "path": "wili_idle_front\\050.png",
+          "alpha_bbox": [
+            262,
+            440,
+            718,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 51,
+          "path": "wili_idle_front\\051.png",
+          "alpha_bbox": [
+            262,
+            440,
+            718,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 52,
+          "path": "wili_idle_front\\052.png",
+          "alpha_bbox": [
+            262,
+            439,
+            717,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 53,
+          "path": "wili_idle_front\\053.png",
+          "alpha_bbox": [
+            262,
+            438,
+            716,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 54,
+          "path": "wili_idle_front\\054.png",
+          "alpha_bbox": [
+            262,
+            437,
+            716,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 55,
+          "path": "wili_idle_front\\055.png",
+          "alpha_bbox": [
+            262,
+            437,
+            715,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 56,
+          "path": "wili_idle_front\\056.png",
+          "alpha_bbox": [
+            262,
+            436,
+            714,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 57,
+          "path": "wili_idle_front\\057.png",
+          "alpha_bbox": [
+            262,
+            435,
+            714,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 58,
+          "path": "wili_idle_front\\058.png",
+          "alpha_bbox": [
+            262,
+            434,
+            713,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 59,
+          "path": "wili_idle_front\\059.png",
+          "alpha_bbox": [
+            262,
+            434,
+            712,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 60,
+          "path": "wili_idle_front\\060.png",
+          "alpha_bbox": [
+            262,
+            433,
+            711,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 61,
+          "path": "wili_idle_front\\061.png",
+          "alpha_bbox": [
+            262,
+            432,
+            711,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 62,
+          "path": "wili_idle_front\\062.png",
+          "alpha_bbox": [
+            262,
+            431,
+            710,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 63,
+          "path": "wili_idle_front\\063.png",
+          "alpha_bbox": [
+            262,
+            431,
+            709,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 64,
+          "path": "wili_idle_front\\064.png",
+          "alpha_bbox": [
+            262,
+            430,
+            709,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 65,
+          "path": "wili_idle_front\\065.png",
+          "alpha_bbox": [
+            262,
+            429,
+            708,
+            1055
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    "wili_attack_front": {
+      "canvas": [
+        900,
+        1100
+      ],
+      "anchor": [
+        450,
+        1010
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 25,
+      "frames": [
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 0,
+          "path": "wili_attack_front\\000.png",
+          "alpha_bbox": [
+            263,
+            428,
+            708,
+            1055
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 1,
+          "path": "wili_attack_front\\001.png",
+          "alpha_bbox": [
+            257,
+            419,
+            714,
+            1033
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 2,
+          "path": "wili_attack_front\\002.png",
+          "alpha_bbox": [
+            238,
+            388,
+            733,
+            1033
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 3,
+          "path": "wili_attack_front\\003.png",
+          "alpha_bbox": [
+            167,
+            378,
+            663,
+            1034
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 4,
+          "path": "wili_attack_front\\004.png",
+          "alpha_bbox": [
+            133,
+            370,
+            670,
+            1034
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 5,
+          "path": "wili_attack_front\\005.png",
+          "alpha_bbox": [
+            120,
+            349,
+            676,
+            1034
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 0,
+          "path": "wili_attack_front\\006.png",
+          "alpha_bbox": [
+            129,
+            374,
+            693,
+            1034
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 1,
+          "path": "wili_attack_front\\007.png",
+          "alpha_bbox": [
+            148,
+            389,
+            748,
+            1050
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 2,
+          "path": "wili_attack_front\\008.png",
+          "alpha_bbox": [
+            246,
+            427,
+            714,
+            1037
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 3,
+          "path": "wili_attack_front\\009.png",
+          "alpha_bbox": [
+            249,
+            540,
+            694,
+            1085
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 4,
+          "path": "wili_attack_front\\010.png",
+          "alpha_bbox": [
+            255,
+            539,
+            751,
+            1062
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 5,
+          "path": "wili_attack_front\\011.png",
+          "alpha_bbox": [
+            258,
+            573,
+            759,
+            1051
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 6,
+          "path": "wili_attack_front\\012.png",
+          "alpha_bbox": [
+            256,
+            549,
+            753,
+            1057
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 7,
+          "path": "wili_attack_front\\013.png",
+          "alpha_bbox": [
+            252,
+            542,
+            705,
+            1065
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 8,
+          "path": "wili_attack_front\\014.png",
+          "alpha_bbox": [
+            247,
+            480,
+            695,
+            1053
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 9,
+          "path": "wili_attack_front\\015.png",
+          "alpha_bbox": [
+            277,
+            462,
+            729,
+            1032
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 10,
+          "path": "wili_attack_front\\016.png",
+          "alpha_bbox": [
+            272,
+            454,
+            729,
+            1032
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 11,
+          "path": "wili_attack_front\\017.png",
+          "alpha_bbox": [
+            268,
+            447,
+            727,
+            1032
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 12,
+          "path": "wili_attack_front\\018.png",
+          "alpha_bbox": [
+            266,
+            441,
+            722,
+            1032
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 13,
+          "path": "wili_attack_front\\019.png",
+          "alpha_bbox": [
+            264,
+            437,
+            718,
+            1042
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 14,
+          "path": "wili_attack_front\\020.png",
+          "alpha_bbox": [
+            263,
+            434,
+            715,
+            1050
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 15,
+          "path": "wili_attack_front\\021.png",
+          "alpha_bbox": [
+            263,
+            431,
+            712,
+            1054
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 16,
+          "path": "wili_attack_front\\022.png",
+          "alpha_bbox": [
+            263,
+            430,
+            709,
+            1055
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 17,
+          "path": "wili_attack_front\\023.png",
+          "alpha_bbox": [
+            263,
+            429,
+            708,
+            1055
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 18,
+          "path": "wili_attack_front\\024.png",
+          "alpha_bbox": [
+            263,
+            428,
+            708,
+            1055
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    "wili_idle_side": {
+      "canvas": [
+        900,
+        1100
+      ],
+      "anchor": [
+        450,
+        1010
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 66,
+      "frames": [
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 0,
+          "path": "wili_idle_side\\000.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 1,
+          "path": "wili_idle_side\\001.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 2,
+          "path": "wili_idle_side\\002.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 3,
+          "path": "wili_idle_side\\003.png",
+          "alpha_bbox": [
+            252,
+            417,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 4,
+          "path": "wili_idle_side\\004.png",
+          "alpha_bbox": [
+            252,
+            417,
+            689,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 5,
+          "path": "wili_idle_side\\005.png",
+          "alpha_bbox": [
+            252,
+            418,
+            689,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 6,
+          "path": "wili_idle_side\\006.png",
+          "alpha_bbox": [
+            252,
+            419,
+            690,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 7,
+          "path": "wili_idle_side\\007.png",
+          "alpha_bbox": [
+            252,
+            420,
+            690,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 8,
+          "path": "wili_idle_side\\008.png",
+          "alpha_bbox": [
+            252,
+            421,
+            691,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 9,
+          "path": "wili_idle_side\\009.png",
+          "alpha_bbox": [
+            253,
+            422,
+            692,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 10,
+          "path": "wili_idle_side\\010.png",
+          "alpha_bbox": [
+            253,
+            424,
+            694,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 11,
+          "path": "wili_idle_side\\011.png",
+          "alpha_bbox": [
+            253,
+            427,
+            695,
+            1052
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 12,
+          "path": "wili_idle_side\\012.png",
+          "alpha_bbox": [
+            253,
+            429,
+            696,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 13,
+          "path": "wili_idle_side\\013.png",
+          "alpha_bbox": [
+            254,
+            430,
+            697,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 14,
+          "path": "wili_idle_side\\014.png",
+          "alpha_bbox": [
+            254,
+            431,
+            698,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 15,
+          "path": "wili_idle_side\\015.png",
+          "alpha_bbox": [
+            254,
+            433,
+            699,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 16,
+          "path": "wili_idle_side\\016.png",
+          "alpha_bbox": [
+            254,
+            435,
+            700,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 17,
+          "path": "wili_idle_side\\017.png",
+          "alpha_bbox": [
+            254,
+            434,
+            701,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 18,
+          "path": "wili_idle_side\\018.png",
+          "alpha_bbox": [
+            255,
+            436,
+            701,
+            1057
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 19,
+          "path": "wili_idle_side\\019.png",
+          "alpha_bbox": [
+            255,
+            438,
+            702,
+            1057
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 20,
+          "path": "wili_idle_side\\020.png",
+          "alpha_bbox": [
+            255,
+            436,
+            702,
+            1058
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 21,
+          "path": "wili_idle_side\\021.png",
+          "alpha_bbox": [
+            255,
+            439,
+            703,
+            1058
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 22,
+          "path": "wili_idle_side\\022.png",
+          "alpha_bbox": [
+            255,
+            440,
+            703,
+            1058
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 23,
+          "path": "wili_idle_side\\023.png",
+          "alpha_bbox": [
+            255,
+            437,
+            704,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 24,
+          "path": "wili_idle_side\\024.png",
+          "alpha_bbox": [
+            255,
+            441,
+            704,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 25,
+          "path": "wili_idle_side\\025.png",
+          "alpha_bbox": [
+            255,
+            441,
+            704,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 26,
+          "path": "wili_idle_side\\026.png",
+          "alpha_bbox": [
+            255,
+            439,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 27,
+          "path": "wili_idle_side\\027.png",
+          "alpha_bbox": [
+            255,
+            439,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 28,
+          "path": "wili_idle_side\\028.png",
+          "alpha_bbox": [
+            255,
+            439,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 29,
+          "path": "wili_idle_side\\029.png",
+          "alpha_bbox": [
+            255,
+            442,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 30,
+          "path": "wili_idle_side\\030.png",
+          "alpha_bbox": [
+            256,
+            442,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 31,
+          "path": "wili_idle_side\\031.png",
+          "alpha_bbox": [
+            256,
+            442,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 32,
+          "path": "wili_idle_side\\032.png",
+          "alpha_bbox": [
+            255,
+            442,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 33,
+          "path": "wili_idle_side\\033.png",
+          "alpha_bbox": [
+            255,
+            441,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 34,
+          "path": "wili_idle_side\\034.png",
+          "alpha_bbox": [
+            255,
+            439,
+            705,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 35,
+          "path": "wili_idle_side\\035.png",
+          "alpha_bbox": [
+            255,
+            439,
+            706,
+            1059
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 36,
+          "path": "wili_idle_side\\036.png",
+          "alpha_bbox": [
+            255,
+            441,
+            706,
+            1058
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 37,
+          "path": "wili_idle_side\\037.png",
+          "alpha_bbox": [
+            255,
+            438,
+            706,
+            1058
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 38,
+          "path": "wili_idle_side\\038.png",
+          "alpha_bbox": [
+            255,
+            440,
+            706,
+            1057
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 39,
+          "path": "wili_idle_side\\039.png",
+          "alpha_bbox": [
+            255,
+            436,
+            707,
+            1057
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 40,
+          "path": "wili_idle_side\\040.png",
+          "alpha_bbox": [
+            255,
+            438,
+            707,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 41,
+          "path": "wili_idle_side\\041.png",
+          "alpha_bbox": [
+            255,
+            435,
+            708,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 42,
+          "path": "wili_idle_side\\042.png",
+          "alpha_bbox": [
+            254,
+            434,
+            708,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 43,
+          "path": "wili_idle_side\\043.png",
+          "alpha_bbox": [
+            254,
+            433,
+            709,
+            1052
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 44,
+          "path": "wili_idle_side\\044.png",
+          "alpha_bbox": [
+            254,
+            431,
+            710,
+            1051
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 45,
+          "path": "wili_idle_side\\045.png",
+          "alpha_bbox": [
+            254,
+            430,
+            708,
+            1052
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 46,
+          "path": "wili_idle_side\\046.png",
+          "alpha_bbox": [
+            253,
+            429,
+            706,
+            1053
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 47,
+          "path": "wili_idle_side\\047.png",
+          "alpha_bbox": [
+            253,
+            428,
+            704,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 48,
+          "path": "wili_idle_side\\048.png",
+          "alpha_bbox": [
+            253,
+            426,
+            702,
+            1054
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 49,
+          "path": "wili_idle_side\\049.png",
+          "alpha_bbox": [
+            253,
+            425,
+            700,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 50,
+          "path": "wili_idle_side\\050.png",
+          "alpha_bbox": [
+            253,
+            424,
+            699,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 51,
+          "path": "wili_idle_side\\051.png",
+          "alpha_bbox": [
+            253,
+            422,
+            697,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 52,
+          "path": "wili_idle_side\\052.png",
+          "alpha_bbox": [
+            253,
+            422,
+            696,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 53,
+          "path": "wili_idle_side\\053.png",
+          "alpha_bbox": [
+            252,
+            421,
+            695,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 54,
+          "path": "wili_idle_side\\054.png",
+          "alpha_bbox": [
+            252,
+            420,
+            694,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 55,
+          "path": "wili_idle_side\\055.png",
+          "alpha_bbox": [
+            252,
+            419,
+            693,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 56,
+          "path": "wili_idle_side\\056.png",
+          "alpha_bbox": [
+            252,
+            419,
+            692,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 57,
+          "path": "wili_idle_side\\057.png",
+          "alpha_bbox": [
+            252,
+            419,
+            691,
+            1056
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 58,
+          "path": "wili_idle_side\\058.png",
+          "alpha_bbox": [
+            252,
+            418,
+            690,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 59,
+          "path": "wili_idle_side\\059.png",
+          "alpha_bbox": [
+            252,
+            418,
+            690,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 60,
+          "path": "wili_idle_side\\060.png",
+          "alpha_bbox": [
+            252,
+            417,
+            689,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 61,
+          "path": "wili_idle_side\\061.png",
+          "alpha_bbox": [
+            252,
+            417,
+            689,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 62,
+          "path": "wili_idle_side\\062.png",
+          "alpha_bbox": [
+            252,
+            417,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 63,
+          "path": "wili_idle_side\\063.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 64,
+          "path": "wili_idle_side\\064.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "idle_loop",
+          "source_frame": 65,
+          "path": "wili_idle_side\\065.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    "wili_attack_side": {
+      "canvas": [
+        900,
+        1100
+      ],
+      "anchor": [
+        450,
+        1010
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 25,
+      "frames": [
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 0,
+          "path": "wili_attack_side\\000.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 1,
+          "path": "wili_attack_side\\001.png",
+          "alpha_bbox": [
+            242,
+            404,
+            684,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 2,
+          "path": "wili_attack_side\\002.png",
+          "alpha_bbox": [
+            210,
+            367,
+            742,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 3,
+          "path": "wili_attack_side\\003.png",
+          "alpha_bbox": [
+            161,
+            359,
+            625,
+            1040
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 4,
+          "path": "wili_attack_side\\004.png",
+          "alpha_bbox": [
+            136,
+            356,
+            632,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk_pre",
+          "source_frame": 5,
+          "path": "wili_attack_side\\005.png",
+          "alpha_bbox": [
+            124,
+            356,
+            624,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 0,
+          "path": "wili_attack_side\\006.png",
+          "alpha_bbox": [
+            139,
+            357,
+            616,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 1,
+          "path": "wili_attack_side\\007.png",
+          "alpha_bbox": [
+            182,
+            357,
+            603,
+            1040
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 2,
+          "path": "wili_attack_side\\008.png",
+          "alpha_bbox": [
+            219,
+            343,
+            737,
+            1053
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 3,
+          "path": "wili_attack_side\\009.png",
+          "alpha_bbox": [
+            248,
+            384,
+            826,
+            1053
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 4,
+          "path": "wili_attack_side\\010.png",
+          "alpha_bbox": [
+            282,
+            453,
+            752,
+            1066
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 5,
+          "path": "wili_attack_side\\011.png",
+          "alpha_bbox": [
+            238,
+            472,
+            768,
+            1074
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 6,
+          "path": "wili_attack_side\\012.png",
+          "alpha_bbox": [
+            243,
+            470,
+            764,
+            1071
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 7,
+          "path": "wili_attack_side\\013.png",
+          "alpha_bbox": [
+            255,
+            463,
+            753,
+            1062
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 8,
+          "path": "wili_attack_side\\014.png",
+          "alpha_bbox": [
+            277,
+            452,
+            734,
+            1053
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 9,
+          "path": "wili_attack_side\\015.png",
+          "alpha_bbox": [
+            295,
+            433,
+            732,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 10,
+          "path": "wili_attack_side\\016.png",
+          "alpha_bbox": [
+            278,
+            430,
+            723,
+            1042
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 11,
+          "path": "wili_attack_side\\017.png",
+          "alpha_bbox": [
+            277,
+            424,
+            715,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 12,
+          "path": "wili_attack_side\\018.png",
+          "alpha_bbox": [
+            268,
+            425,
+            708,
+            1041
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 13,
+          "path": "wili_attack_side\\019.png",
+          "alpha_bbox": [
+            264,
+            422,
+            701,
+            1043
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 14,
+          "path": "wili_attack_side\\020.png",
+          "alpha_bbox": [
+            259,
+            420,
+            697,
+            1049
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 15,
+          "path": "wili_attack_side\\021.png",
+          "alpha_bbox": [
+            256,
+            420,
+            693,
+            1052
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 16,
+          "path": "wili_attack_side\\022.png",
+          "alpha_bbox": [
+            254,
+            418,
+            690,
+            1054
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 17,
+          "path": "wili_attack_side\\023.png",
+          "alpha_bbox": [
+            252,
+            417,
+            688,
+            1055
+          ]
+        },
+        {
+          "source_animation": "wili_scimitar_atk",
+          "source_frame": 18,
+          "path": "wili_attack_side\\024.png",
+          "alpha_bbox": [
+            252,
+            416,
+            688,
+            1055
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    "hound_idle": {
+      "canvas": [
+        1700,
+        1700
+      ],
+      "anchor": [
+        750,
+        1320
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 10,
+      "frames": [
+        {
+          "source_animation": "idle",
+          "source_frame": 0,
+          "path": "hound_idle\\000.png",
+          "alpha_bbox": [
+            311,
+            601,
+            1117,
+            1383
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 1,
+          "path": "hound_idle\\001.png",
+          "alpha_bbox": [
+            303,
+            606,
+            1118,
+            1384
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 2,
+          "path": "hound_idle\\002.png",
+          "alpha_bbox": [
+            296,
+            611,
+            1120,
+            1386
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 3,
+          "path": "hound_idle\\003.png",
+          "alpha_bbox": [
+            282,
+            621,
+            1122,
+            1387
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 4,
+          "path": "hound_idle\\004.png",
+          "alpha_bbox": [
+            271,
+            632,
+            1124,
+            1388
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 5,
+          "path": "hound_idle\\005.png",
+          "alpha_bbox": [
+            261,
+            640,
+            1126,
+            1389
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 6,
+          "path": "hound_idle\\006.png",
+          "alpha_bbox": [
+            268,
+            639,
+            1127,
+            1388
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 7,
+          "path": "hound_idle\\007.png",
+          "alpha_bbox": [
+            277,
+            639,
+            1129,
+            1387
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 8,
+          "path": "hound_idle\\008.png",
+          "alpha_bbox": [
+            287,
+            626,
+            1121,
+            1385
+          ]
+        },
+        {
+          "source_animation": "idle",
+          "source_frame": 9,
+          "path": "hound_idle\\009.png",
+          "alpha_bbox": [
+            298,
+            615,
+            1117,
+            1384
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    "hound_hit": {
+      "canvas": [
+        1700,
+        1700
+      ],
+      "anchor": [
+        750,
+        1320
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 13,
+      "frames": [
+        {
+          "source_animation": "hit",
+          "source_frame": 0,
+          "path": "hound_hit\\000.png",
+          "alpha_bbox": [
+            293,
+            740,
+            1144,
+            1372
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 1,
+          "path": "hound_hit\\001.png",
+          "alpha_bbox": [
+            240,
+            820,
+            1261,
+            1393
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 2,
+          "path": "hound_hit\\002.png",
+          "alpha_bbox": [
+            70,
+            1000,
+            1378,
+            1373
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 3,
+          "path": "hound_hit\\003.png",
+          "alpha_bbox": [
+            76,
+            1009,
+            1367,
+            1372
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 4,
+          "path": "hound_hit\\004.png",
+          "alpha_bbox": [
+            104,
+            982,
+            1330,
+            1380
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 5,
+          "path": "hound_hit\\005.png",
+          "alpha_bbox": [
+            137,
+            893,
+            1259,
+            1423
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 6,
+          "path": "hound_hit\\006.png",
+          "alpha_bbox": [
+            341,
+            449,
+            1108,
+            1332
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 7,
+          "path": "hound_hit\\007.png",
+          "alpha_bbox": [
+            310,
+            420,
+            1103,
+            1253
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 8,
+          "path": "hound_hit\\008.png",
+          "alpha_bbox": [
+            297,
+            405,
+            1102,
+            1209
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 9,
+          "path": "hound_hit\\009.png",
+          "alpha_bbox": [
+            294,
+            398,
+            1107,
+            1193
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 10,
+          "path": "hound_hit\\010.png",
+          "alpha_bbox": [
+            299,
+            397,
+            1106,
+            1199
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 11,
+          "path": "hound_hit\\011.png",
+          "alpha_bbox": [
+            316,
+            396,
+            1103,
+            1218
+          ]
+        },
+        {
+          "source_animation": "hit",
+          "source_frame": 12,
+          "path": "hound_hit\\012.png",
+          "alpha_bbox": [
+            332,
+            393,
+            1097,
+            1255
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    "hound_atk": {
+      "canvas": [
+        1700,
+        1700
+      ],
+      "anchor": [
+        750,
+        1320
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 9,
+      "frames": [
+        {
+          "source_animation": "atk",
+          "source_frame": 0,
+          "path": "hound_atk\\000.png",
+          "alpha_bbox": [
+            371,
+            75,
+            1418,
+            1394
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 1,
+          "path": "hound_atk\\001.png",
+          "alpha_bbox": [
+            415,
+            252,
+            1599,
+            1392
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 2,
+          "path": "hound_atk\\002.png",
+          "alpha_bbox": [
+            422,
+            981,
+            1564,
+            1439
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 3,
+          "path": "hound_atk\\003.png",
+          "alpha_bbox": [
+            381,
+            1031,
+            1575,
+            1450
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 4,
+          "path": "hound_atk\\004.png",
+          "alpha_bbox": [
+            398,
+            1012,
+            1570,
+            1443
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 5,
+          "path": "hound_atk\\005.png",
+          "alpha_bbox": [
+            368,
+            1063,
+            1585,
+            1480
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 6,
+          "path": "hound_atk\\006.png",
+          "alpha_bbox": [
+            372,
+            1048,
+            1580,
+            1467
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 7,
+          "path": "hound_atk\\007.png",
+          "alpha_bbox": [
+            367,
+            1078,
+            1590,
+            1496
+          ]
+        },
+        {
+          "source_animation": "atk",
+          "source_frame": 8,
+          "path": "hound_atk\\008.png",
+          "alpha_bbox": [
+            366,
+            1071,
+            1588,
+            1490
+          ]
+        }
+      ],
+      "unresolved": []
+    },
+    "redgem": {
+      "canvas": [
+        600,
+        600
+      ],
+      "anchor": [
+        300,
+        400
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 1,
+      "frames": [
+        {
+          "source_animation": "redgem_idle",
+          "source_frame": 0,
+          "path": "redgem\\000.png",
+          "alpha_bbox": [
+            158,
+            233,
+            457,
+            495
+          ]
+        }
+      ],
+      "unresolved": [],
+      "cropped_png": "redgem.png"
+    },
+    "orangegem": {
+      "canvas": [
+        600,
+        600
+      ],
+      "anchor": [
+        300,
+        400
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 1,
+      "frames": [
+        {
+          "source_animation": "orangegem_idle",
+          "source_frame": 0,
+          "path": "orangegem\\000.png",
+          "alpha_bbox": [
+            136,
+            231,
+            453,
+            496
+          ]
+        }
+      ],
+      "unresolved": [],
+      "cropped_png": "orangegem.png"
+    },
+    "yellowgem": {
+      "canvas": [
+        600,
+        600
+      ],
+      "anchor": [
+        300,
+        400
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 1,
+      "frames": [
+        {
+          "source_animation": "yellowgem_idle",
+          "source_frame": 0,
+          "path": "yellowgem\\000.png",
+          "alpha_bbox": [
+            152,
+            242,
+            459,
+            493
+          ]
+        }
+      ],
+      "unresolved": [],
+      "cropped_png": "yellowgem.png"
+    },
+    "greengem": {
+      "canvas": [
+        600,
+        600
+      ],
+      "anchor": [
+        300,
+        400
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 1,
+      "frames": [
+        {
+          "source_animation": "greengem_idle",
+          "source_frame": 0,
+          "path": "greengem\\000.png",
+          "alpha_bbox": [
+            157,
+            244,
+            475,
+            497
+          ]
+        }
+      ],
+      "unresolved": [],
+      "cropped_png": "greengem.png"
+    },
+    "bluegem": {
+      "canvas": [
+        600,
+        600
+      ],
+      "anchor": [
+        300,
+        400
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 1,
+      "frames": [
+        {
+          "source_animation": "bluegem_idle",
+          "source_frame": 0,
+          "path": "bluegem\\000.png",
+          "alpha_bbox": [
+            135,
+            271,
+            426,
+            511
+          ]
+        }
+      ],
+      "unresolved": [],
+      "cropped_png": "bluegem.png"
+    },
+    "purplegem": {
+      "canvas": [
+        600,
+        600
+      ],
+      "anchor": [
+        300,
+        400
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 1,
+      "frames": [
+        {
+          "source_animation": "purplegem_idle",
+          "source_frame": 0,
+          "path": "purplegem\\000.png",
+          "alpha_bbox": [
+            161,
+            251,
+            463,
+            491
+          ]
+        }
+      ],
+      "unresolved": [],
+      "cropped_png": "purplegem.png"
+    },
+    "opalgem": {
+      "canvas": [
+        600,
+        600
+      ],
+      "anchor": [
+        300,
+        400
+      ],
+      "scale": 2.0,
+      "fps": 30,
+      "count": 1,
+      "frames": [
+        {
+          "source_animation": "opalgem_idle",
+          "source_frame": 0,
+          "path": "opalgem\\000.png",
+          "alpha_bbox": [
+            165,
+            265,
+            460,
+            469
+          ]
+        }
+      ],
+      "unresolved": [],
+      "cropped_png": "opalgem.png"
+    }
+  }
+}

@@ -1,3 +1,5 @@
+local BlinkOnHit = require "wili_blink"
+
 local assets = {Asset("ANIM", "anim/scimitar.zip"), Asset("ANIM", "anim/swap_scimitar.zip"),
                 Asset("ATLAS", "images/inventoryimages/scimitar.xml"),
                 Asset("IMAGE", "images/inventoryimages/scimitar.tex")}
@@ -40,7 +42,9 @@ local GEM_OFFSET_RADIUS = 2
 local GEM_OFFSET_ATTEMPTS = 3
 
 local function onattack(inst, owner, target)
-    owner.Transform:SetPosition(target.Transform:GetWorldPosition())
+    if not BlinkOnHit(inst, owner, target) then
+        return
+    end
 
     -- 宝石掉落逻辑
     if math.random() >= GEM_DROP_CHANCE then

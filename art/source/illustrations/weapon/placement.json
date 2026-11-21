@@ -1,6 +1,6 @@
 {
   "input": "silver-moon-source.png",
-  "input_sha256": "4648585599de922440913ee89b9e733115003996f8d408bd2920ba8fa7c01dc8",
+  "input_sha256": "5828b46b2b7a144abbe246f7a41d989efa9c7485229d654b2af2222fbb0d6d12",
   "original_generated_sha256": "48e0cea82228e4196a8bcf8d2e6821a1743fbdf71b3c05839c476be040fd92ec",
   "clean_source": "silver-moon-source.png",
   "source_size": [
@@ -8,20 +8,20 @@
     1536
   ],
   "source_solid_bounds": [
-    316,
+    209,
     13,
-    806,
-    1452
+    690,
+    1451
   ],
   "source_alpha_bounds": [
-    316,
+    207,
     12,
-    807,
+    691,
     1452
   ],
   "source_tip": [
-    794.0952380952381,
-    1451.0
+    218.5,
+    1450
   ],
   "alpha_normalization": {
     "zero_threshold": 3,
@@ -32,7 +32,7 @@
   "world_geometry_scale_applied": false,
   "external_geometry_scale": {
     "ground": 1.65,
-    "held": 1.35
+    "held": 1.728
   },
   "baseline_complete_pixel_heights": {
     "held": 223,
@@ -61,9 +61,9 @@
       ],
       "pixel_scale": 0.15496872828353023,
       "new_solid_bounds": [
-        29,
+        12,
         347,
-        104,
+        87,
         570
       ],
       "full_pixel_height_target": 223,
@@ -90,9 +90,9 @@
       ],
       "pixel_scale": 0.15496872828353023,
       "new_solid_bounds": [
-        29,
+        12,
         353,
-        104,
+        87,
         576
       ],
       "full_pixel_height_target": 223,
@@ -106,27 +106,27 @@
       496
     ],
     "source_tip": [
-      794.0952380952381,
-      1451.0
+      218.5,
+      1450
     ],
     "target_tip_png": [
-      108.69899997711181,
+      22.0,
       473.8489959716797
     ],
     "ground_line_png": 422.2126323335099,
     "pixel_scale": 0.18207088255733148,
     "full_pixel_height_target": 262,
     "unclipped_solid_bounds": [
-      22,
+      21,
       212,
-      111,
+      108,
       474
     ],
     "inserted_solid_bounds": [
-      22,
+      40,
       212,
-      105,
-      466
+      108,
+      422
     ],
     "selected": "lower blade buried",
     "geometry_scale_applied": false,
@@ -155,27 +155,28 @@
       64,
       64
     ],
-    "rotation_degrees": 25,
+    "rotation_degrees": -25,
     "fit_box": [
       60,
       60
     ],
     "alpha_bounds": [
-      7,
+      8,
       2,
-      56,
+      55,
       62
     ],
     "solid_bounds": [
-      7,
+      9,
       2,
-      56,
+      55,
       62
     ]
   },
   "geometry_scale_applied_in_build": {
     "ground": 1.65,
-    "held": 1.35,
+    "held": 1.728,
     "about": "original ground contact and original grip anchors"
-  }
+  },
+  "blade_orientation": "B: outward-facing silver convex cutting edge; blade tip hooks back toward the holder. In a right-facing idle the bright edge is on the right and the point curves to the left. Grip, pommel and medallion are unchanged."
 }

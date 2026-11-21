@@ -5,6 +5,7 @@ import json
 import shutil
 import zipfile
 import dst_art_pipeline as codec
+from build_blink_afterimage import build_archive as build_blink_afterimage
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'art/source'
@@ -29,6 +30,21 @@ def main():
                 for name in runtime.namelist():
                     assert compiled.read(name) == runtime.read(name), (record['archive'], name)
         checked.append(record['archive'])
+    for record in manifest.get('animation_only_archives', []):
+        clip = (SOURCE / record['source']).read_bytes()
+        destination = output / record['archive']
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with zipfile.ZipFile(destination, 'w', zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr('anim.bin', clip)
+        if args.verify_runtime:
+            with zipfile.ZipFile(ROOT / record['archive']) as runtime:
+                assert runtime.namelist() == ['anim.bin'] and runtime.read('anim.bin') == clip, record['archive']
+        checked.append(record['archive'])
+    blink = manifest['blink_afterimage']['archive']
+    build_blink_afterimage(output / blink)
+    if args.verify_runtime:
+        assert (output / blink).read_bytes() == (ROOT / blink).read_bytes(), blink
+    checked.append(blink)
     for record in manifest['ui_textures']:
         destination = output / record['target']
         codec.encode_tex(SOURCE/record['source'], destination, record['format'])

@@ -1,4 +1,5 @@
 local MakePlayerCharacter = require "prefabs/player_common"
+local BlinkOnHit = require "wili_blink"
 
 local WILI_SPEED_MULTIPLIER = 2.25
 
@@ -32,7 +33,7 @@ local start_inv = {"scimitar", "lunar_forge_kit", "shadow_forge_kit"}
 for k, v in pairs(TUNING.GAMEMODE_STARTING_ITEMS) do
     start_inv[string.lower(k)] = v.WILI
 end
-local prefabs = {}
+local prefabs = {"wili_blink_trail"}
 
 local MOONVISION_SOURCE = "wili_moonvision"
 local IDENTITY_COLOURCUBE = "images/colour_cubes/identity_colourcube.tex"
@@ -132,13 +133,10 @@ local changedamage = function(inst, data)
     end
 end
 
-local function onattack(inst, owner, target)
-    owner.Transform:SetPosition(target.Transform:GetWorldPosition())
-end
 
 -- 下面代码是由于一些武器本身有特殊效果，因此需要将源代码移植
 local function batbat_attack(inst, owner, target)
-    onattack(inst, owner, target)
+    BlinkOnHit(inst, owner, target)
     if owner.components.health and owner.components.health:GetPercent() < 1 and not target:HasTag("wall") then
         owner.components.health:DoDelta(TUNING.BATBAT_DRAIN, false, "batbat")
         owner.components.sanity:DoDelta(-TUNING.BATBAT_DRAIN * 0.5)
@@ -149,7 +147,7 @@ local function NoHoles(pt)
     return not TheWorld.Map:IsPointNearHole(pt)
 end
 local function ruins_bat_attack(inst, owner, target)
-    onattack(inst, owner, target)
+    BlinkOnHit(inst, owner, target)
     if math.random() < 0.4 then
         local pt
         if target ~= nil and target:IsValid() then
@@ -173,7 +171,7 @@ local function ruins_bat_attack(inst, owner, target)
 end
 
 local function shadow_battleaxe_attack(inst, owner, target)
-    onattack(inst, owner, target)
+    BlinkOnHit(inst, owner, target)
     if target ~= nil and target:IsValid() then
         inst:DoAttackEffects(owner, target)
     end
@@ -202,7 +200,7 @@ local function shadow_battleaxe_attack(inst, owner, target)
 end
 
 local function glassglasscutter_attack(inst, owner, target)
-    onattack(inst, owner, target)
+    BlinkOnHit(inst, owner, target)
     inst.components.weapon.attackwear = target ~= nil and target:IsValid() and
                                             (target:HasTag("shadow") or target:HasTag("shadowminion") or
                                                 target:HasTag("shadowchesspiece") or target:HasTag("stalker") or
@@ -211,14 +209,14 @@ local function glassglasscutter_attack(inst, owner, target)
 end
 
 local function sword_lunarplant_attack(inst, owner, target)
-    onattack(inst, owner, target)
+    BlinkOnHit(inst, owner, target)
     if target ~= nil and target:IsValid() then
         SpawnPrefab("hitsparks_fx"):Setup(owner, target)
     end
 end
 
 local function moonglassaxe_attack(inst, owner, target)
-    onattack(inst, owner, target)
+    BlinkOnHit(inst, owner, target)
     inst.components.weapon.attackwear = target ~= nil and target:IsValid() and
                                             (target:HasTag("shadow") or target:HasTag("shadowminion") or
                                                 target:HasTag("shadowchesspiece") or target:HasTag("stalker") or
@@ -228,7 +226,7 @@ end
 
 local hitsparks_fx_colouroverride = {1, 0, 0}
 local function voidcloth_scythe_attack(inst, owner, target)
-    onattack(inst, owner, target)
+    BlinkOnHit(inst, owner, target)
     if target ~= nil and target:IsValid() then
         local spark = SpawnPrefab("hitsparks_fx")
         spark:Setup(owner, target, nil, hitsparks_fx_colouroverride)
@@ -237,10 +235,10 @@ local function voidcloth_scythe_attack(inst, owner, target)
 end
 
 local attack_functions = {
-    nightsword = onattack,
+    nightsword = BlinkOnHit,
     glasscutter = glassglasscutter_attack,
-    shovel_lunarplant = onattack,
-    pickaxe_lunarplant = onattack,
+    shovel_lunarplant = BlinkOnHit,
+    pickaxe_lunarplant = BlinkOnHit,
     moonglassaxe = moonglassaxe_attack,
     voidcloth_scythe = voidcloth_scythe_attack,
     batbat = batbat_attack,

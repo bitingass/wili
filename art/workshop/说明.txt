@@ -1,0 +1,24 @@
+Wili 创意工坊宣传封面 · 2026-11-21
+
+wili-cover.gif：448×448，64 帧，6.4 秒无限循环，950607 字节；兼容版首选。
+wili-cover-hq.gif：768×768，80 帧，6.4 秒无限循环，高清预览版。
+wili-cover.png：1024×1024 静态封面。
+cover-backplate.png：内置 image_gen 生成的封面背景与人物插画。
+generation-prompt.json：完整提示词及生成来源。
+native-manifest.json / native-quality-check.json：真实游戏动画与当前模组素材的来源、锚点和校验。
+
+动态展示：Wili 反握银月弯刀，在两个猎犬目标之间瞬移攻击；三次攻击示意中有两次掉落宝石。
+实际人物、专武、猎犬和宝石来自游戏及模组资源。场景编排、瞬移残影和命中特效为宣传后期；这不是游戏实录，不表示每次攻击必定掉落宝石。动作演示使用放大后的手持弯刀与加粗的外侧墨线，银刃朝外。起手和挥刀采用项目内的 wili_scimitar_attack.zip 专武动作包。
+
+封面接口支持 GIF：
+https://partner.steamgames.com/doc/api/ISteamUGC#SetItemPreview
+兼容版小于 1 MB 是制作选择，并非已确认的所有工坊主封面硬性限制。
+workshop-preview.vdf 仅填写 appid、现有条目 ID 和 previewfile，不包含 contentfolder、标题或描述。
+
+重建（项目根目录运行）：
+python art/tools/render_workshop_native.py
+python art/tools/build_workshop_cover.py
+
+依赖：Python、Pillow、NumPy、Windows 字体，以及本机 F:/steam/steamapps/common/Don't Starve Together/data/anim 中的原生编译动画包。
+人物采用本仓库 art/source/anim 中当前 PNG 与构建定位，动画解码复用 art/tools/dst_art_pipeline.py。
+中间帧仅生成到已忽略的 art/.work/workshop/native，不纳入正式素材目录。

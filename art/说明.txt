@@ -31,3 +31,6 @@ python art/tools/restore_head_tips.py
 此工具只新增 atlas-head-tips.tex；原 atlas-0.tex 及其他 81 帧的几何/UV 保持原样。重复运行不会反复增加画布高度。
 encode_ktex.py 用 Pillow 的 DDS/DXT5 编码写出 BC3 KTEX，支持 Linux，无需 Windows 转换器；自检命令为 python art/tools/encode_ktex.py --self-test。
 当前资源已通过像素保留、切片完整性、坐标不变、全部 mip 解码及二进制结构检查；完整人物动画与装备效果仍待游戏内验证。
+
+银月弯刀的手持和落地构建通过 outer_ink 在打包时给武器外缘描线，radius_px 以部件源图像素为单位。落地部件的 clip_bottom 与埋入地面的裁线对应。工坊预览使用同一个描线函数。
+Wili 持弯刀时，步行普通攻击使用 wili_scimitar_atk_pre 和 wili_scimitar_atk。原生攻击动作的帧数、事件和握点保存在专属动作中，抬刀时持刀手和弯刀会绘制在身体前方。可编辑的生成规则在 tools/build_wili_scimitar_attack.py，标准重打包会把 source/anim/wili_scimitar_attack/anim.bin 编入专属动作包。

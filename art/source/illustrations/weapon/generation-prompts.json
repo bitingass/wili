@@ -11,5 +11,12 @@
   "production_processing": "Alpha normalization and sprite registration only; ground scale1.65 and held scale1.35 applied through build geometry. Separate native ground contact strokes use unchanged original size.",
   "ground_contact_source": "ground-contact-source.json",
   "runtime_assets_changed": true,
-  "game_tested": false
+  "game_tested": false,
+  "generated_master_revision": "2026-10-24 original source, before blade-facing correction",
+  "current_master_revision": {
+    "date": "2026-11-21",
+    "source_before_registration_sha256": "4648585599de922440913ee89b9e733115003996f8d408bd2920ba8fa7c01dc8",
+    "output_sha256": "5828b46b2b7a144abbe246f7a41d989efa9c7485229d654b2af2222fbb0d6d12",
+    "blade_orientation": "B: outward-facing silver convex cutting edge; blade tip hooks back toward the holder. In a right-facing idle the bright edge is on the right and the point curves to the left. Grip, pommel and medallion are unchanged."
+  }
 }

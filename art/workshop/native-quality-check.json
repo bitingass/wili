@@ -1,0 +1,166 @@
+{
+  "result": "PASS",
+  "reviewed_images": [
+    "character-review.png",
+    "hound_idle/000.png",
+    "hound_hit/004.png",
+    "opalgem.png"
+  ],
+  "sequences": {
+    "wili_idle_front": {
+      "frames": 66,
+      "union_bbox": [
+        261,
+        428,
+        722,
+        1067
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "wili_attack_front": {
+      "frames": 25,
+      "union_bbox": [
+        120,
+        349,
+        759,
+        1085
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "wili_idle_side": {
+      "frames": 66,
+      "union_bbox": [
+        252,
+        416,
+        710,
+        1059
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "wili_attack_side": {
+      "frames": 25,
+      "union_bbox": [
+        124,
+        343,
+        826,
+        1074
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "hound_idle": {
+      "frames": 10,
+      "union_bbox": [
+        261,
+        601,
+        1129,
+        1389
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "hound_hit": {
+      "frames": 13,
+      "union_bbox": [
+        70,
+        393,
+        1378,
+        1423
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "hound_atk": {
+      "frames": 9,
+      "union_bbox": [
+        366,
+        75,
+        1599,
+        1496
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "redgem": {
+      "frames": 1,
+      "union_bbox": [
+        158,
+        233,
+        457,
+        495
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "orangegem": {
+      "frames": 1,
+      "union_bbox": [
+        136,
+        231,
+        453,
+        496
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "yellowgem": {
+      "frames": 1,
+      "union_bbox": [
+        152,
+        242,
+        459,
+        493
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "greengem": {
+      "frames": 1,
+      "union_bbox": [
+        157,
+        244,
+        475,
+        497
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "bluegem": {
+      "frames": 1,
+      "union_bbox": [
+        135,
+        271,
+        426,
+        511
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "purplegem": {
+      "frames": 1,
+      "union_bbox": [
+        161,
+        251,
+        463,
+        491
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    },
+    "opalgem": {
+      "frames": 1,
+      "union_bbox": [
+        165,
+        265,
+        460,
+        469
+      ],
+      "clipped_frames": [],
+      "unresolved_count": 0
+    }
+  },
+  "note": "The native poses render the held weapon with the build-specific ink outline. The facing-right idle has its silver cutting edge on the right."
+}

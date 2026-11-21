@@ -22,7 +22,11 @@
           "h": 409.2,
           "png": "hash_824664575-0.png"
         }
-      ]
+      ],
+      "outer_ink": {
+        "radius_px": 1.32,
+        "clip_bottom": 422
+      }
     },
     {
       "hash": 1012542230,

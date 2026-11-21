@@ -273,6 +273,43 @@ def encode_tex(png, output, texture_format="bc3"):
     return tex_info(output.read_bytes())
 
 
+def read_sprite(sprites, frame, symbol):
+    """Load the editable frame and apply its game-scale silhouette treatment."""
+    with Image.open(sprites / frame["png"]) as source:
+        sprite = source.convert("RGBA")
+    ink = symbol.get("outer_ink")
+    if ink is None:
+        return sprite
+
+    radius = ink["radius_px"]
+    # Fade the extra width at narrow tips so the pommel and point stay sharp.
+    alpha = np.asarray(sprite.getchannel("A"), dtype=np.float32) / 255
+    solid = alpha > 0.5
+    left = np.argmax(solid, axis=1)
+    right = alpha.shape[1] - np.argmax(solid[:, ::-1], axis=1)
+    width = np.where(solid.any(axis=1), right - left, 0)
+    row_radius = radius * (0.52 + 0.48 * np.clip(width / 17, 0, 1))
+    extent = math.ceil(radius + 0.5)
+    height, cols = alpha.shape
+    padded = np.pad(alpha, extent)
+    expanded = alpha.copy()
+    for dy in range(-extent, extent + 1):
+        for dx in range(-extent, extent + 1):
+            distance = math.hypot(dx, dy)
+            if distance >= radius + 0.5:
+                continue
+            nearby = padded[extent + dy:extent + dy + height, extent + dx:extent + dx + cols]
+            coverage = np.clip(row_radius + 0.5 - distance, 0, 1)
+            np.maximum(expanded, nearby * coverage[:, None], out=expanded)
+    # A buried blade is clipped at the same soil plane as its source art.
+    if "clip_bottom" in ink:
+        expanded[ink["clip_bottom"]:] = 0
+    underlay = Image.new("RGBA", sprite.size, (10, 11, 15, 0))
+    underlay.putalpha(Image.fromarray(np.rint(expanded * 255).astype(np.uint8)))
+    underlay.alpha_composite(sprite)
+    return underlay
+
+
 def pack_archive(build_path, sprites, output, texture_format="bc3"):
     build = json.loads(build_path.read_text(encoding="utf-8"))
     animation_data = None
@@ -281,7 +318,7 @@ def pack_archive(build_path, sprites, output, texture_format="bc3"):
         if animation_data[:4] != b"ANIM":
             raise ValueError("animation_file must contain a compiled ANIM resource")
     allframes = [f for s in build["symbols"] for f in s["frames"]]
-    images = {f["png"]: Image.open(sprites / f["png"]).convert("RGBA") for f in allframes}
+    images = {f["png"]: read_sprite(sprites, f, s) for s in build["symbols"] for f in s["frames"]}
     padding = 4
     side = 2048
     for im in images.values():
