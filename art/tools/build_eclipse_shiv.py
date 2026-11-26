@@ -231,7 +231,9 @@ def build_assets():
                element(ground_weapon_key,0,prop_shift)] for n in range(count)],
              [bbox(fr,prop_shift) for fr in ground_frames]+[bbox(ground_weapon,prop_shift),bbox(grass_frame,grass_shift)])
 
-    side=2048;padding=4;placements={};pages=[[]];extents=[[0,0]]
+    # The game's ordinary two-atlas shader maps every z>=.5 to sampler 1.
+    # Use one atlas so neither normal nor bloom paths can sample another cel.
+    side=4096;padding=4;placements={};pages=[[]];extents=[[0,0]]
     x=y=padding;row=0
     for name,im in sorted(tiles.items(),key=lambda t:(-t[1].height,-t[1].width,t[0])):
         if x+im.width+padding>side:x,y,row=padding,y+row+2*padding,0
@@ -240,6 +242,8 @@ def build_assets():
         pages[-1].append((name,x,y));ex=extents[-1]
         ex[0]=max(ex[0],x+im.width+padding);ex[1]=max(ex[1],y+im.height+padding)
         x+=4*math.ceil((im.width+2*padding)/4);row=max(row,4*math.ceil(im.height/4))
+    if len(pages)!=1:
+        raise ValueError("Eclipse Shiv must fit one atlas; additional pages can flicker in the game renderer")
     atlas_names=[];assets={}
     for idx,(items,extent) in enumerate(zip(pages,extents)):
         w,h=(1<<(s-1).bit_length() for s in extent)

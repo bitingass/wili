@@ -1,36 +1,20 @@
-Wili 当前美术源文件
+Wili 1.2.5 正式版美术源文件
 
-source/anim：角色、幽灵、专武构建元数据及无压缩 PNG 部件。当前头部切片和武器地面姿势修正待游戏内复测。
-source/ui：当前头像、立绘、图标等 11 张纹理的 PNG 源图。
-source/illustrations：采用的高分辨率设计图、绘制源图和生成提示词。
-source/manifest.json：当前资源映射及运行资源哈希；保留上一版 2026-10-20 游戏测试记录，当前修复版尚未确认。
-tools：格式转换及重新打包工具。
+人物外观、界面和攻击动作以 1.2.4 为基础。人物躯干与四肢放大 10%，头部及武器尺寸保留；普通持物待机与跑动收肘 5°，小臂在上述比例上沿长度缩短 6%。正面头部整体向左微移，使下巴对齐双脚中线。没有采用月影使者人物和两套新攻击设计。
 
-旧稿、重复解包/测试输出、发布包、旧导出目录和回退备份均已清理。历史版本按用户要求使用 Git，不另留本地回退副本。
+source/anim：人物、幽灵和武器部件元数据。人物原始运行包锁定在 source/baselines/1.2.4/wili.zip；原攻击动画锁定为 1.2.4 提交 25c1998 的资源。
+source/anim/wili_body_fit/recipe.json：比例调整参数和原生动画来源哈希。
+source/illustrations/weapon/eclipse-shiv：蚀隙刀刃原画、配准与月相效果生成规则。随刀碎晶保留原数量、轨迹与亮度，仅放大单颗尺寸 45%；编译为单张图集以避免采样闪烁。
+source/ui：界面与物品栏图标源图。
+source/manifest.json：正式资源映射及运行资源哈希。
+tools：构建、编译与打包工具。
 
-重新打包（在项目根目录运行）：
-python art/tools/rebuild_assets.py
-输出为 art/.work/rebuilt，确认后再覆盖到 Mod。工具不会自动替换运行资源。
-加 --verify-runtime 可以检查重建内容是否与当前运行资源逐字节相同。当前角色包保留旧图集并新增头部页，全量重排图集的结果与它不会逐字节一致；此选项会报告差异。
+重建并校验（在开发仓库根目录运行）：
+python art/tools/rebuild_assets.py --verify-runtime
+输出为 art/.work/rebuilt，不自动覆盖运行文件。身体动画 ZIP 的封装时间可能不同，校验比较内部 anim.bin；其他资产按工具中的内容校验。
 
-依赖：Python、Pillow、NumPy，以及 Klei Don't Starve Mod Tools 的 TextureConverter.exe。
-当前工具位置在 tools/dst_art_pipeline.py 的 MODTOOLS 常量中，可按安装目录调整。
-所有构建中的 source_zip 相对项目根目录定位，不再依赖已删除的备份或旧导出目录。
-银月弯刀的独立地面动画保存在 source/anim/scimitar/anim.bin，build.json 的 animation_file 指向该文件，重新打包会自动采用它。
-地面线条使用原版 staffs/grass 部件，独立于刀身缩放；来源记录在 source/illustrations/weapon/ground-contact-source.json，只会在地面动画中显示。
-source/illustrations/weapon/placement.json 记录了握持轴心、地面接触点和库存图标的导出参数。
+依赖：Python、Pillow、NumPy，以及本机 DST 和 Klei Mod Tools。游戏目录与转换器位置记录在 tools/render_workshop_native.py 和 tools/dst_art_pipeline.py 中。身体动画构建依赖本机游戏资源，recipe.json 记录了本次采用的原生动画哈希；游戏更新后应核对这些来源再重建。安装已编译发行包不需要构建工具。
 
-头部末端切片修复（2026-10-23）：
-原稿 illustrations/head/heads-v1.png 高 756 像素，先前按两行等分裁在 y=378；第一排四个头却延伸至约 y=390–399，造成横向断边。
-source/anim/wili/head-slices.json 保存原来的裁框、缩放及位置。只恢复 headbase-0..3 的末端，并重算旧裁边前四行的采样接缝；此前所有像素保持不变。
-画布向下扩展 24 个源像素，同时构建高度增加 12、中心 y 增加 6，保持左上角及每世界单位 2 像素不变。戴帽、五官和马尾切片不移动。
-
-复现本次修复：
-python art/tools/restore_head_tips.py
-输出 art/.work/head-tip-fix 下的四张 PNG、build.json 和 anim/wili.zip。检查输出后再复制对应文件到项目，并更新 manifest 的运行包哈希。
-此工具只新增 atlas-head-tips.tex；原 atlas-0.tex 及其他 81 帧的几何/UV 保持原样。重复运行不会反复增加画布高度。
-encode_ktex.py 用 Pillow 的 DDS/DXT5 编码写出 BC3 KTEX，支持 Linux，无需 Windows 转换器；自检命令为 python art/tools/encode_ktex.py --self-test。
-当前资源已通过像素保留、切片完整性、坐标不变、全部 mip 解码及二进制结构检查；完整人物动画与装备效果仍待游戏内验证。
-
-银月弯刀的手持和落地构建通过 outer_ink 在打包时给武器外缘描线，radius_px 以部件源图像素为单位。落地部件的 clip_bottom 与埋入地面的裁线对应。工坊预览使用同一个描线函数。
-Wili 持弯刀时，步行普通攻击使用 wili_scimitar_atk_pre 和 wili_scimitar_atk。原生攻击动作的帧数、事件和握点保存在专属动作中，抬刀时持刀手和弯刀会绘制在身体前方。可编辑的生成规则在 tools/build_wili_scimitar_attack.py，标准重打包会把 source/anim/wili_scimitar_attack/anim.bin 编入专属动作包。
+发版：
+python art/tools/package_release.py
+从 wili-dev 同步同级 wili 目录，并生成 art/.work/release/wili.zip。该目录与压缩包只包含游戏运行所需文件，不包含草稿、预览和检查输出。

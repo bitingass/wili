@@ -194,8 +194,9 @@ EDGE=((368,646),(417,606),(468,558),(521,527),(581,508),(622,442),(660,360),(690
 OFF=(.07,.61,.31,.84,.46,.95,.17,.70)
 SEA=(167,201,179); IVORY=(242,240,209)
 VIOLET=(111,102,122); VOID=(42,37,41)
-FXBOX=(118,60,744,762)
+FXBOX=(72,12,852,800)
 FXOR=np.array(FXBOX[:2],dtype=float)
+PARTICLE_SCALE=1.45
 
 @lru_cache(maxsize=2)
 def cut_flake(pale):
@@ -240,7 +241,7 @@ def atmosphere(phase_id,n):
     j=PHASES.index(phase_id); lum=LIGHT[j];t=n/FRAMES
     layer=Image.new("RGBA",(FXBOX[2]-FXBOX[0],FXBOX[3]-FXBOX[1]))
     dr=ImageDraw.Draw(layer)
-    # Seven narrow glass slivers are visible at full moon. At new moon there
+    # Eight narrow glass slivers are visible at full moon. At new moon there
     # are only a few dark scales and a live-shadow wisp along the spine notch.
     count=(4,4,6,7,8,6,5,4)[j]
     for k in range(count):
@@ -269,13 +270,17 @@ def atmosphere(phase_id,n):
         if j==0:r*=.94
         p[0]=min(p[0],CROP[2]-4-r)
         pale=(j==4 or (j<=3 and k<round(count*(.27+.54*lum))) or (j>=5 and k%4==1))
-        shard(layer,p,tan,r,r*(.44 if pale else .41),pale,round(246*strength),j>=5)
+        # Keep the approved centers, particle count and opacity. Only enlarge
+        # each individual flake; the wider canvas gives it unclipped room.
+        shard(layer,p,tan,r*PARTICLE_SCALE,r*(.44 if pale else .41)*PARTICLE_SCALE,
+              pale,round(246*strength),j>=5)
         # Two staggered tiny echoes extend along the exact flight path. They
         # make the direction readable without adding drawn arrows or a halo.
         if j in (1,2,3,5,6,7) and k in (0,2,4):
             for z in (1,2):
                 tip=p+tan*((-1 if j<4 else 1)*(z*7+r))
-                shard(layer,tip,tan,r*(.38/z),r*.17/z,pale,round(150*strength/z),j>=5)
+                shard(layer,tip,tan,r*(.38/z)*PARTICLE_SCALE,r*.17/z*PARTICLE_SCALE,
+                      pale,round(150*strength/z),j>=5)
     if j in (0,7):
         t0=math.tau*t
         path=((206,538),(216,521),(211,502),(217,483),(234,468),(268,454),

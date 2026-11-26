@@ -1,5 +1,6 @@
 local MakePlayerCharacter = require "prefabs/player_common"
 local BlinkOnHit = require "wili_blink"
+local BodyFit = require "wili_body_fit"
 
 local WILI_SPEED_MULTIPLIER = 2.25
 
@@ -102,6 +103,7 @@ end
 
 -- This initializes for both the server and client. Tags can be added here.
 local common_postinit = function(inst)
+    BodyFit.common_init(inst)
     -- Minimap icon
     inst.MiniMapEntity:SetIcon("wili.tex")
     inst:AddTag("wili_builder")
@@ -473,6 +475,7 @@ end
 
 -- This initializes for the server only. Components are added here.
 local master_postinit = function(inst)
+    BodyFit.master_init(inst)
     local wisecracker = inst.components.wisecracker
     if wisecracker ~= nil then
         local old_update = wisecracker.OnUpdate

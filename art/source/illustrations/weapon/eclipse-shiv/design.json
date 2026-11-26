@@ -9,18 +9,46 @@
   "held_size": {
     "reference": "Approved historical held-size calibration; numerical measurements retained below",
     "reference_figure_height_px": 267,
-    "reference_palm_px": [1296, 888],
-    "reference_tip_px": [1202, 954],
+    "reference_palm_px": [
+      1296,
+      888
+    ],
+    "reference_tip_px": [
+      1202,
+      954
+    ],
     "game_front_idle_height_units": 299.667,
     "prior_projected_palm_to_tip_units": 136.873
   },
   "registered_art": "master.png",
   "anchors": "registration.json",
-  "details": ["月晶刃", "活影刀脊", "相位之眼", "镂空柄环"],
+  "details": [
+    "月晶刃",
+    "活影刀脊",
+    "相位之眼",
+    "镂空柄环"
+  ],
   "lunar_keys": [
-    {"phase": "new", "title": "新月 · 影盛", "appearance": "墨影覆刃，影丝和墨屑贴着刀背。"},
-    {"phase": "waxing_half", "title": "上弦 · 月盈", "appearance": "晶质裂隙显露，碎光向刀尖汇聚。"},
-    {"phase": "full", "title": "满月 · 月盛", "appearance": "冰白晶刃显露，薄荷色晶屑浮散，活影刀脊仍可见。"},
-    {"phase": "waning_half", "title": "下弦 · 影长", "appearance": "暗影从刀背侵入，碎光向刀根回流。"}
-  ]
+    {
+      "phase": "new",
+      "title": "新月 · 影盛",
+      "appearance": "墨影覆刃，影丝和墨屑贴着刀背。"
+    },
+    {
+      "phase": "waxing_half",
+      "title": "上弦 · 月盈",
+      "appearance": "晶质裂隙显露，碎光向刀尖汇聚。"
+    },
+    {
+      "phase": "full",
+      "title": "满月 · 月盛",
+      "appearance": "冰白晶刃显露，薄荷色晶屑浮散，活影刀脊仍可见。"
+    },
+    {
+      "phase": "waning_half",
+      "title": "下弦 · 影长",
+      "appearance": "暗影从刀背侵入，碎光向刀根回流。"
+    }
+  ],
+  "effect_revision": "Original particle counts, paths, opacity and lighting; individual flakes scaled 1.45x. One atlas prevents native shader page mis-sampling."
 }

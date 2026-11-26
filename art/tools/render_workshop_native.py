@@ -100,7 +100,9 @@ def render_frame(frame, table, names, size=(900, 1100), origin=(450, 1010), scal
                  hide_layers=(), hide_symbols=(), overrides=None):
     canvas = Image.new("RGBA", size)
     missing = []
-    for elem in sorted(frame["elements"], key=lambda e:e["matrix"][6], reverse=True):
+    # ANIM stores foreground first. The game paints the encoded array back
+    # to front; it does not repair an artistically stale order from matrix Z.
+    for elem in reversed(frame["elements"]):
         symbol_name = names.get(elem["symbol"], str(elem["symbol"]))
         layer_name = names.get(elem["layer"], str(elem["layer"]))
         if layer_name in hide_layers or symbol_name in hide_symbols:
@@ -174,9 +176,9 @@ def make_outputs():
                                           count=len(frames),frames=indices,unresolved=unique_missing)
         return frames
     player_frames={}
-    for direction,facing in [("front",8),("side",5)]:
+    for direction,facing in [("front",8),("side",1)]:
         for action, parsed, anim_names in player_actions:
-            anims=[(parsed,next(a for a in parsed["anims"] if a["name"]==name and a["facing"]==facing)) for name in anim_names]
+            anims=[(parsed,next(a for a in parsed["anims"] if a["name"]==name and a["facing"] & facing)) for name in anim_names]
             absent={v for k,v in parsed["names"].items() if k not in player_table and v not in overrides}
             key=f"wili_{action}_{direction}"
             player_frames[key]=export_sequence(key,anims,player_table,(900,1100),(450,1010),2.0,

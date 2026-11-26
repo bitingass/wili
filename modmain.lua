@@ -1,4 +1,4 @@
-Assets = {Asset("ANIM", "anim/wili_scimitar_attack.zip"),
+Assets = {Asset("ANIM", "anim/wili_scimitar_attack.zip"), Asset("ANIM", "anim/wili_body_fit.zip"),
           Asset("IMAGE", "images/saveslot_portraits/wili.tex"), Asset("ATLAS", "images/saveslot_portraits/wili.xml"),
 
           Asset("IMAGE", "images/selectscreen_portraits/wili.tex"),
@@ -96,14 +96,16 @@ end)
 
 -- Keep the reverse-held blade and its wrist visible across the wind-up.
 -- Only replace the ordinary on-foot melee pair after the SG selected it.
-local wilson_bank = GLOBAL.hash("wilson")
+local BodyFit = require "wili_body_fit"
+AddStategraphPostInit("wilson", BodyFit.install)
+AddStategraphPostInit("wilson_client", BodyFit.install)
 local function UseScimitarAttack(sg)
     local state = sg.states.attack
     local old_onenter = state.onenter
     state.onenter = function(inst, ...)
         old_onenter(inst, ...)
         if inst.prefab ~= "wili" or inst.sg.currentstate ~= state
-            or inst.AnimState:GetBankHash() ~= wilson_bank
+            or not BodyFit.is_player_bank(inst.AnimState:GetBankHash())
             or not inst.AnimState:IsCurrentAnimation("atk_pre") then
             return
         end
@@ -120,6 +122,26 @@ end
 
 AddStategraphPostInit("wilson", UseScimitarAttack)
 AddStategraphPostInit("wilson_client", UseScimitarAttack)
+
+-- Skip Wili's ordinary scratching/kicking fidget after the native selector.
+-- Special-condition idles and the original timeout/royalty logic still run.
+AddStategraphPostInit("wilson", function(sg)
+    local state = sg.states.funnyidle
+    if state == nil then return end
+    local old_onenter = state.onenter
+    state.onenter = function(inst, ...)
+        local frame = inst.prefab == "wili" and inst.AnimState:IsCurrentAnimation("idle_loop")
+            and inst.AnimState:GetCurrentAnimationFrame() or nil
+        old_onenter(inst, ...)
+        if inst.prefab == "wili" and inst.sg.currentstate == state
+            and inst.AnimState:IsCurrentAnimation("idle_inaction") then
+            inst.sg:GoToState("idle")
+            if frame ~= nil and inst.AnimState:IsCurrentAnimation("idle_loop") then
+                inst.AnimState:SetFrame(frame)
+            end
+        end
+    end
+end)
 
 -- Suppress combat reactions in the server stategraph, not the damage/events
 -- themselves, so health loss and Wili's revenge proc still work normally.
@@ -423,7 +445,7 @@ end
 
 STRINGS.CHARACTERS.WILI = require "speech_wili"
 STRINGS.NAMES.SCIMITAR = LocalizedText("Silver Moon Scimitar", "银月弯刀", "銀月彎刀")
-STRINGS.RECIPE_DESC.SCIMITAR = LocalizedText("Source of wealth!", "财富之源！", "財富之源！")
+STRINGS.RECIPE_DESC.SCIMITAR = LocalizedText("Forbidden Twins", "禁忌的雙生", "禁忌的雙生")
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.SCIMITAR = STRINGS.CHARACTERS.WILI.DESCRIBE.SCIMITAR
 
 TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.WILI = {"scimitar"}

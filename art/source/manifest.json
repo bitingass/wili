@@ -1,5 +1,5 @@
 {
-  "revision": "1.2.5-weapon-transplant-on-1.2.4",
+  "revision": "1.2.5",
   "game_test_confirmed_by_user": null,
   "animation_builds": [
     {
@@ -86,7 +86,7 @@
       "format": "bc3"
     }
   ],
-  "notes": "Release 1.2.4 character, UI, movement and attacks; Eclipse Shiv weapon art and lunar effects transplanted for 1.2.5.",
+  "notes": "Release 1.2.4 character, UI and attack choreography with approved body/held-arm proportions and frontal head alignment; Eclipse Shiv lunar visuals and impact effects for final 1.2.5.",
   "previous_revision_game_test_confirmed_by_user": "2026-10-20",
   "previous_game_test_confirmed_by_user": {
     "date": "2026-10-20",
@@ -123,7 +123,26 @@
     "ground_scale_adjustment": 1.15,
     "extra_outline_radius": 1.2,
     "base_release": "1.2.4",
-    "hit_fx": "hitsparks_fx (native lunar/shadow impact)"
+    "hit_fx": "hitsparks_fx (native lunar/shadow impact)",
+    "particle_enhancement": {
+      "shard_counts": [
+        4,
+        4,
+        6,
+        7,
+        8,
+        6,
+        5,
+        4
+      ],
+      "individual_size_multiplier": 1.45,
+      "original_centres_directions_opacity_retained": true,
+      "additional_symbol_bloom": false,
+      "single_atlas": [
+        4096,
+        2048
+      ]
+    }
   },
   "previous_weapon_in_game_feedback": {
     "date": "2026-10-24",
@@ -146,6 +165,19 @@
   "eclipse_shiv": {
     "archive": "anim/wili_eclipse_shiv.zip",
     "builder": "art/tools/build_eclipse_shiv.py",
-    "runtime_sha256": "76df49a4bc39bfc58b48ad40e2874d0e4ea6f2486dc57e9c1e5741c149083b44"
-  }
+    "runtime_sha256": "6e7fa95e604c1939a299754cb0a09831bc03ddb562787392eb730c0b79fd9208"
+  },
+  "body_fit": {
+    "archive": "anim/wili_body_fit.zip",
+    "builder": "art/tools/build_wili_body_fit.py",
+    "recipe": "anim/wili_body_fit/recipe.json",
+    "runtime_sha256": "238208430e183160f4af634d32198fa470fa40738c11b7906d8c326aced98486",
+    "body_scale": 1.1,
+    "head_scale": 1.0,
+    "weapon_scale": 1.0,
+    "carry_elbow_degrees": 5,
+    "carry_forearm_scale": 0.94,
+    "frontal_head_local_x_offset": -3.5
+  },
+  "release_date": "2026-11-27"
 }

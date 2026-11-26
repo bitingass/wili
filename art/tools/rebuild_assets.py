@@ -59,6 +59,18 @@ def main():
     if args.verify_runtime:
         assert (output / shiv).read_bytes() == (ROOT / shiv).read_bytes(), shiv
     checked.append(shiv)
+    if 'body_fit' in manifest:
+        from build_wili_body_fit import build as build_body_fit
+        body_record=manifest['body_fit']
+        generated=output/'body-fit-intermediate'
+        build_body_fit(generated)
+        destination=output/body_record['archive']
+        destination.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(generated/destination.name,destination)
+        if args.verify_runtime:
+            with zipfile.ZipFile(destination) as built,zipfile.ZipFile(ROOT/body_record['archive']) as existing:
+                assert built.read('anim.bin')==existing.read('anim.bin'),body_record['archive']
+        checked.append(body_record['archive'])
     for record in manifest['ui_textures']:
         destination = output / record['target']
         codec.encode_tex(SOURCE/record['source'], destination, record['format'])

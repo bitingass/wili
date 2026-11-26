@@ -19,6 +19,6 @@ speech.ANNOUNCE_WILI_REVENGE = LocalizedText("Time To Revenge!", "反击的时�
 speech.ANNOUNCE_WILI_COUP_DE_GRACE = LocalizedText("Give you relief!", "给你一个解脱！", "給你一個解脫！")
 speech.ANNOUNCE_WILI_NO_FOLLOWERS = LocalizedText("no follower I need", "我不需要追随者。", "我不需要追隨者。")
 speech.ANNOUNCE_WILI_REJECTED = LocalizedText("get rejected", "它拒绝了我。", "它拒絕了我。")
-speech.DESCRIBE.SCIMITAR = LocalizedText("Source of wealth!", "财富之源！", "財富之源！")
+speech.DESCRIBE.SCIMITAR = LocalizedText("Forbidden Twins", "禁忌的雙生", "禁忌的雙生")
 
 return speech
