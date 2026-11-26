@@ -6,6 +6,7 @@ import shutil
 import zipfile
 import dst_art_pipeline as codec
 from build_blink_afterimage import build_archive as build_blink_afterimage
+from build_eclipse_shiv import build_archive as build_eclipse_shiv
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'art/source'
@@ -23,7 +24,11 @@ def main():
     for record in manifest['animation_builds']:
         folder = SOURCE / record['source']
         destination = output / record['archive']
-        codec.pack_archive(folder/'build.json', folder/'sprites', destination)
+        if 'source_archive' in record:
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copyfile(SOURCE/record['source_archive'],destination)
+        else:
+            codec.pack_archive(folder/'build.json', folder/'sprites', destination)
         if args.verify_runtime:
             with zipfile.ZipFile(destination) as compiled, zipfile.ZipFile(ROOT/record['archive']) as runtime:
                 assert set(compiled.namelist()) == set(runtime.namelist()), record['archive']
@@ -41,10 +46,19 @@ def main():
                 assert runtime.namelist() == ['anim.bin'] and runtime.read('anim.bin') == clip, record['archive']
         checked.append(record['archive'])
     blink = manifest['blink_afterimage']['archive']
-    build_blink_afterimage(output / blink)
+    if 'source_archive' in manifest['blink_afterimage']:
+        (output/blink).parent.mkdir(parents=True,exist_ok=True)
+        shutil.copyfile(SOURCE/manifest['blink_afterimage']['source_archive'],output/blink)
+    else:
+        build_blink_afterimage(output / blink)
     if args.verify_runtime:
         assert (output / blink).read_bytes() == (ROOT / blink).read_bytes(), blink
     checked.append(blink)
+    shiv = manifest['eclipse_shiv']['archive']
+    build_eclipse_shiv(output / shiv)
+    if args.verify_runtime:
+        assert (output / shiv).read_bytes() == (ROOT / shiv).read_bytes(), shiv
+    checked.append(shiv)
     for record in manifest['ui_textures']:
         destination = output / record['target']
         codec.encode_tex(SOURCE/record['source'], destination, record['format'])

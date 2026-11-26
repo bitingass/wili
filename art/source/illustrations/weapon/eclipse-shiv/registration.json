@@ -1,0 +1,51 @@
+{
+  "image": "master.png",
+  "source": "eclipse-shiv-reference.png",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "units": "source pixels, origin top-left",
+  "grip": [
+    175,
+    758
+  ],
+  "tip": [
+    710,
+    91
+  ],
+  "pommel": [
+    74,
+    916
+  ],
+  "guard": [
+    220,
+    700
+  ],
+  "wrap_start": [
+    128,
+    813
+  ],
+  "wrap_end": [
+    221,
+    698
+  ],
+  "eye_center": [
+    313,
+    616
+  ],
+  "ring_hole_center": [
+    107,
+    851
+  ],
+  "blade_root": [
+    373,
+    643
+  ],
+  "source_sha256": "d947fc7722592355298d6d4f563daee58cc834ea9519f68a0cbc64e99048a99c",
+  "handle_axis_toward_blade": [
+    0.628809,
+    -0.77756
+  ],
+  "handle_angle_degrees_screen": -51.038
+}

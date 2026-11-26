@@ -1,12 +1,14 @@
 {
-  "revision": "moonshadow-weapon-ink-v9",
+  "revision": "1.2.5-weapon-transplant-on-1.2.4",
   "game_test_confirmed_by_user": null,
   "animation_builds": [
     {
       "archive": "anim/wili.zip",
       "source": "anim/wili",
       "frames": 85,
-      "runtime_sha256": "d6b04d706ebeaf29b1dbe8cd8fd17846019a283a3f3283ac1d5db033a5ff0461"
+      "runtime_sha256": "d6b04d706ebeaf29b1dbe8cd8fd17846019a283a3f3283ac1d5db033a5ff0461",
+      "source_archive": "baselines/1.2.4/wili.zip",
+      "reference_release": "1.2.4"
     },
     {
       "archive": "anim/ghost_wili_build.zip",
@@ -18,13 +20,13 @@
       "archive": "anim/scimitar.zip",
       "source": "anim/scimitar",
       "frames": 2,
-      "runtime_sha256": "b67a96b0a7bbc9c670bdda5c29cb29afd29fe8932795af3505c7c210c2cc8374"
+      "runtime_sha256": "27cffc7410c9f606c133b96e1628bf6b97c6c116e2bdeb0dfe6a18a8f53e178d"
     },
     {
       "archive": "anim/swap_scimitar.zip",
       "source": "anim/swap_scimitar",
       "frames": 2,
-      "runtime_sha256": "8180b385cb969d175d4b6b4a2034e072047ab7a0d832c73b55d6b8dbcb8c7a64"
+      "runtime_sha256": "29fcbcce966b8709cb770569b0d0accefe014a4c886c2847c757b12c280a47e1"
     }
   ],
   "ui_textures": [
@@ -84,32 +86,44 @@
       "format": "bc3"
     }
   ],
-  "notes": "Current editable uncompressed artwork combines restored headbase tips with the redesigned, enlarged weapon and buried ground pose. Head tips preserve original upper pixels and rig positions. Source and compiled assets checked; these final corrections await in-game verification. Runtime files are in the project root; history/rollback uses Git.",
+  "notes": "Release 1.2.4 character, UI, movement and attacks; Eclipse Shiv weapon art and lunar effects transplanted for 1.2.5.",
   "previous_revision_game_test_confirmed_by_user": "2026-10-20",
   "previous_game_test_confirmed_by_user": {
     "date": "2026-10-20",
     "scope": "Character/ghost art and previous weapon design"
   },
   "weapon_update": {
-    "date": "2026-11-21",
-    "design": "gem-tile game-readable refinement",
-    "ground_bank": "scimitar",
-    "ground_all_directions": true,
-    "ground_tip_at_floor": true,
-    "held_scale_vs_previous": 1.728,
-    "ground_scale_vs_previous": 1.65,
-    "native_ground_contact": "staffs/grass",
-    "ground_contact_scale": 1.0,
+    "date": "2026-11-26",
+    "design": "illustrations/weapon/eclipse-shiv/design.json",
+    "prefab": "scimitar",
+    "lunar_bank": "wili_eclipse_shiv",
+    "phases": 8,
+    "period_seconds": 1.2,
+    "held_frame_ranges": [
+      [
+        0,
+        2
+      ],
+      [
+        5,
+        7
+      ]
+    ],
+    "ground_pose": "planted with native front grass",
+    "attack_pairs": [
+      "wili_scimitar_atk"
+    ],
     "compiled_resources_verified": true,
-    "game_tested": false,
-    "ground_pose": "lower blade buried, wide cut section at soil plane",
-    "additional_ground_burial_units": 36,
-    "blade_orientation": "B: outward-facing silver convex cutting edge; blade tip hooks back toward the holder. In a right-facing idle the bright edge is on the right and the point curves to the left. Grip, pommel and medallion are unchanged.",
-    "held_scale_vs_outward_blade_v7": 1.28,
-    "outer_ink_radius_source_px": {
-      "held": 1.35,
-      "ground": 1.32
-    }
+    "unique_frames_per_phase": 30,
+    "fps": 25,
+    "effect_texture_density": 2,
+    "approved_gif_sha256": "eebfa46596cf824f649c2be36b9111fd3a4a9d210fb0a564f99a2f82186b39c3",
+    "reference_low_carry_palm_to_tip_fraction": 0.4302,
+    "held_scale_adjustment": 1.2,
+    "ground_scale_adjustment": 1.15,
+    "extra_outline_radius": 1.2,
+    "base_release": "1.2.4",
+    "hit_fx": "hitsparks_fx (native lunar/shadow impact)"
   },
   "previous_weapon_in_game_feedback": {
     "date": "2026-10-24",
@@ -125,6 +139,13 @@
   "blink_afterimage": {
     "archive": "anim/wili_blink_afterimage.zip",
     "builder": "art/tools/build_blink_afterimage.py",
-    "runtime_sha256": "e6d0de7ccdce62638983016d05631fad77505d25c907d9acc65c52c03ffaf82e"
+    "runtime_sha256": "e6d0de7ccdce62638983016d05631fad77505d25c907d9acc65c52c03ffaf82e",
+    "source_archive": "baselines/1.2.4/wili_blink_afterimage.zip",
+    "reference_release": "1.2.4"
+  },
+  "eclipse_shiv": {
+    "archive": "anim/wili_eclipse_shiv.zip",
+    "builder": "art/tools/build_eclipse_shiv.py",
+    "runtime_sha256": "76df49a4bc39bfc58b48ad40e2874d0e4ea6f2486dc57e9c1e5741c149083b44"
   }
 }

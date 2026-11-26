@@ -280,7 +280,11 @@ def read_sprite(sprites, frame, symbol):
     ink = symbol.get("outer_ink")
     if ink is None:
         return sprite
+    return apply_outer_ink(sprite, ink)
 
+
+def apply_outer_ink(sprite, ink):
+    """Add the same tapered dark contour to file-backed and generated sprites."""
     radius = ink["radius_px"]
     # Fade the extra width at narrow tips so the pommel and point stay sharp.
     alpha = np.asarray(sprite.getchannel("A"), dtype=np.float32) / 255
@@ -347,7 +351,8 @@ def pack_archive(build_path, sprites, output, texture_format="bc3"):
         atlases[p["page"]].paste(images[name], (p["x"], p["y"]))
     atlas_names = [f"atlas-{i}.tex" for i in range(len(atlases))]
     output.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(prefix="wili_atlas_") as tmp:
+    WORK.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="wili_atlas_", dir=WORK) as tmp:
         temp = Path(tmp)
         for i, atlas in enumerate(atlases):
             png = temp / f"atlas-{i}.png"
@@ -363,10 +368,11 @@ def pack_archive(build_path, sprites, output, texture_format="bc3"):
         if source_zip.resolve() == output.resolve():
             raise ValueError("Pack to a temporary ZIP before replacing the current runtime archive")
         with zipfile.ZipFile(source_zip) as source, zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as packed:
+            old_atlases = set(parse_build(source.read("build.bin"))["atlases"])
             for name in source.namelist():
                 if name == "anim.bin" and animation_data is not None:
                     continue
-                if name != "build.bin" and name not in build["atlases"]:
+                if name != "build.bin" and name not in old_atlases:
                     packed.writestr(name, source.read(name))
             if animation_data is not None:
                 packed.writestr("anim.bin", animation_data)

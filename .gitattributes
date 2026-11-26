@@ -1,0 +1,7 @@
+# Preserve the exact runtime text bytes validated in the release package.
+/modinfo.lua -text
+/modmain.lua -text
+/modicon.xml -text
+/scripts/** -text whitespace=trailing-space,space-before-tab,cr-at-eol
+/images/**/*.xml -text whitespace=trailing-space,space-before-tab,cr-at-eol
+/bigportraits/*.xml -text
