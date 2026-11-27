@@ -2,8 +2,10 @@ local BlinkOnHit = require "wili_blink"
 
 local BANK = "wili_eclipse_shiv"
 local EDGE_FX = "wili_eclipse_shiv_edge_fx"
+local HIT_FX = "wili_eclipse_hit_fx"
 -- Mod asset registration resolves file paths in place. Give each prefab its own Asset.
 local edge_assets = {Asset("ANIM", "anim/wili_eclipse_shiv.zip")}
+local hit_assets = {Asset("ANIM", "anim/wili_eclipse_hit_fx.zip")}
 local assets = {Asset("ANIM", "anim/wili_eclipse_shiv.zip"), Asset("ANIM", "anim/scimitar.zip"), Asset("ANIM", "anim/swap_scimitar.zip"),
                 Asset("ATLAS", "images/inventoryimages/scimitar.xml"),
                 Asset("IMAGE", "images/inventoryimages/scimitar.tex")}
@@ -13,27 +15,46 @@ local held_frames = {
     { clip = "held_a_", first = 0, stop = 3 },
     { clip = "held_b_", first = 5, stop = 8 },
 }
+local MOON_PHASES = {
+    "new", "waxing_quarter", "waxing_half", "waxing_threequarter",
+    "full", "waning_threequarter", "waning_half", "waning_quarter",
+}
+local MOON_PHASE_ID = {}
+for i, phase in ipairs(MOON_PHASES) do
+    MOON_PHASE_ID[phase] = i
+end
 local moonlight = {
     new = 0.03, waxing_quarter = 0.10, waxing_half = 0.18, waxing_threequarter = 0.24,
     full = 0.32, waning_threequarter = 0.20, waning_half = 0.13, waning_quarter = 0.07,
 }
--- The brightshade sword and voidcloth scythe share the stock hit-spark prefab.
--- Its independent network proxy keeps playing even if the victim disappears.
-local hit_flash = {
-    new = {.50, .35, .75}, waxing_quarter = {.60, .70, .92},
-    waxing_half = {.62, .86, 1}, waxing_threequarter = {.75, .97, 1},
-    full = {.88, 1, 1}, waning_threequarter = {.68, .86, .98},
-    waning_half = {.62, .60, .86}, waning_quarter = {.52, .40, .78},
+-- Keep the blade-current hit slash readable in daylight, night and caves.
+local hit_light = {
+    new = 0.30, waxing_quarter = 0.45, waxing_half = 0.62, waxing_threequarter = 0.75,
+    full = 0.90, waning_threequarter = 0.65, waning_half = 0.50, waning_quarter = 0.35,
 }
 
-local function spawn_hit_sparks(inst, data)
+-- Independent network proxy keeps playing even if the victim dies on the same frame.
+local function spawn_hit_fx(inst, owner, data)
     if data == nil or data.weapon ~= inst or not (data.target and data.target:IsValid()) then return end
-    local spark = SpawnPrefab("hitsparks_fx")
-    if spark then
-        -- A nil directional source centres the stock spark on the victim.
-        spark:Setup(nil, data.target, nil, hit_flash[inst._moon])
-        spark.black:set(inst._moon == "new" or inst._moon == "waning_quarter")
+    local target = data.target
+    local fx = SpawnPrefab(HIT_FX)
+    if fx == nil then return end
+
+    local tx, ty, tz = target.Transform:GetWorldPosition()
+    local radius = target.GetPhysicsRadius ~= nil and target:GetPhysicsRadius(0) or 0
+    local y_offset = math.min(1.8, 0.55 + radius * 0.55)
+    local scale = math.min(1.55, 0.92 + radius * 0.22)
+    local facing = 0
+    if owner ~= nil and owner:IsValid() and owner.Transform ~= nil then
+        local ox, _, oz = owner.Transform:GetWorldPosition()
+        local dx, dz = tx - ox, tz - oz
+        if dx * dx + dz * dz > 0.01 then
+            facing = math.atan2(-dz, dx) * RADIANS
+        else
+            facing = owner.Transform:GetRotation()
+        end
     end
+    fx:Setup(tx, ty + y_offset, tz, facing, inst._moon, scale)
 end
 
 local function play_edge(fx, slot, phase)
@@ -225,7 +246,7 @@ local function fn()
     inst:WatchWorldState(inst._moon_key, update_moon)
     inst:WatchWorldState(inst._wax_key, update_moon)
     inst._on_edge_owner_removed = function() remove_edges(inst) end
-    inst._on_owner_hit = function(_, data) spawn_hit_sparks(inst, data) end
+    inst._on_owner_hit = function(owner, data) spawn_hit_fx(inst, owner, data) end
     update_moon(inst)
     inst:ListenForEvent("ondropped", remove_edges)
     inst:ListenForEvent("onremove", remove_edges)
@@ -251,5 +272,89 @@ local function edge_fn()
     return inst
 end
 
-return Prefab("common/inventory/scimitar", fn, assets, { EDGE_FX, "hitsparks_fx" }),
-       Prefab(EDGE_FX, edge_fn, edge_assets)
+-- Client-side one-shot slash FX; only the impact position, direction, scale and phase are networked.
+local function SpawnLocalHitFX(x, y, z, facing, phase, scale)
+    local fx = CreateEntity()
+    fx.entity:AddTransform()
+    fx.entity:AddAnimState()
+    fx.entity:SetCanSleep(false)
+    fx:AddTag("FX")
+    fx:AddTag("NOCLICK")
+    fx.persists = false
+    fx.Transform:SetPosition(x, y, z)
+    fx.AnimState:SetBank(HIT_FX)
+    fx.AnimState:SetBuild(HIT_FX)
+    fx.AnimState:SetFinalOffset(1)
+    fx.AnimState:SetLightOverride(hit_light[phase] or 0.5)
+
+    -- Mirror horizontally when Wili strikes left-to-right on this client's screen
+    -- so the crescent blade-current sweeps along the attack direction.
+    local rad = facing * DEGREES
+    local right = TheCamera ~= nil and TheCamera.GetRightVec ~= nil and TheCamera:GetRightVec() or nil
+    local flip = right ~= nil and (math.cos(rad) * right.x - math.sin(rad) * right.z) > 0
+    fx.AnimState:SetScale(flip and -scale or scale, scale)
+
+    fx:ListenForEvent("animover", fx.Remove)
+    fx.AnimState:PlayAnimation("hit_" .. phase)
+end
+
+local function PlayHitFX(inst)
+    inst._play_pending = nil
+    local phase_id = inst._phase:value()
+    if phase_id == 0 or inst._played then
+        return
+    end
+    local phase = MOON_PHASES[phase_id]
+    if phase == nil then
+        return
+    end
+    inst._played = true
+    local x, y, z = inst.Transform:GetWorldPosition()
+    local facing = inst.Transform:GetRotation()
+    local raw_scale = inst._scale:value()
+    local scale = raw_scale > 0 and (raw_scale / 50) or 1
+    SpawnLocalHitFX(x, y, z, facing, phase, scale)
+end
+
+local function QueueHitFX(inst)
+    if not inst._play_pending and not inst._played then
+        inst._play_pending = inst:DoTaskInTime(0, PlayHitFX)
+    end
+end
+
+local function SetupHitFX(inst, x, y, z, facing, phase, scale)
+    inst.Transform:SetPosition(x, y, z)
+    inst.Transform:SetRotation(facing)
+    inst._scale:set(math.clamp(math.floor((scale or 1) * 50 + 0.5), 1, 255))
+    inst._phase:set(MOON_PHASE_ID[phase] or 1)
+    if not TheNet:IsDedicated() then
+        QueueHitFX(inst)
+    end
+end
+
+local function hit_fn()
+    local inst = CreateEntity()
+    inst.entity:AddTransform()
+    inst.entity:AddNetwork()
+    inst:AddTag("FX")
+    inst:AddTag("NOCLICK")
+    inst._scale = net_byte(inst.GUID, "wili_eclipse_hit_fx.scale")
+    -- Zero until position, rotation and scale have been set.
+    inst._phase = net_smallbyte(inst.GUID, "wili_eclipse_hit_fx.phase", "wilieclipsehitready")
+    inst.entity:SetPristine()
+
+    if not TheWorld.ismastersim then
+        inst:ListenForEvent("wilieclipsehitready", QueueHitFX)
+        QueueHitFX(inst)
+        return inst
+    end
+
+    inst.persists = false
+    inst.Setup = SetupHitFX
+    inst:DoTaskInTime(1, inst.Remove)
+    return inst
+end
+
+return Prefab("common/inventory/scimitar", fn, assets, { EDGE_FX, HIT_FX }),
+       Prefab(EDGE_FX, edge_fn, edge_assets),
+       Prefab(HIT_FX, hit_fn, hit_assets)

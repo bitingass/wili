@@ -13,10 +13,13 @@ Assets = {Asset("ANIM", "anim/wili_scimitar_attack.zip"), Asset("ANIM", "anim/wi
 
           Asset("IMAGE", "images/avatars/self_inspect_wili.tex"),
           Asset("ATLAS", "images/avatars/self_inspect_wili.xml"), Asset("IMAGE", "images/inventoryimages/scimitar.tex"),
-          Asset("ATLAS", "images/inventoryimages/scimitar.xml") -- Asset( "IMAGE", "images/names_wili.tex" ),
--- Asset( "ATLAS", "images/names_wili.xml" ),
--- Asset( "IMAGE", "images/names_gold_wili.tex" ),
--- Asset( "ATLAS", "images/names_gold_wili.xml" ),
+          Asset("ATLAS", "images/inventoryimages/scimitar.xml"),
+          Asset("IMAGE", "images/names_wili.tex"),
+          Asset("ATLAS", "images/names_wili.xml"),
+          Asset("IMAGE", "images/names_gold_wili.tex"),
+          Asset("ATLAS", "images/names_gold_wili.xml"),
+          Asset("IMAGE", "images/names_gold_cn_wili.tex"),
+          Asset("ATLAS", "images/names_gold_cn_wili.xml"),
 }
 
 TUNING.CHARACTER_PREFAB_MODCONFIGDATA = {}
@@ -195,11 +198,13 @@ end)
 
 -- prevent making friends
 AddPrefabPostInit("pigman", function(inst)
-    if GLOBAL.TheWorld.ismastersim then
+    if GLOBAL.TheWorld.ismastersim and inst.components.trader ~= nil then
         local oldPigOnGetItemFromPlayer = inst.components.trader.onaccept
         inst.components.trader.onaccept = function(inst, giver, item)
-            if giver.prefab ~= "wili" then
-                oldPigOnGetItemFromPlayer(inst, giver, item)
+            if giver == nil or giver.prefab ~= "wili" then
+                if oldPigOnGetItemFromPlayer ~= nil then
+                    oldPigOnGetItemFromPlayer(inst, giver, item)
+                end
             else
                 if item.components.edible ~= nil then
                     -- meat makes us friends (unless I'm a guard)
@@ -247,11 +252,13 @@ AddPrefabPostInit("pigman", function(inst)
 end)
 
 AddPrefabPostInit("bunnyman", function(inst)
-    if GLOBAL.TheWorld.ismastersim then
+    if GLOBAL.TheWorld.ismastersim and inst.components.trader ~= nil then
         local oldBunnyOnGetItemFromPlayer = inst.components.trader.onaccept
         inst.components.trader.onaccept = function(inst, giver, item)
-            if giver.prefab ~= "wili" then
-                oldBunnyOnGetItemFromPlayer(inst, giver, item)
+            if giver == nil or giver.prefab ~= "wili" then
+                if oldBunnyOnGetItemFromPlayer ~= nil then
+                    oldBunnyOnGetItemFromPlayer(inst, giver, item)
+                end
             else
                 if item.components.edible ~= nil then
                     if (item.prefab == "carrot" or item.prefab == "carrot_cooked") and item.components.inventoryitem ~=
@@ -297,11 +304,13 @@ AddPrefabPostInit("bunnyman", function(inst)
 end)
 
 AddPrefabPostInit("rocky", function(inst)
-    if GLOBAL.TheWorld.ismastersim then
+    if GLOBAL.TheWorld.ismastersim and inst.components.trader ~= nil then
         local oldRockyOnGetItemFromPlayer = inst.components.trader.onaccept
         inst.components.trader.onaccept = function(inst, giver, item)
-            if giver.prefab ~= "wili" then
-                oldRockyOnGetItemFromPlayer(inst, giver, item)
+            if giver == nil or giver.prefab ~= "wili" then
+                if oldRockyOnGetItemFromPlayer ~= nil then
+                    oldRockyOnGetItemFromPlayer(inst, giver, item)
+                end
             else
                 if item.components.edible ~= nil and item.components.edible.foodtype == GLOBAL.FOODTYPE.ELEMENTAL and
                     item.components.inventoryitem ~= nil and ( -- make sure it didn't drop due to pockets full
@@ -318,9 +327,9 @@ AddPrefabPostInit("rocky", function(inst)
                             giver:PushEvent("makefriend")
                             -- giver.components.leader:AddFollower(inst)
                         end
-                        inst.components.follower:AddLoyaltyTime(
-                            (giver:HasTag("polite") and TUNING.ROCKY_LOYALTY + TUNING.ROCKY_POLITENESS_LOYALTY_BONUS) or
-                                TUNING.ROCKY_LOYALTY)
+                        -- inst.components.follower:AddLoyaltyTime(
+                        --     (giver:HasTag("polite") and TUNING.ROCKY_LOYALTY + TUNING.ROCKY_POLITENESS_LOYALTY_BONUS) or
+                        --         TUNING.ROCKY_LOYALTY)
                         inst.sg:GoToState("rocklick")
                     end
                 end
@@ -334,38 +343,41 @@ AddPrefabPostInit("rocky", function(inst)
 
 end)
 
-AddPrefabPostInit("flower", function(inst)
-    if GLOBAL.TheWorld.ismastersim then
-        oldinit_flower = inst.components.pickable.onpickedfn
-        inst.components.pickable.onpickedfn = function(inst, picker)
-            if picker.prefab ~= "wili" then
-                oldinit_flower(inst, picker)
-            else
-                local pos = inst:GetPosition()
-
-                if picker ~= nil then
-                    if picker.components.sanity ~= nil and not picker:HasTag("plantkin") then
-                        -- picker.components.sanity:DoDelta(TUNING.SANITY_TINY)
-                    end
-
-                    if inst.animname == ROSE_NAME and picker.components.combat ~= nil and
-                        not (picker.components.inventory ~= nil and
-                            picker.components.inventory:EquipHasTag("bramble_resistant")) and
-                        not picker:HasTag("shadowminion") then
-                        picker.components.combat:GetAttacked(inst, TUNING.ROSE_DAMAGE)
-                        picker:PushEvent("thorns")
-                    end
-                end
-
-                GLOBAL.TheWorld:PushEvent("plantkilled", {
-                    doer = picker,
-                    pos = pos
-                }) -- this event is pushed in other places too
+-- Suppress only the native flower-picking sanity gain for Wili while keeping
+-- rose thorns, plantkilled events, and any other flower hooks intact.
+local function PreventWiliFlowerSanity(inst)
+    if not GLOBAL.TheWorld.ismastersim or inst.components.pickable == nil then
+        return
+    end
+    local old_onpicked = inst.components.pickable.onpickedfn
+    if old_onpicked == nil then
+        return
+    end
+    inst.components.pickable.onpickedfn = function(flower, picker, ...)
+        if picker == nil or picker.prefab ~= "wili" or picker.components.sanity == nil then
+            return old_onpicked(flower, picker, ...)
+        end
+        local sanity = picker.components.sanity
+        local old_dodelta = sanity.DoDelta
+        local had_override = GLOBAL.rawget(sanity, "DoDelta")
+        local blocked = false
+        sanity.DoDelta = function(self, delta, ...)
+            if not blocked and delta == TUNING.SANITY_TINY then
+                blocked = true
+                return
             end
+            return old_dodelta(self, delta, ...)
+        end
+        local ok, err = GLOBAL.pcall(old_onpicked, flower, picker, ...)
+        sanity.DoDelta = had_override
+        if not ok then
+            GLOBAL.error(err, 0)
         end
     end
+end
 
-end)
+AddPrefabPostInit("flower", PreventWiliFlowerSanity)
+AddPrefabPostInit("flower_rose", PreventWiliFlowerSanity)
 
 -- prevent cx picking up Chester's Eyebone
 local function PreventEyebonePickup(inst)
@@ -399,24 +411,48 @@ end
 -- 在脚本开始时设置一次随机数种子
 math.randomseed(better_random_seed())
 
-local invincibility_rate = GetModConfigData("invincibility_rate") or 0.13
+local invincibility_rate = GetModConfigData("invincibility_rate")
+if invincibility_rate == nil then
+    invincibility_rate = 0.13
+end
+
+local function CancelRevengeTask(inst)
+    if inst._wili_revenge_task ~= nil then
+        inst._wili_revenge_task:Cancel()
+        inst._wili_revenge_task = nil
+    end
+end
 
 local function onAttacked(inst, data)
+    if invincibility_rate <= 0 or not IsLivingWili(inst) or
+        inst._wili_revenge_task ~= nil or inst.components.health:IsInvincible() then
+        return
+    end
     if math.random() < invincibility_rate then
-        inst.components.talker:Say(GLOBAL.GetString(inst, "ANNOUNCE_WILI_REVENGE"))
+        if inst.components.talker ~= nil then
+            inst.components.talker:Say(GLOBAL.GetString(inst, "ANNOUNCE_WILI_REVENGE"))
+        end
         inst.components.health:SetInvincible(true)
-        inst:DoTaskInTime(13, function()
-            inst.components.health:SetInvincible(false)
+        inst._wili_revenge_task = inst:DoTaskInTime(13, function()
+            inst._wili_revenge_task = nil
+            if IsLivingWili(inst) then
+                inst.components.health:SetInvincible(false)
+            end
         end)
-    else
-        inst.components.health:SetInvincible(false)
     end
 end
 
 local function onDamageImmunity(inst)
-    if inst.components.combat then
+    if not GLOBAL.TheWorld.ismastersim then
+        return
+    end
+
+    if inst.components.combat ~= nil then
         inst:ListenForEvent("attacked", onAttacked)
     end
+    inst:ListenForEvent("death", CancelRevengeTask)
+    inst:ListenForEvent("ms_becameghost", CancelRevengeTask)
+    inst:ListenForEvent("onremove", CancelRevengeTask)
 
     local inventory = inst.components.inventory
     if inventory ~= nil then
@@ -448,7 +484,7 @@ STRINGS.NAMES.SCIMITAR = LocalizedText("Silver Moon Scimitar", "银月弯刀", "
 STRINGS.RECIPE_DESC.SCIMITAR = LocalizedText("Forbidden Twins", "禁忌的雙生", "禁忌的雙生")
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.SCIMITAR = STRINGS.CHARACTERS.WILI.DESCRIBE.SCIMITAR
 
-TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.WILI = {"scimitar"}
+TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.WILI = {"scimitar", "lunar_forge_kit", "shadow_forge_kit"}
 TUNING.STARTING_ITEM_IMAGE_OVERRIDE["scimitar"] = {
     atlas = "images/inventoryimages/scimitar.xml",
     image = "scimitar.tex"

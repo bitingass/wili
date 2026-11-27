@@ -27,14 +27,13 @@ TUNING.WILI_HEALTH = 88
 TUNING.WILI_HUNGER = 132
 TUNING.WILI_SANITY = 176
 
--- Custom starting inventory
-TUNING.GAMEMODE_STARTING_ITEMS.DEFAULT.WILI = {"scimitar", "lunar_forge_kit", "shadow_forge_kit"}
-
-local start_inv = {"scimitar", "lunar_forge_kit", "shadow_forge_kit"}
+-- Custom starting inventory (configured in modmain.lua)
+local start_inv = {}
 for k, v in pairs(TUNING.GAMEMODE_STARTING_ITEMS) do
     start_inv[string.lower(k)] = v.WILI
 end
-local prefabs = {"wili_blink_trail"}
+local prefabs = FlattenTree(start_inv, true)
+table.insert(prefabs, "wili_blink_trail")
 
 local MOONVISION_SOURCE = "wili_moonvision"
 local IDENTITY_COLOURCUBE = "images/colour_cubes/identity_colourcube.tex"
@@ -291,7 +290,7 @@ local ZERO_DISTSQ = ZERO_DISTANCE * ZERO_DISTANCE
 local UPDATE_SPAWNLIGHT_ONEOF_TAGS = {"HASHEATER", "spawnlight"}
 local UPDATE_NOSPAWNLIGHT_MUST_TAGS = {"HASHEATER"}
 
-function OnUpdate(self, dt, applyhealthdelta)
+local function OnTemperatureUpdate(self, dt, applyhealthdelta)
     self.externalheaterpower = 0
     self.delta = 0
     self.rate = 0
@@ -530,7 +529,7 @@ local master_postinit = function(inst)
     -- hurtrate
     inst.components.temperature.hurtrate = 0.25
 
-    inst.components.temperature.OnUpdate = OnUpdate
+    inst.components.temperature.OnUpdate = OnTemperatureUpdate
 
     -- Reduced sanity drain
     inst.components.sanity.night_drain_mult = 0.1
