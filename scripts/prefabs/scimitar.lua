@@ -188,6 +188,7 @@ local gem_gen_rate = TUNING.CHARACTER_PREFAB_MODCONFIGDATA["gemGenRate"]
 local GEM_DROP_CHANCE = 1 + (-1.0) * gem_gen_rate -- x%
 local GEM_OFFSET_RADIUS = 2
 local GEM_OFFSET_ATTEMPTS = 3
+local GEM_DROP_SOUND = "aqol/new_test/gem"
 
 local function onattack(inst, owner, target)
     if not BlinkOnHit(inst, owner, target) then
@@ -202,7 +203,12 @@ local function onattack(inst, owner, target)
         if st_pt then
             st_pt = st_pt + pt
             local st = SpawnPrefab(gem_to_spawn)
-            st.Transform:SetPosition(st_pt.x, st_pt.y, st_pt.z)
+            if st ~= nil then
+                st.Transform:SetPosition(st_pt.x, st_pt.y, st_pt.z)
+                if st.SoundEmitter ~= nil then
+                    st.SoundEmitter:PlaySound(PICKUPSOUNDS ~= nil and PICKUPSOUNDS[st.pickupsound or "gem"] or GEM_DROP_SOUND)
+                end
+            end
         end
     end
 end
