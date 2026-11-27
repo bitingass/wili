@@ -84,6 +84,21 @@
       "target": "images/inventoryimages/scimitar.tex",
       "source": "ui/images/inventoryimages/scimitar.png",
       "format": "bc3"
+    },
+    {
+      "target": "images/names_wili.tex",
+      "source": "ui/images/names_wili.png",
+      "format": "bc3"
+    },
+    {
+      "target": "images/names_gold_wili.tex",
+      "source": "ui/images/names_gold_wili.png",
+      "format": "bc3"
+    },
+    {
+      "target": "images/names_gold_cn_wili.tex",
+      "source": "ui/images/names_gold_cn_wili.png",
+      "format": "bc3"
     }
   ],
   "notes": "Release 1.2.4 character, UI and attack choreography with approved body/held-arm proportions and frontal head alignment; Eclipse Shiv lunar visuals and impact effects for final 1.2.5.",

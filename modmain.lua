@@ -13,10 +13,13 @@ Assets = {Asset("ANIM", "anim/wili_scimitar_attack.zip"), Asset("ANIM", "anim/wi
 
           Asset("IMAGE", "images/avatars/self_inspect_wili.tex"),
           Asset("ATLAS", "images/avatars/self_inspect_wili.xml"), Asset("IMAGE", "images/inventoryimages/scimitar.tex"),
-          Asset("ATLAS", "images/inventoryimages/scimitar.xml") -- Asset( "IMAGE", "images/names_wili.tex" ),
--- Asset( "ATLAS", "images/names_wili.xml" ),
--- Asset( "IMAGE", "images/names_gold_wili.tex" ),
--- Asset( "ATLAS", "images/names_gold_wili.xml" ),
+          Asset("ATLAS", "images/inventoryimages/scimitar.xml"),
+          Asset("IMAGE", "images/names_wili.tex"),
+          Asset("ATLAS", "images/names_wili.xml"),
+          Asset("IMAGE", "images/names_gold_wili.tex"),
+          Asset("ATLAS", "images/names_gold_wili.xml"),
+          Asset("IMAGE", "images/names_gold_cn_wili.tex"),
+          Asset("ATLAS", "images/names_gold_cn_wili.xml"),
 }
 
 TUNING.CHARACTER_PREFAB_MODCONFIGDATA = {}
