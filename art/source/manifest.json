@@ -1,6 +1,6 @@
 {
-  "revision": "1.2.6",
-  "game_test_confirmed_by_user": null,
+  "revision": "1.2.7",
+  "game_test_confirmed_by_user": "2026-11-27",
   "animation_builds": [
     {
       "archive": "anim/wili.zip",
