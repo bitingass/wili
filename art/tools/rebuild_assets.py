@@ -7,6 +7,7 @@ import zipfile
 import dst_art_pipeline as codec
 from build_blink_afterimage import build_archive as build_blink_afterimage
 from build_eclipse_shiv import build_archive as build_eclipse_shiv
+from build_eclipse_hit_fx import build_archive as build_eclipse_hit_fx
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / 'art/source'
@@ -59,6 +60,12 @@ def main():
     if args.verify_runtime:
         assert (output / shiv).read_bytes() == (ROOT / shiv).read_bytes(), shiv
     checked.append(shiv)
+    if 'eclipse_hit_fx' in manifest:
+        hit_fx = manifest['eclipse_hit_fx']['archive']
+        build_eclipse_hit_fx(output / hit_fx)
+        if args.verify_runtime:
+            assert (output / hit_fx).read_bytes() == (ROOT / hit_fx).read_bytes(), hit_fx
+        checked.append(hit_fx)
     if 'body_fit' in manifest:
         from build_wili_body_fit import build as build_body_fit
         body_record=manifest['body_fit']

@@ -123,7 +123,7 @@
     "ground_scale_adjustment": 1.15,
     "extra_outline_radius": 1.2,
     "base_release": "1.2.4",
-    "hit_fx": "hitsparks_fx (native lunar/shadow impact)",
+    "hit_fx": "wili_eclipse_hit_fx (8-phase Style-A arc blade-current slash + artist-cut shards)",
     "particle_enhancement": {
       "shard_counts": [
         4,
@@ -166,6 +166,19 @@
     "archive": "anim/wili_eclipse_shiv.zip",
     "builder": "art/tools/build_eclipse_shiv.py",
     "runtime_sha256": "6e7fa95e604c1939a299754cb0a09831bc03ddb562787392eb730c0b79fd9208"
+  },
+  "eclipse_hit_fx": {
+    "archive": "anim/wili_eclipse_hit_fx.zip",
+    "builder": "art/tools/build_eclipse_hit_fx.py",
+    "runtime_sha256": "4061e58eb0821fdabcc13d04d284ebe6d0cd7106ff1340880c47bbf305acede1",
+    "style": "arc_blade_current",
+    "phases": 8,
+    "fps": 30,
+    "frames_per_phase": 12,
+    "single_atlas": [
+      2048,
+      1024
+    ]
   },
   "body_fit": {
     "archive": "anim/wili_body_fit.zip",
