@@ -2,6 +2,7 @@
 
 The body is 1.10x; head artwork and held objects retain their dimensions.
 Normal held idle/running closes the elbow five degrees and shortens its forearm 6%.
+Worn hats (swap_hat frames 0-2) are seated +22 local-Y units lower to match Wili's head proportions.
 """
 from pathlib import Path
 from zipfile import ZipFile,ZIP_DEFLATED
@@ -17,6 +18,7 @@ BODY_SCALE=1.10
 CARRY_ANGLE=5.
 CARRY_FOREARM_SCALE=.94
 FRONT_HEAD_OFFSET=-3.5
+HAT_LOCAL_Y_OFFSET=22.
 REST_CLIPS={'idle_loop','run_pre','run_loop','run_pst'}
 HEAD={'headbase','headbase_hat','face','cheeks','hair','hair_hat','hairfront','hairpigtails',
       'beard','beard_skin','swap_hat','swap_face','swap_hat_helmet','swap_hat_top'}
@@ -76,6 +78,13 @@ def head_symbol(name):
     return name in HEAD or name.startswith(('swap_hat_','swap_face_','beard_','hair_'))
 
 
+def hat_offset(element,symbol_name,offset=HAT_LOCAL_Y_OFFSET):
+    """Seat worn hats lower onto Wili's head without shifting ground bush-hat hides."""
+    if symbol_name=='swap_hat' and element['frame'] in (0,1,2):
+        return basis(element)@np.array((0.,offset))
+    return np.zeros(2)
+
+
 def head_anchors(frames,names):
     # A few native disappearance/jump cels omit headbase while retaining a
     # face, hair or hat cel. Continue the same head-root translation through
@@ -115,7 +124,11 @@ def transform(frame,names,anchor,close_elbow=False,head_anchor=None,head_offset=
     for e in elements:
         b,p=basis(e),xy(e)
         if head_symbol(symbol(e)):
-            store(e,b,p+head_delta)
+            # Quantize head-group translation to float32 before adding hat_offset so
+            # patching an existing wili_body_fit.zip stays bit-for-bit identical to
+            # a full rebuild from native DST sources.
+            p_head=np.asarray(p+head_delta,dtype=np.float32).astype(float)
+            store(e,b,p_head+hat_offset(e,symbol(e)))
         elif symbol(e)=='swap_object' or layer(e)=='lantern_overlay':
             grip=np.array((0.,3. if e['frame']>=5 else 0.))
             store(e,b,anchor+BODY_SCALE*(p+b@grip-anchor)-b@grip)
@@ -209,13 +222,56 @@ def build(out):
     manifest={'bank':BANK,'body_factor':BODY_SCALE,'head_size_factor':1.,'weapon_size_factor':1.,
               'held_elbow_degrees':CARRY_ANGLE,'held_forearm_scale':CARRY_FOREARM_SCALE,
               'frontal_head_local_x_offset':FRONT_HEAD_OFFSET,
+              'hat_local_y_offset':HAT_LOCAL_Y_OFFSET,
               'elbow_clips':sorted(REST_CLIPS),'ground_planes':planes,
               'clips':num_anims,'frames':num_frames,'elements':num_elements,'catalog':catalog,'sources':sources}
     (out/'build-report.json').write_text(json.dumps(manifest,indent=2),encoding='utf8')
     print(BANK,num_anims,'clips',num_frames,'frames',len(payload),'bytes',flush=True)
 
 
+def patch_hat_offset(source_zip,out_zip,offset=HAT_LOCAL_Y_OFFSET):
+    """Apply worn swap_hat local-Y offset directly to an existing wili_body_fit.zip."""
+    source_zip=Path(source_zip);out_zip=Path(out_zip)
+    with ZipFile(source_zip) as z:raw=z.read('anim.bin')
+    bank=rig.parse_anim(raw)
+    names=bank['names']
+    patched=0;skipped_ground=0
+    for clip in bank['anims']:
+        for frame in clip['frames']:
+            for e in frame['elements']:
+                sym=names[e['symbol']].lower()
+                if sym!='swap_hat':continue
+                if e['frame'] in (0,1,2):
+                    store(e,basis(e),xy(e)+hat_offset(e,sym,offset))
+                    patched+=1
+                else:
+                    skipped_ground+=1
+    payload=serialize(bank['anims'],names)
+    out_zip.parent.mkdir(parents=True,exist_ok=True)
+    tmp=out_zip.with_suffix(out_zip.suffix+'.tmp')
+    with ZipFile(tmp,'w',ZIP_DEFLATED) as z:z.writestr('anim.bin',payload)
+    tmp.replace(out_zip)
+    return {
+        'clips':len(bank['anims']),
+        'frames':sum(len(c['frames']) for c in bank['anims']),
+        'patched_swap_hat':patched,
+        'skipped_non_worn_swap_hat':skipped_ground,
+        'anim_bin_bytes':len(payload),
+        'anim_bin_sha256':hashlib.sha256(payload).hexdigest(),
+        'zip_sha256':hashlib.sha256(out_zip.read_bytes()).hexdigest(),
+    }
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out',type=Path,default=ROOT/'art/.work/body-scale-fit/build')
-    build(parser.parse_args().out)
+    parser.add_argument('--patch-hat-from',type=Path,default=None,
+                        help='Patch an existing wili_body_fit.zip with --hat-offset instead of rebuilding from DST.')
+    parser.add_argument('--hat-offset',type=float,default=HAT_LOCAL_Y_OFFSET)
+    args=parser.parse_args()
+    if args.patch_hat_from is not None:
+        target=args.out if args.out.suffix=='.zip' else args.out/(BANK+'.zip')
+        report=patch_hat_offset(args.patch_hat_from,target,args.hat_offset)
+        print(json.dumps(report,indent=2),flush=True)
+    else:
+        build(args.out)
