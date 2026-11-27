@@ -1,6 +1,6 @@
 # 饥荒联机版角色 Mod：月影刺客 · 葳丽（Wili）
 
-> 当前版本：**1.2.7** ｜ 兼容《饥荒联机版》（Don't Starve Together）
+> 当前版本：**1.2.8** ｜ 兼容《饥荒联机版》（Don't Starve Together）
 
 ---
 
@@ -100,6 +100,10 @@ Wili came from an all-female assassin alliance and was sent to the Constant afte
 ---
 
 ## 更新日志（Changelog）
+
+### 1.2.8 正式版（2026-11-27）
+
+- **戴帽覆盖位置优化**：调整角色动画库 `anim/wili_body_fit.zip` 中全部 1,782 个动画片段、40,300 个戴帽挂点帧（`swap_hat` 帧 0/1/2），沿头部局部 Y 轴统一下移 `22` 世界单位，使游戏内所有帽子自然贴合前额与眉眼上方，与官方角色覆盖深度保持一致；同时完整保留人物不戴帽头身比例、旋转/躺卧/跑步/攻击姿态跟随，以及灌木帽躲藏状态（`hide_idle`）接地位置。
 
 ### 1.2.7 正式版（2026-11-27）
 

@@ -223,5 +223,6 @@
   },
   "source_commit_for_attack": "25c199847f9d529ceb0f41bff1f4658ea7b1dd48",
   "held_forearm_scale": 0.94,
-  "frontal_head_local_x_offset": -3.5
+  "frontal_head_local_x_offset": -3.5,
+  "hat_local_y_offset": 22.0
 }
