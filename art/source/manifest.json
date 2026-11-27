@@ -155,10 +155,10 @@
       "additional_symbol_bloom": false,
       "single_atlas": [
         4096,
-        4096
+        2048
       ]
     },
-    "visual_polish": "Plan 1 DST jet-black 2.15px outer ink + reinforced interior ink + cool lunar crystal/indigo spine contrast + 8-phase spherical lunar Phase Eye with 1.2s animated breathing pulse"
+    "visual_polish": "Plan 1 DST jet-black 2.15px outer ink + reinforced interior ink + cool lunar crystal/indigo spine contrast + living 8-phase spherical lunar Phase Eye (5 gaze poses + 2 blink poses, held & ground)"
   },
   "previous_weapon_in_game_feedback": {
     "date": "2026-10-24",
@@ -181,7 +181,7 @@
   "eclipse_shiv": {
     "archive": "anim/wili_eclipse_shiv.zip",
     "builder": "art/tools/build_eclipse_shiv.py",
-    "runtime_sha256": "1415ec07faa4760dd7d2fcfadf1e17bdedd738c9a7a9f8c36c5b7be301ab27a1"
+    "runtime_sha256": "3f05712ed5b3849d140b8cd6d8b4b03073ca4b3d9dffae3df70b869dcb721ea4"
   },
   "eclipse_hit_fx": {
     "archive": "anim/wili_eclipse_hit_fx.zip",
@@ -208,5 +208,18 @@
     "carry_forearm_scale": 0.94,
     "frontal_head_local_x_offset": -3.5
   },
-  "release_date": "2026-11-27"
+  "release_date": "2026-11-27",
+  "eye_anim": {
+    "archive": "anim/wili_eye_anim.zip",
+    "builder": "art/tools/build_wili_eye_anim.py",
+    "source": "anim/wili/eye_anim",
+    "runtime_sha256": "58910d8520ca3e1367274aaaa2d90b393b353c67bf58544143e941c55778690d",
+    "symbols": 8,
+    "gaze_steps": 5,
+    "blink_stages": 3,
+    "single_atlas": [
+      2048,
+      1024
+    ]
+  }
 }

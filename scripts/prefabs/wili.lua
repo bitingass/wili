@@ -1,6 +1,7 @@
 local MakePlayerCharacter = require "prefabs/player_common"
 local BlinkOnHit = require "wili_blink"
 local BodyFit = require "wili_body_fit"
+local EyeAnim = require "wili_eye_anim"
 
 local WILI_SPEED_MULTIPLIER = 2.25
 
@@ -20,7 +21,7 @@ local oneshot_weapons = {
 
 local assets = {Asset("SCRIPT", "scripts/prefabs/player_common.lua"), Asset("SOUNDPACKAGE", "sound/wili.fev"),
                 Asset("SOUND", "sound/wili_bank00.fsb"), Asset("ANIM", "anim/wili.zip"),
-                Asset("ANIM", "anim/ghost_wili_build.zip")}
+                Asset("ANIM", "anim/ghost_wili_build.zip"), Asset("ANIM", "anim/wili_eye_anim.zip")}
 
 -- Your character's stats
 TUNING.WILI_HEALTH = 88
@@ -103,6 +104,7 @@ end
 -- This initializes for both the server and client. Tags can be added here.
 local common_postinit = function(inst)
     BodyFit.common_init(inst)
+    EyeAnim.install(inst)
     -- Minimap icon
     inst.MiniMapEntity:SetIcon("wili.tex")
     inst:AddTag("wili_builder")

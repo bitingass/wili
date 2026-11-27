@@ -63,14 +63,145 @@ local function spawn_hit_fx(inst, owner, data)
     fx:Setup(tx, ty + y_offset, tz, facing, inst._moon, scale)
 end
 
-local function play_edge(fx, slot, phase)
+local EYE_GAZE_POSES = { "up", "down", "left", "right", "center" }
+
+local function eye_light_for(phase, pose)
+    local base = moonlight[phase] or 0.03
+    local glow = glint_light[phase] or base
+    if pose == "closed" then
+        return base
+    elseif pose == "half_blink" then
+        return (base + glow) * 0.5
+    end
+    return glow
+end
+
+local function apply_eye_to_fx(fx, phase, pose)
+    if fx == nil or not fx:IsValid() then return end
+    fx.AnimState:OverrideSymbol("shiv_eye", BANK, "shiv_eye_" .. phase .. "_" .. pose)
+    fx.AnimState:SetSymbolLightOverride("shiv_eye", eye_light_for(phase, pose))
+end
+
+local function apply_eye_pose(inst, pose)
+    local phase = inst._moon or "new"
+    pose = pose or inst._eye_gaze or "center"
+    inst._eye_pose = pose
+    inst.AnimState:OverrideSymbol("shiv_ground_eye", BANK, "shiv_ground_eye_" .. phase .. "_" .. pose)
+    inst.AnimState:SetSymbolLightOverride("shiv_ground_eye", eye_light_for(phase, pose))
+    if inst._edges ~= nil then
+        for _, fx in ipairs(inst._edges) do
+            apply_eye_to_fx(fx, phase, pose)
+        end
+    end
+end
+
+local function cancel_eye_blink_steps(inst)
+    if inst._eye_blink_steps ~= nil then
+        for _, task in ipairs(inst._eye_blink_steps) do
+            task:Cancel()
+        end
+        inst._eye_blink_steps = nil
+    end
+    inst._eye_blinking = false
+end
+
+local function stop_eye_ai(inst)
+    cancel_eye_blink_steps(inst)
+    if inst._eye_gaze_task ~= nil then
+        inst._eye_gaze_task:Cancel()
+        inst._eye_gaze_task = nil
+    end
+    if inst._eye_blink_task ~= nil then
+        inst._eye_blink_task:Cancel()
+        inst._eye_blink_task = nil
+    end
+end
+
+local function pick_next_eye_gaze(current)
+    -- Prefer active directional glances (up/down/left/right) and avoid repeating the same pose back-to-back.
+    local choices = {}
+    for _, p in ipairs(EYE_GAZE_POSES) do
+        if p ~= current then
+            table.insert(choices, p)
+            if p ~= "center" then
+                table.insert(choices, p)
+            end
+        end
+    end
+    return choices[math.random(#choices)] or "center"
+end
+
+local schedule_eye_gaze
+local schedule_eye_blink
+
+schedule_eye_gaze = function(inst)
+    if inst._eye_gaze_task ~= nil then
+        inst._eye_gaze_task:Cancel()
+    end
+    inst._eye_gaze_task = inst:DoTaskInTime(1.5 + math.random() * 2.1, function()
+        inst._eye_gaze_task = nil
+        if not inst:IsValid() then return end
+        local next_gaze = pick_next_eye_gaze(inst._eye_gaze)
+        inst._eye_gaze = next_gaze
+        if not inst._eye_blinking then
+            apply_eye_pose(inst, next_gaze)
+        end
+        schedule_eye_gaze(inst)
+    end)
+end
+
+schedule_eye_blink = function(inst)
+    if inst._eye_blink_task ~= nil then
+        inst._eye_blink_task:Cancel()
+    end
+    -- Occasional unhurried blink every 5.5 - 11.0 seconds.
+    inst._eye_blink_task = inst:DoTaskInTime(5.5 + math.random() * 5.5, function()
+        inst._eye_blink_task = nil
+        if not inst:IsValid() then return end
+        cancel_eye_blink_steps(inst)
+        inst._eye_blinking = true
+        apply_eye_pose(inst, "half_blink")
+        local steps = {}
+        inst._eye_blink_steps = steps
+        steps[1] = inst:DoTaskInTime(0.045, function()
+            if not inst:IsValid() or not inst._eye_blinking then return end
+            apply_eye_pose(inst, "closed")
+        end)
+        steps[2] = inst:DoTaskInTime(0.165, function()
+            if not inst:IsValid() or not inst._eye_blinking then return end
+            apply_eye_pose(inst, "half_blink")
+        end)
+        steps[3] = inst:DoTaskInTime(0.210, function()
+            inst._eye_blink_steps = nil
+            inst._eye_blinking = false
+            if not inst:IsValid() then return end
+            if math.random() < 0.5 then
+                inst._eye_gaze = pick_next_eye_gaze(inst._eye_gaze)
+            end
+            apply_eye_pose(inst, inst._eye_gaze or "center")
+            schedule_eye_blink(inst)
+        end)
+    end)
+end
+
+local function start_eye_ai(inst)
+    if not inst:IsValid() then return end
+    stop_eye_ai(inst)
+    inst._eye_gaze = inst._eye_gaze or "center"
+    apply_eye_pose(inst, inst._eye_gaze)
+    schedule_eye_gaze(inst)
+    schedule_eye_blink(inst)
+end
+
+local function play_edge(fx, slot, phase, eye_pose)
     fx.AnimState:SetSymbolLightOverride("shiv_glint_" .. phase, glint_light[phase] or moonlight[phase])
     fx.AnimState:PlayAnimation(slot.clip .. phase, true)
+    apply_eye_to_fx(fx, phase, eye_pose or "center")
 end
 
 local function show_weapon(owner, phase)
     -- The ring, wrapped grip, guard, eye and point are one owner-drawn sprite.
-    -- The two native follower slots carry only changing light and loose crystals.
+    -- The two native follower slots carry changing light, loose crystals and the living Phase Eye.
     owner.AnimState:OverrideSymbol("swap_object", BANK, "shiv_weapon_" .. phase)
     owner.AnimState:SetSymbolLightOverride("swap_object", moonlight[phase])
 end
@@ -92,9 +223,10 @@ local function update_moon(inst)
     end
     if inst._edges ~= nil then
         for i, fx in ipairs(inst._edges) do
-            play_edge(fx, held_frames[i], phase)
+            play_edge(fx, held_frames[i], phase, inst._eye_pose)
         end
     end
+    apply_eye_pose(inst, inst._eye_pose or inst._eye_gaze or "center")
 end
 
 local function clear_followers(inst)
@@ -150,7 +282,7 @@ local function attach_edges(inst, owner)
         if owner.components.colouradder ~= nil then
             owner.components.colouradder:AttachChild(fx)
         end
-        play_edge(fx, slot, inst._moon)
+        play_edge(fx, slot, inst._moon, inst._eye_pose)
     end
 end
 
@@ -170,12 +302,14 @@ local function onequip(inst, owner)
     end
 
     attach_edges(inst, owner)
+    start_eye_ai(inst)
     owner.AnimState:Show("ARM_carry")
     owner.AnimState:Hide("ARM_normal")
 end
 
 local function onunequip(inst, owner)
     remove_edges(inst)
+    stop_eye_ai(inst)
     owner.AnimState:Hide("ARM_carry")
     owner.AnimState:Show("ARM_normal")
 end
@@ -257,11 +391,38 @@ local function fn()
     inst._wax_key = cave and "iscavewaxingmoon" or "iswaxingmoon"
     inst:WatchWorldState(inst._moon_key, update_moon)
     inst:WatchWorldState(inst._wax_key, update_moon)
-    inst._on_edge_owner_removed = function() remove_edges(inst) end
+    inst._on_edge_owner_removed = function()
+        remove_edges(inst)
+        if inst.components.inventoryitem == nil or inst.components.inventoryitem:IsHeld() then
+            stop_eye_ai(inst)
+        end
+    end
     inst._on_owner_hit = function(owner, data) spawn_hit_fx(inst, owner, data) end
     update_moon(inst)
-    inst:ListenForEvent("ondropped", remove_edges)
-    inst:ListenForEvent("onremove", remove_edges)
+    start_eye_ai(inst)
+    inst:ListenForEvent("onputininventory", function()
+        if inst._edge_owner == nil then
+            stop_eye_ai(inst)
+        end
+    end)
+    inst:ListenForEvent("ondropped", function()
+        remove_edges(inst)
+        start_eye_ai(inst)
+    end)
+    inst:ListenForEvent("onremove", function()
+        stop_eye_ai(inst)
+        remove_edges(inst)
+    end)
+    inst.OnEntitySleep = function(ent)
+        if ent._edge_owner == nil then
+            stop_eye_ai(ent)
+        end
+    end
+    inst.OnEntityWake = function(ent)
+        if ent._edge_owner ~= nil or (ent.components.inventoryitem ~= nil and not ent.components.inventoryitem:IsHeld()) then
+            start_eye_ai(ent)
+        end
+    end
     return inst
 end
 

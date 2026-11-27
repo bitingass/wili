@@ -242,6 +242,8 @@ def build_assets():
                       ground_origin,ground_unit,name+"_cut")
 
     count=eclipse_looks.FRAMES
+    eye_default_held = None
+    eye_default_ground = None
     for phase in eclipse_looks.PHASES:
         surface = project_cel(eclipse_looks.surface(phase))
         weapon_name = "shiv_weapon_" + phase
@@ -251,6 +253,26 @@ def build_assets():
                              for idx,origin in zip((0,5),hand_origins)])
         ground_weapon = planted(weapon_name,0,weapon_rect)
         ground_weapon_key = symbol("shiv_planted_"+phase,[ground_weapon])
+
+        # Living Phase Eye layer: 7 gaze/blink poses per moon phase (shared tiny ~40x48 atlas tiles!)
+        eye_center_held_fr = None
+        eye_center_ground_fr = None
+        for pose in eclipse_looks.EYE_POSES:
+            ep_tile_name = f"eye_{phase}_{pose}"
+            ep_cel = project_cel(eclipse_looks.eye_patch(phase, pose))
+            ep_rect = tile(ep_tile_name, ep_cel)
+            held_eye_fr = record(0, 1, ep_rect/density, np.zeros(2), held_unit, ep_tile_name)
+            ground_eye_fr = record(0, 1, ep_rect/density, ground_origin, ground_unit, ep_tile_name)
+            symbol(f"shiv_eye_{phase}_{pose}", [held_eye_fr])
+            symbol(f"shiv_ground_eye_{phase}_{pose}", [ground_eye_fr])
+            if pose == "center":
+                eye_center_held_fr = held_eye_fr
+                eye_center_ground_fr = ground_eye_fr
+
+        if eye_default_held is None:
+            eye_default_held = symbol("shiv_eye", [eye_center_held_fr])
+            eye_default_ground = symbol("shiv_ground_eye", [eye_center_ground_fr])
+
         held_frames=[];ground_frames=[]
         for i in range(count):
             key=f"{phase}_{i}"
@@ -262,13 +284,13 @@ def build_assets():
         ground_glint=symbol("shiv_ground_glint_"+phase,ground_frames)
         for group,offset in zip(("a","b"),hand_origins):
             clip("held_"+group+"_"+phase,
-                 [[element(held,n,offset)] for n in range(count)],
-                 [bbox(fr,offset) for fr in held_frames])
+                 [[element(eye_default_held,0,offset,-5.2), element(held,n,offset,-5.0)] for n in range(count)],
+                 [bbox(fr,offset) for fr in held_frames] + [bbox(eye_center_held_fr,offset)])
         prop_shift=(.45,.10); grass_shift=(0,-2.15)
         clip("ground_"+phase,
-             [[element(grass_key,0,grass_shift,-6),element(ground_glint,n,prop_shift,-5.1),
-               element(ground_weapon_key,0,prop_shift)] for n in range(count)],
-             [bbox(fr,prop_shift) for fr in ground_frames]+[bbox(ground_weapon,prop_shift),bbox(grass_frame,grass_shift)])
+             [[element(grass_key,0,grass_shift,-6), element(eye_default_ground,0,prop_shift,-5.2),
+               element(ground_glint,n,prop_shift,-5.1), element(ground_weapon_key,0,prop_shift)] for n in range(count)],
+             [bbox(fr,prop_shift) for fr in ground_frames] + [bbox(eye_center_ground_fr,prop_shift), bbox(ground_weapon,prop_shift), bbox(grass_frame,grass_shift)])
 
     # The game's ordinary two-atlas shader maps every z>=.5 to sampler 1.
     # Use one atlas so neither normal nor bloom paths can sample another cel.
