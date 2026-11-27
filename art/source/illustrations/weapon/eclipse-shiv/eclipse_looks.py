@@ -169,15 +169,163 @@ def registered_paint():
         result.append(np.uint8(np.rint(np.clip(crystal,0,255))))
     return result
 
+@lru_cache(maxsize=1)
+def _master_structural_ink():
+    """Extract only true hand-drawn black structural ink from master.png so spine/handle fills stay rich."""
+    m_arr = np.asarray(master(), dtype=np.float32)
+    m_alpha = m_arr[:, :, 3] / 255.0
+    m_lum = m_arr[:, :, :3] @ np.array((0.253, 0.60, 0.147), dtype=np.float32)
+    lum_filled = np.where(m_alpha > 0.35, m_lum, 210.0)
+    lf_u8 = Image.fromarray(np.uint8(np.clip(lum_filled, 0, 255)))
+    closed = np.asarray(lf_u8.filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.MinFilter(5)), dtype=np.float32)
+    valley = np.clip((closed - lum_filled - 18.0) / 36.0, 0.0, 1.0) * np.clip((118.0 - lum_filled) / 55.0, 0.0, 1.0)
+    deep_ink = np.clip((34.0 - m_lum) / 22.0, 0.0, 1.0)
+    ink_core = np.maximum(deep_ink, valley * 0.85) * np.clip((m_alpha - 0.35) / 0.4, 0.0, 1.0)
+    ink_dil = Image.fromarray(np.uint8(np.clip(ink_core * 255, 0, 255))).filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.GaussianBlur(0.6))
+    return (np.asarray(ink_dil, dtype=np.float32) / 255.0) * np.clip((m_alpha - 0.30) / 0.4, 0.0, 1.0)
+
+@lru_cache(maxsize=8)
+def _phase_eye_fields(j):
+    """3D spherical lunar-phase fields aligned to the almond Phase Eye on the METAL patch."""
+    _, m_lum, mask, _, _, eye_m, _, _, _, x, y = geometry()
+    # Measured almond eye axis: grip corner (264,650) -> tip corner (367,584), iris center (313.5, 616.0)
+    cx, cy, r_iris = 313.5, 616.0, 21.5
+    ux, uy = 0.842, -0.540
+    vx, vy = 0.540, 0.842
+    dx, dy = x - cx, y - cy
+    eu = (dx * ux + dy * uy) / r_iris
+    ev = (dx * vx + dy * vy) / r_iris
+    r2 = eu * eu + ev * ev
+    r = np.sqrt(np.maximum(r2, 1e-8))
+    nz = np.sqrt(np.maximum(0.0, 1.0 - r2))
+
+    # Open interior of the almond eye (preserves the drawn black eyelid rim cleanly)
+    eye_open = eye_m * ease((m_lum - 52.0) / 42.0) * mask
+    iris_disc = ease((1.03 - r) / 0.14) * eye_open
+    iris_rim_dark = np.exp(-((r - 1.03) / 0.10) ** 2) * eye_open
+
+    # Exact 8-phase lunar illumination across the spherical iris (+eu = blade-tip waxing side)
+    phi = math.tau * j / 8.0
+    ndotl = eu * math.sin(phi) - nz * math.cos(phi)
+    lit_moon = ease((ndotl + 0.13) / 0.26) * iris_disc
+    dark_moon = (1.0 - ease((ndotl + 0.13) / 0.26)) * iris_disc
+
+    # Eclipse corona ring (most vivid on New Moon; crisp subtle highlight on crescent/half phases)
+    eclipse_rim = np.exp(-((r - 0.88) / 0.17) ** 2) * iris_disc
+    # Specular catchlight positioned on the lit hemisphere (or upper rim at New Moon)
+    if j == 0:
+        cu, cv = 0.55, -0.45
+    elif j == 4:
+        cu, cv = 0.12, -0.18
+    elif j < 4:
+        cu, cv = 0.48, -0.26
+    else:
+        cu, cv = -0.48, -0.26
+    catch_spot = np.exp(-(((eu - cu) / 0.30) ** 2 + ((ev - cv) / 0.30) ** 2)) * iris_disc
+    return (
+        np.float32(eye_open),
+        np.float32(iris_disc),
+        np.float32(iris_rim_dark),
+        np.float32(lit_moon),
+        np.float32(dark_moon),
+        np.float32(eclipse_rim),
+        np.float32(catch_spot),
+        np.float32(nz * iris_disc),
+    )
+
+# Per-phase Phase Eye palettes: (sclera, dark_shadow_iris, lit_moon_iris, corona_or_glow)
+EYE_PALETTES = (
+    ((102, 92, 134), (20, 14, 34), (168, 138, 224), (186, 144, 248)),   # new: eclipsed dark violet + corona
+    ((148, 168, 176), (26, 22, 42), (228, 250, 238), (190, 244, 224)),  # waxing_quarter: slender mint crescent
+    ((184, 218, 206), (30, 26, 48), (242, 255, 244), (204, 252, 234)),  # waxing_half: glowing half-moon
+    ((212, 238, 220), (36, 32, 54), (248, 255, 238), (222, 255, 236)),  # waxing_threequarter: waxing gibbous
+    ((234, 248, 224), (48, 44, 62), (255, 255, 236), (236, 255, 230)),  # full: blazing full-moon orb
+    ((200, 224, 218), (34, 30, 52), (234, 248, 246), (196, 238, 244)),  # waning_threequarter: waning gibbous
+    ((166, 188, 198), (28, 24, 46), (218, 242, 246), (176, 226, 242)),  # waning_half: mirror waning half-moon
+    ((130, 136, 166), (22, 18, 40), (196, 214, 238), (168, 182, 234)),  # waning_quarter: fading crescent
+)
+
+def _paint_phase_eye(metal_rgb, j, m_metal_lum):
+    """Render the exact 8-phase lunar iris & sclera onto the METAL patch."""
+    eye_open, iris_disc, iris_rim_dark, lit_moon, dark_moon, eclipse_rim, catch_spot, nz = _phase_eye_fields(j)
+    sclera_c, shadow_c, moon_c, corona_c = [np.array(c, dtype=np.float32) for c in EYE_PALETTES[j]]
+    # Subtle sclera shading from master drawing luminance
+    eye_rgb = sclera_c + (m_metal_lum - 186.0)[..., None] * (0.28 if j == 0 else 0.42)
+    # Paint dark eclipsed portion and lit lunar portion inside the iris disc
+    if j == 0:
+        # New moon: deep dark obsidian-violet eclipse orb with luminous twilight-violet corona ring
+        iris_rgb = shadow_c + (corona_c - shadow_c) * np.clip(eclipse_rim * 0.85, 0.0, 1.0)[..., None]
+        iris_rgb += np.array((28.0, 22.0, 44.0), dtype=np.float32) * (catch_spot * 0.65)[..., None]
+    else:
+        lit_frac = np.clip(lit_moon / np.maximum(iris_disc, 1e-5), 0.0, 1.0)
+        # Subtle spherical dome shading on lit lunar face
+        moon_shaded = moon_c * (0.86 + 0.16 * nz[..., None])
+        iris_rgb = shadow_c * (1.0 - lit_frac[..., None]) + moon_shaded * lit_frac[..., None]
+        # Crisp bright specular glint on lit hemisphere
+        iris_rgb += np.array((36.0, 42.0, 38.0), dtype=np.float32) * (catch_spot * (0.55 + 0.45 * lit_frac))[..., None]
+        # Tiny faint shadow rim on eclipsed side so circular iris stays legible
+        if j != 4:
+            iris_rgb += (corona_c - iris_rgb) * np.clip(eclipse_rim * (1.0 - lit_frac) * 0.22, 0.0, 0.35)[..., None]
+    eye_rgb = eye_rgb + (iris_rgb - eye_rgb) * iris_disc[..., None]
+    # Crisp dark ink separation ring around the iris
+    eye_rgb = eye_rgb * (1.0 - iris_rim_dark[..., None] * 0.72) + np.array((12.0, 12.0, 18.0), dtype=np.float32) * (iris_rim_dark[..., None] * 0.72)
+    return metal_rgb + (np.clip(eye_rgb, 0.0, 255.0) - metal_rgb) * eye_open[..., None]
+
 @lru_cache(maxsize=8)
 def surface(phase_id):
     j=PHASES.index(phase_id); l,r,t=MIX[j]
     views=registered_paint()
-    rgb=views[l] if l==r else np.rint(views[l].astype(np.float32)*(1-t)+views[r]*t).astype(np.uint8)
+    rgb_metal=views[l] if l==r else np.rint(views[l].astype(np.float32)*(1-t)+views[r]*t).astype(np.uint8)
     im=master().copy()
-    patch=np.asarray(im.crop(METAL)).copy();patch[:,:,:3]=rgb
+    patch=np.asarray(im.crop(METAL)).copy();patch[:,:,:3]=rgb_metal
     im.paste(Image.fromarray(patch),METAL[:2])
-    return im
+
+    # Apply approved Plan 1 (经典饥荒均衡版) DST contrast/colour polish & structural ink reinforcement
+    arr = np.asarray(im, dtype=np.float32).copy()
+    alpha = arr[:, :, 3] / 255.0
+    rgb = arr[:, :, :3]
+    x0, y0, x1, y1 = METAL
+    _, m_metal_lum, mask_m, facet, _, _, _, _, transverse, xx, yy = geometry()
+    p_rgb = rgb[y0:y1, x0:x1].copy()
+    p_lum = p_rgb @ np.array((0.253, 0.60, 0.147), dtype=np.float32)
+    phase_lum = LIGHT[j]
+
+    # Lunar crystal blade: crisp luminous cold moon-silver / sea-glass edge (resists DST dusk green muddiness)
+    pivot = 96.0 + 36.0 * phase_lum
+    c_rgb = pivot + (p_rgb - pivot) * 1.22 + 20.0 * (1.35 - 0.35 * phase_lum)
+    edge_rim = ease((transverse - 20.0) / 56.0) * ease((m_metal_lum - 100.0) / 80.0) * facet
+    rim_tint = np.array((234.0, 252.0, 248.0), dtype=np.float32)
+    c_rgb = c_rgb + (rim_tint - c_rgb) * np.clip(edge_rim * 0.45 * (0.68 + 0.32 * phase_lum), 0.0, 0.78)[..., None]
+    c_gray = np.mean(c_rgb, axis=2, keepdims=True)
+    c_rgb = c_gray + (c_rgb - c_gray) * 1.40
+    c_rgb = c_rgb + np.array((-6.0, 6.0, 16.0), dtype=np.float32) * ease((p_lum - 60.0) / 80.0)[..., None]
+
+    # Living shadow spine: rich cool indigo-slate matching Wili's hair/cloak without crushing to flat black
+    guard_m = ease(((xx - 235.0) * 0.70 - (yy - 657.0) * 0.72 + 38.0) / 41.0)
+    spine_mask = (1.0 - facet) * guard_m * mask_m
+    s_rgb = p_rgb * 0.92 + np.array((-2.0, 3.0, 14.0), dtype=np.float32)
+    s_rgb = s_rgb + ease((m_metal_lum - 46.0) / 36.0)[..., None] * np.array((12.0, 18.0, 28.0), dtype=np.float32)
+
+    metal_out = p_rgb + (s_rgb - p_rgb) * spine_mask[..., None]
+    metal_out = metal_out + (c_rgb - metal_out) * (facet * mask_m)[..., None]
+    # 8-phase lunar Phase Eye
+    metal_out = _paint_phase_eye(metal_out, j, m_metal_lum)
+    rgb[y0:y1, x0:x1] = np.clip(metal_out, 0.0, 255.0)
+
+    # Wrapped handle & pommel ring: crisp sculpted contrast
+    full_guard = np.zeros(alpha.shape, dtype=np.float32)
+    full_guard[y0:y1, x0:x1] = guard_m
+    handle_mask = (1.0 - full_guard) * alpha
+    h_rgb = 76.0 + (rgb - 76.0) * 1.24 + np.array((10.0, 7.0, 10.0), dtype=np.float32)
+    rgb = rgb + (np.clip(h_rgb, 0.0, 255.0) - rgb) * handle_mask[..., None]
+
+    # Reinforce true structural drawn ink lines to crisp DST black
+    ink_mask = _master_structural_ink()
+    w_ink = ink_mask[..., None] * 0.78
+    rgb = rgb * (1.0 - w_ink) + np.array((7.0, 8.0, 12.0), dtype=np.float32) * w_ink
+
+    arr[:, :, :3] = np.clip(rgb, 0.0, 255.0)
+    return Image.fromarray(np.rint(arr).astype(np.uint8), "RGBA")
 
 def arc_polyline(points,u):
     p=np.asarray(points,dtype=np.float64)
@@ -346,6 +494,23 @@ def _weapon(phase_id,n):
     strength=(.13,.60,.86,.88,.48,.85,.84,.46)[j]
     col=patch[:,:,:3].astype(np.float32)
     col+=(colors-col)*np.clip(beam*strength,0,1)[...,None]
+    # Animated Phase Eye lunar pulse synced with the 1.2s energy loop (baked cleanly into light_overlay)
+    eye_open, iris_disc, _, lit_moon, _, eclipse_rim, catch_spot, _ = _phase_eye_fields(j)
+    pulse = 0.5 + 0.5 * math.sin(math.tau * t)
+    twinkle = (0.5 + 0.5 * math.sin(math.tau * (t + 0.14))) ** 2.4
+    if j == 0:
+        eye_glow = np.clip(eclipse_rim * (0.25 + 0.62 * pulse) + eye_open * (0.12 + 0.18 * pulse) + catch_spot * 0.55 * twinkle, 0.0, 0.90)
+        eye_glow_col = np.array((214.0, 174.0, 255.0), dtype=np.float32)
+    elif j == 4:
+        eye_glow = np.clip(iris_disc * (0.24 + 0.50 * pulse) + eye_open * (0.14 + 0.24 * pulse) + catch_spot * 0.72 * twinkle, 0.0, 0.92)
+        eye_glow_col = np.array((255.0, 255.0, 245.0), dtype=np.float32)
+    elif j < 4:
+        eye_glow = np.clip(lit_moon * (0.24 + 0.54 * pulse) + eye_open * (0.10 + 0.16 * pulse) + catch_spot * 0.70 * twinkle, 0.0, 0.90)
+        eye_glow_col = np.array((242.0, 255.0, 248.0), dtype=np.float32)
+    else:
+        eye_glow = np.clip(lit_moon * (0.20 + 0.46 * pulse) + eye_open * (0.08 + 0.14 * pulse) + catch_spot * 0.62 * twinkle, 0.0, 0.88)
+        eye_glow_col = np.array((218.0, 246.0, 255.0), dtype=np.float32)
+    col += (eye_glow_col - col) * eye_glow[..., None]
     patch[:,:,:3]=np.uint8(np.rint(np.clip(col,0,255)))
     im=surface_im.copy();im.paste(Image.fromarray(patch),METAL[:2])
     base.alpha_composite(im)

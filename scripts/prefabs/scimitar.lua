@@ -27,6 +27,12 @@ local moonlight = {
     new = 0.03, waxing_quarter = 0.10, waxing_half = 0.18, waxing_threequarter = 0.24,
     full = 0.32, waning_threequarter = 0.20, waning_half = 0.13, waning_quarter = 0.07,
 }
+-- Let the animated Phase Eye pulse, blade veins and moon shards read clearly in dusk/night
+-- while keeping the solid blade grounded in ambient world lighting.
+local glint_light = {
+    new = 0.26, waxing_quarter = 0.34, waxing_half = 0.46, waxing_threequarter = 0.56,
+    full = 0.68, waning_threequarter = 0.50, waning_half = 0.38, waning_quarter = 0.28,
+}
 -- Keep the blade-current hit slash readable in daylight, night and caves.
 local hit_light = {
     new = 0.30, waxing_quarter = 0.45, waxing_half = 0.62, waxing_threequarter = 0.75,
@@ -58,7 +64,7 @@ local function spawn_hit_fx(inst, owner, data)
 end
 
 local function play_edge(fx, slot, phase)
-    fx.AnimState:SetSymbolLightOverride("shiv_glint_" .. phase, moonlight[phase])
+    fx.AnimState:SetSymbolLightOverride("shiv_glint_" .. phase, glint_light[phase] or moonlight[phase])
     fx.AnimState:PlayAnimation(slot.clip .. phase, true)
 end
 
@@ -79,7 +85,7 @@ local function update_moon(inst)
     if inst._moon == phase then return end
     inst._moon = phase
     inst.AnimState:SetSymbolLightOverride("shiv_planted_" .. phase, moonlight[phase])
-    inst.AnimState:SetSymbolLightOverride("shiv_ground_glint_" .. phase, moonlight[phase])
+    inst.AnimState:SetSymbolLightOverride("shiv_ground_glint_" .. phase, glint_light[phase] or moonlight[phase])
     inst.AnimState:PlayAnimation("ground_" .. phase, true)
     if inst._edge_owner ~= nil then
         show_weapon(inst._edge_owner, phase)

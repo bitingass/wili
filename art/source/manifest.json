@@ -20,13 +20,13 @@
       "archive": "anim/scimitar.zip",
       "source": "anim/scimitar",
       "frames": 2,
-      "runtime_sha256": "27cffc7410c9f606c133b96e1628bf6b97c6c116e2bdeb0dfe6a18a8f53e178d"
+      "runtime_sha256": "b2fbb59ae0109666dfde9eeee23a4c0783c29657f22cb5362458f4906ded74dd"
     },
     {
       "archive": "anim/swap_scimitar.zip",
       "source": "anim/swap_scimitar",
       "frames": 2,
-      "runtime_sha256": "29fcbcce966b8709cb770569b0d0accefe014a4c886c2847c757b12c280a47e1"
+      "runtime_sha256": "1a3fc0b1e1d279a86fad85561ba664fe4ede7541589d955d0e08f6bfd02a55f0"
     }
   ],
   "ui_textures": [
@@ -136,7 +136,7 @@
     "reference_low_carry_palm_to_tip_fraction": 0.4302,
     "held_scale_adjustment": 1.2,
     "ground_scale_adjustment": 1.15,
-    "extra_outline_radius": 1.2,
+    "extra_outline_radius": 2.15,
     "base_release": "1.2.4",
     "hit_fx": "wili_eclipse_hit_fx (8-phase Style-A arc blade-current slash + artist-cut shards)",
     "particle_enhancement": {
@@ -155,9 +155,10 @@
       "additional_symbol_bloom": false,
       "single_atlas": [
         4096,
-        2048
+        4096
       ]
-    }
+    },
+    "visual_polish": "Plan 1 DST jet-black 2.15px outer ink + reinforced interior ink + cool lunar crystal/indigo spine contrast + 8-phase spherical lunar Phase Eye with 1.2s animated breathing pulse"
   },
   "previous_weapon_in_game_feedback": {
     "date": "2026-10-24",
@@ -180,7 +181,7 @@
   "eclipse_shiv": {
     "archive": "anim/wili_eclipse_shiv.zip",
     "builder": "art/tools/build_eclipse_shiv.py",
-    "runtime_sha256": "6e7fa95e604c1939a299754cb0a09831bc03ddb562787392eb730c0b79fd9208"
+    "runtime_sha256": "1415ec07faa4760dd7d2fcfadf1e17bdedd738c9a7a9f8c36c5b7be301ab27a1"
   },
   "eclipse_hit_fx": {
     "archive": "anim/wili_eclipse_hit_fx.zip",
