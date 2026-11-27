@@ -88,11 +88,12 @@ Wili came from an all-female assassin alliance and was sent to the Constant afte
 
 ---
 
-## 本地打包说明
+## 打包与自动发版说明
 
 每次正式更新只在 Steam 工坊已发布版本上将末位加 1，同一次更新的本地试玩迭代共用这个版本号。
 
-在名为 `wili-dev` 的开发仓库根目录运行 `python art/tools/package_release.py`。脚本重建 `mod.manifest`，将游戏运行文件同步到同级的 `wili` 文件夹，并生成 `art/.work/release/wili.zip`。可整目录复制 `wili` 用于发版。
+- **本地打包**：在名为 `wili-dev` 的开发仓库根目录运行 `python art/tools/package_release.py`。脚本重建 `mod.manifest`，将游戏运行文件同步到同级的 `wili` 文件夹，并生成 `art/.work/release/wili.zip`。可整目录复制 `wili` 用于发版。
+- **GitHub 自动发版**：更新 `modinfo.lua` 版本号和本文件对应的更新日志后，推送 `v*` 标签（例如 `git tag v1.2.7 && git push origin v1.2.7`），`.github/workflows/release.yml` 会自动调用 `art/tools/build_release_zip.py` 打包仅含工坊运行文件的 `wili-<版本号>.zip`、`SHA256SUMS.txt`，提取对应版本的更新日志并发布 GitHub Release（也支持在 GitHub Actions 页面手动 `workflow_dispatch` 补传附件）。
 
 攻击动画源锁定为 1.2.4 提交 `25c1998` 中的原始资源；美术构建说明见 [美术说明](art/说明.txt)。
 
