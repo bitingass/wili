@@ -78,6 +78,13 @@ def main():
             with zipfile.ZipFile(destination) as built,zipfile.ZipFile(ROOT/body_record['archive']) as existing:
                 assert built.read('anim.bin')==existing.read('anim.bin'),body_record['archive']
         checked.append(body_record['archive'])
+    if 'eye_anim' in manifest:
+        from build_wili_eye_anim import build_archive as build_eye_anim
+        eye_archive = manifest['eye_anim']['archive']
+        build_eye_anim(output / eye_archive)
+        if args.verify_runtime:
+            assert (output / eye_archive).read_bytes() == (ROOT / eye_archive).read_bytes(), eye_archive
+        checked.append(eye_archive)
     for record in manifest['ui_textures']:
         destination = output / record['target']
         codec.encode_tex(SOURCE/record['source'], destination, record['format'])

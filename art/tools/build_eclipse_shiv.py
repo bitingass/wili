@@ -28,7 +28,10 @@ PIVOT = np.array([138., 83.])
 EDGE_RESOLUTION = 2
 HELD_SCALE = 1.20
 GROUND_SCALE = 1.15
-OUTLINE_RADIUS = 1.2
+OUTLINE_RADIUS = 2.15
+OUTLINE_TAPER_MIN = 0.62
+OUTLINE_INK_RGB = (6, 7, 10)
+POST_INK_LOCK = 0.55
 R = Image.Resampling
 PLACEMENT = json.loads((DESIGN.parent / "placement.json").read_text(encoding="utf8"))
 REGISTER = json.loads((DESIGN / "registration.json").read_text(encoding="utf8"))
@@ -67,6 +70,41 @@ def project(art, dest=PIVOT, size=CANVAS, scale=1.):
                              (*m[0], p[0], *m[1], p[1]), R.BICUBIC)
 
 
+def apply_shiv_ink(sprite, radius_px, taper_min=OUTLINE_TAPER_MIN, ink_rgb=OUTLINE_INK_RGB, ink_lock=POST_INK_LOCK):
+    """Apply crisp DST jet-black outer contour and lock resampled interior ink."""
+    if ink_lock > 0:
+        arr = np.asarray(sprite, dtype=np.float32).copy()
+        a = arr[:, :, 3] / 255.0
+        rgb = arr[:, :, :3]
+        lum = rgb @ np.array((0.253, 0.60, 0.147), dtype=np.float32)
+        dark = np.clip((34.0 - lum) / 20.0, 0.0, 1.0) * np.clip((a - 0.4) / 0.4, 0.0, 1.0) * ink_lock
+        ink_arr = np.array(ink_rgb, dtype=np.float32)
+        arr[:, :, :3] = rgb * (1.0 - dark[..., None]) + ink_arr * dark[..., None]
+        sprite = Image.fromarray(np.rint(np.clip(arr, 0, 255)).astype(np.uint8), "RGBA")
+    alpha = np.asarray(sprite.getchannel("A"), dtype=np.float32) / 255.0
+    solid = alpha > 0.5
+    left = np.argmax(solid, axis=1)
+    right = alpha.shape[1] - np.argmax(solid[:, ::-1], axis=1)
+    width = np.where(solid.any(axis=1), right - left, 0)
+    row_radius = radius_px * (taper_min + (1.0 - taper_min) * np.clip(width / 17.0, 0.0, 1.0))
+    extent = math.ceil(radius_px + 0.5)
+    height, cols = alpha.shape
+    padded = np.pad(alpha, extent)
+    expanded = alpha.copy()
+    for dy in range(-extent, extent + 1):
+        for dx in range(-extent, extent + 1):
+            distance = math.hypot(dx, dy)
+            if distance >= radius_px + 0.5:
+                continue
+            nearby = padded[extent + dy:extent + dy + height, extent + dx:extent + dx + cols]
+            coverage = np.clip(row_radius + 0.5 - distance, 0, 1)
+            np.maximum(expanded, nearby * coverage[:, None], out=expanded)
+    underlay = Image.new("RGBA", sprite.size, (*ink_rgb, 0))
+    underlay.putalpha(Image.fromarray(np.rint(expanded * 255).astype(np.uint8)))
+    underlay.alpha_composite(sprite)
+    return underlay
+
+
 @lru_cache(maxsize=1)
 def ground_layout():
     art = project(eclipse_looks.master())
@@ -87,7 +125,7 @@ def ground_layout():
 
 
 def editable_sprites():
-    art = eclipse_looks.master()
+    art = eclipse_looks.surface("waxing_half")
     for idx, slot in enumerate(PLACEMENT["held"]):
         path = SOURCE/"anim/swap_scimitar/sprites"/slot["file"]
         sprite = project(art, np.array(slot["target_grip_anchor_png"]), slot["canvas_size"], HELD_SCALE)
@@ -102,9 +140,10 @@ def editable_sprites():
     ground.paste((0,0,0,0),(0,floor,ground.width,ground.height))
     ground.save(SOURCE/"anim/scimitar/sprites"/binding["file"])
     icon = art.crop(art.getbbox())
-    icon.thumbnail((60,60),R.LANCZOS)
+    icon.thumbnail((56,56),R.LANCZOS)
     inventory = Image.new("RGBA",(64,64))
     inventory.paste(icon,((64-icon.width)//2,(64-icon.height)//2))
+    inventory = apply_shiv_ink(inventory, radius_px=1.25, taper_min=0.70, ink_lock=0.45)
     inventory.save(SOURCE/"ui/images/inventoryimages/scimitar.png")
 
 
@@ -203,15 +242,37 @@ def build_assets():
                       ground_origin,ground_unit,name+"_cut")
 
     count=eclipse_looks.FRAMES
+    eye_default_held = None
+    eye_default_ground = None
     for phase in eclipse_looks.PHASES:
         surface = project_cel(eclipse_looks.surface(phase))
         weapon_name = "shiv_weapon_" + phase
-        outlined = codec.apply_outer_ink(surface, {"radius_px": OUTLINE_RADIUS*density})
+        outlined = apply_shiv_ink(surface, OUTLINE_RADIUS*density)
         weapon_rect = tile(weapon_name, outlined)
         symbol(weapon_name, [record(idx,3,weapon_rect/density,origin,held_unit,weapon_name)
                              for idx,origin in zip((0,5),hand_origins)])
         ground_weapon = planted(weapon_name,0,weapon_rect)
         ground_weapon_key = symbol("shiv_planted_"+phase,[ground_weapon])
+
+        # Living Phase Eye layer: 7 gaze/blink poses per moon phase (shared tiny ~40x48 atlas tiles!)
+        eye_center_held_fr = None
+        eye_center_ground_fr = None
+        for pose in eclipse_looks.EYE_POSES:
+            ep_tile_name = f"eye_{phase}_{pose}"
+            ep_cel = project_cel(eclipse_looks.eye_patch(phase, pose))
+            ep_rect = tile(ep_tile_name, ep_cel)
+            held_eye_fr = record(0, 1, ep_rect/density, np.zeros(2), held_unit, ep_tile_name)
+            ground_eye_fr = record(0, 1, ep_rect/density, ground_origin, ground_unit, ep_tile_name)
+            symbol(f"shiv_eye_{phase}_{pose}", [held_eye_fr])
+            symbol(f"shiv_ground_eye_{phase}_{pose}", [ground_eye_fr])
+            if pose == "center":
+                eye_center_held_fr = held_eye_fr
+                eye_center_ground_fr = ground_eye_fr
+
+        if eye_default_held is None:
+            eye_default_held = symbol("shiv_eye", [eye_center_held_fr])
+            eye_default_ground = symbol("shiv_ground_eye", [eye_center_ground_fr])
+
         held_frames=[];ground_frames=[]
         for i in range(count):
             key=f"{phase}_{i}"
@@ -223,13 +284,13 @@ def build_assets():
         ground_glint=symbol("shiv_ground_glint_"+phase,ground_frames)
         for group,offset in zip(("a","b"),hand_origins):
             clip("held_"+group+"_"+phase,
-                 [[element(held,n,offset)] for n in range(count)],
-                 [bbox(fr,offset) for fr in held_frames])
+                 [[element(eye_default_held,0,offset,-5.2), element(held,n,offset,-5.0)] for n in range(count)],
+                 [bbox(fr,offset) for fr in held_frames] + [bbox(eye_center_held_fr,offset)])
         prop_shift=(.45,.10); grass_shift=(0,-2.15)
         clip("ground_"+phase,
-             [[element(grass_key,0,grass_shift,-6),element(ground_glint,n,prop_shift,-5.1),
-               element(ground_weapon_key,0,prop_shift)] for n in range(count)],
-             [bbox(fr,prop_shift) for fr in ground_frames]+[bbox(ground_weapon,prop_shift),bbox(grass_frame,grass_shift)])
+             [[element(grass_key,0,grass_shift,-6), element(eye_default_ground,0,prop_shift,-5.2),
+               element(ground_glint,n,prop_shift,-5.1), element(ground_weapon_key,0,prop_shift)] for n in range(count)],
+             [bbox(fr,prop_shift) for fr in ground_frames] + [bbox(eye_center_ground_fr,prop_shift), bbox(ground_weapon,prop_shift), bbox(grass_frame,grass_shift)])
 
     # The game's ordinary two-atlas shader maps every z>=.5 to sampler 1.
     # Use one atlas so neither normal nor bloom paths can sample another cel.
